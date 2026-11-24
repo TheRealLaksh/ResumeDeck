@@ -56,6 +56,8 @@ export const EXPERIENCE = [
     bullets: [
       { t: 'Sole engineer at an early-stage venue-booking marketplace: built the website from scratch and took it to production, now listing 120+ venues.', lenses: ALL },
       { t: 'Integrated Razorpay payments and ship new features every day.', lenses: ALL },
+      { t: 'Manage SEO for the venue listings: page metadata, structured data and Search Console, so listings can be found on Google.', lenses: ALL },
+      { t: 'Lead technology collaborations and integrations with large brands.', lenses: ['client', 'recruiter'] },
       { t: 'Support growth alongside the tech work: outreach calls, operations and social media.', lenses: ['client', 'recruiter'] },
     ],
     tags: ['Razorpay', 'Web app', 'Production'],

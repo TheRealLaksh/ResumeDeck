@@ -37,6 +37,7 @@ export const classicResume = () => {
         details: bullets([
           'Sole engineer on an early-stage venue-booking marketplace: built the website from scratch and shipped it to production, now listing 120+ venues.',
           'Integrated Razorpay payments and ship new features and fixes daily.',
+          'Manage SEO for the venue listings (metadata, structured data, Search Console) and lead technology collaborations with large brands.',
           'Support growth alongside engineering: outreach calls and operations.',
         ]),
       },

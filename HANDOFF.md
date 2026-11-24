@@ -78,12 +78,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 24 Nov 2026, 9:57 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 24 Nov 2026, 10:13 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `6568118` 2026-11-24 21:57 HANDOFF: Unified Mentor number skipped
 - `a470fa4` 2026-11-24 21:56 Add Calibridge Lighthouse result to the /laksh resume
 - `a09fa2b` 2026-11-24 21:54 Per-path canonical and noindex for shared resumes; /laksh description
 - `84396d1` 2026-11-24 21:53 Add JSON-LD, og:site_name and image details; drop stale year keyword
@@ -98,11 +99,11 @@ Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resu
 - `6db00a2` 2026-10-18 10:49 Default /laksh to the standard Profiley view with a Creative view switch
 - `092068e` 2026-10-18 10:44 HANDOFF: note the pushed preview branch
 - `b60460a` 2026-10-18 10:43 Route /laksh to the custom page and update HANDOFF
-- `602bbfc` 2026-10-18 10:43 Add the /laksh resume page: lenses, live ATS check, project status, changelog, print sheet
 
 ### Uncommitted changes at refresh time
 
 ```
-M  HANDOFF.md
+M  src/laksh/classic.js
+M  src/laksh/content.js
 ```
 <!-- handoff:auto:end -->
