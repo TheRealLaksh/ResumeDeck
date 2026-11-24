@@ -10,3 +10,7 @@ database_id = "86267e2f-fc19-41c3-b61a-62171fe99c94"
 
 [vars]
 ALLOWED_ORIGINS = "https://profiley.lakshpradhwani.com"
+
+[[routes]]
+pattern = "profiley-api.lakshpradhwani.com"
+custom_domain = true
