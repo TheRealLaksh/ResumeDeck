@@ -46,7 +46,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 4. Check the `/laksh` public resume page and the exported PDF carry the new links.
 
 ## Open questions / waiting on
-- RENAME FOLLOW-UPS (25 Nov 2026): (1) Auto-deploy to Cloudflare on push is NOT set up (deploy by hand with `npm run deploy:cf`); needs a Cloudflare API token as a GitHub secret, or Workers Builds connected in the dashboard, Laksh to approve. (2) The old Vercel project `profiley-resume-builder` is unused but still exists; delete it (and the leftover profiley domain entry there) only on Laksh's say-so. (3) SEO phase is next: readable landing text for Google, meta/schema, Search Console sitemap for resumedeck.lakshpradhwani.com (needs Laksh's Google login). (4) LinkedIn Featured link still points at the old profiley address (LinkedIn cannot edit a link's URL; it redirects). (5) The old D1 `profiley-share` is kept as a backup; delete once happy. (6) Portfolio chatbot `feat/chat-v3` has a local rename commit, not pushed. (7) PDFs/Google Docs of the resume that still say Profiley are Laksh's to re-export.
+- RENAME FOLLOW-UPS (25 Nov 2026): (1) Auto-deploy: the `deploy` job in `.github/workflows/ci.yml` is in place and skips itself until the repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` exist. A scoped token named "ResumeDeck GitHub Actions deploy" (Workers edit, this account, zone lakshpradhwani.com only, expires 25 Nov 2027) was created on 25 Nov 2026 but the secret could not be stored by Claude (blocked); Laksh stores it (`gh secret set CLOUDFLARE_API_TOKEN --repo TheRealLaksh/ResumeDeck`, and the account id `ed883e733f5ed6ea26829ec5073c8733` as CLOUDFLARE_ACCOUNT_ID). Until then deploy by hand with `npm run deploy:cf`. Renew the token before it expires. (2) The old Vercel project `profiley-resume-builder` is unused but still exists; delete it (and the leftover profiley domain entry there) only on Laksh's say-so. (3) SEO phase is next: readable landing text for Google, meta/schema, Search Console sitemap for resumedeck.lakshpradhwani.com (needs Laksh's Google login). (4) LinkedIn Featured link still points at the old profiley address (LinkedIn cannot edit a link's URL; it redirects). (5) The old D1 `profiley-share` is kept as a backup; delete once happy. (6) Portfolio chatbot `feat/chat-v3` has a local rename commit, not pushed. (7) PDFs/Google Docs of the resume that still say Profiley are Laksh's to re-export.
 - Firebase project `profiley-76c8a` was DELETED on 25 Nov 2026 at Laksh's request (recoverable for about 30 days from the Google Cloud console, project owner account). The 6 shared resumes and the old `laksh` doc (now `laksh-old`) live in D1. Remove the now-unused `VITE_FIREBASE_*` env vars in Vercel.
 - Server key stays off (cost); AI is copy-paste or bring-your-own-key only.
 - Old domain `profiley.lakshp.live` must be removed by hand in the Vercel dashboard (Domains); no tool available for it.
@@ -93,12 +93,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 1:53 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 3:42 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `87712b2` 2026-11-25 01:53 HANDOFF: rename follow-ups
 - `5c71ee2` 2026-11-25 01:50 Tests: read saved data defensively while autosave is still pending
 - `2228748` 2026-11-25 01:39 ResumeDeck: custom domains, docs, import hardening
 - `acab092` 2026-11-25 01:31 Rename Profiley to ResumeDeck, host on Cloudflare, new share Worker and redirect Worker
@@ -113,11 +114,11 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDec
 - `c79c3c4` 2026-11-24 22:17 Add multiple saved resumes and a backup reminder
 - `ee103c9` 2026-11-24 22:17 HANDOFF: /laksh-mu and ShiftsDeal role update
 - `61e72a5` 2026-11-24 22:16 Add /laksh-mu: resume in the Masters' Union format with browser PDF download
-- `be68d41` 2026-11-24 22:13 Add SEO listings and brand tech collaborations to the ShiftsDeal role on /laksh
 
 ### Uncommitted changes at refresh time
 
 ```
+M  .github/workflows/ci.yml
 M  HANDOFF.md
 ```
 <!-- handoff:auto:end -->
