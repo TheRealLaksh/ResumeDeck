@@ -1,7 +1,7 @@
 // Share link helpers: expiry choices and the list of links created from this browser.
-// Expiry is stored on the shared document and enforced when the link is opened (see App.jsx).
-// It is a courtesy, not access control: Profiley has no sign-in, so the stored data can still be read
-// by anyone who knows the document id. Links also cannot be switched off yet (nothing can edit a published doc).
+// The server (Cloudflare Worker + D1, see /worker) enforces expiry and turn-off, and never sends an expired or
+// turned-off resume. Each link created here keeps its owner token in this browser; that token is what allows
+// turning the link off and reading its view count. Clear site data and the tokens are gone (the links stay live).
 
 const LINKS_KEY = 'profiley_links';
 const MAX_LINKS = 30;
@@ -52,7 +52,9 @@ const saveLinks = (list) => {
   return list;
 };
 
-export const addLink = ({ id, url, expiresAt, name }) =>
-  saveLinks([{ id, url, expiresAt: expiresAt || null, name: name || '', createdAt: new Date().toISOString() }, ...loadLinks().filter((l) => l.id !== id)]);
+export const addLink = ({ id, url, expiresAt, name, ownerToken }) =>
+  saveLinks([{ id, url, expiresAt: expiresAt || null, name: name || '', ownerToken: ownerToken || '', createdAt: new Date().toISOString() }, ...loadLinks().filter((l) => l.id !== id)]);
+
+export const markRevoked = (id) => saveLinks(loadLinks().map((l) => (l.id === id ? { ...l, revoked: true, ownerToken: '' } : l)));
 
 export const forgetLink = (id) => saveLinks(loadLinks().filter((l) => l.id !== id));

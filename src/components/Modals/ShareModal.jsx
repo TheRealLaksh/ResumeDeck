@@ -1,13 +1,41 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { X, Link as LinkIcon, Loader2, Copy, Check, ExternalLink } from 'lucide-react';
 import { formatDay, isExpired } from '../../utils/shareLinks';
+import { fetchShareStats } from '../../shareApi';
 
 const ShareModal = ({
   isOpen, onClose, customSlug, setCustomSlug, shareError,
   handleGenerateLink, isGeneratingLink, shareUrl, linkCopied, handleCopyShareUrl,
-  shareExpiry, setShareExpiry, expiryOptions = [], shareExpiresAt, myLinks = [], onForgetLink
+  shareExpiry, setShareExpiry, expiryOptions = [], shareExpiresAt, myLinks = [], onForgetLink, onRevokeLink
 }) => {
   const dialogRef = useRef(null);
+  const [views, setViews] = useState({}); // link id -> view count
+  const [confirmId, setConfirmId] = useState(null);
+  const [busyId, setBusyId] = useState(null);
+  const [linkError, setLinkError] = useState('');
+
+  // View counts come from the server, only for links whose owner token this browser holds.
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    let cancelled = false;
+    myLinks.filter((l) => l.ownerToken && !l.revoked).forEach((l) => {
+      fetchShareStats(l.id, l.ownerToken).then((s) => { if (!cancelled && s) setViews((v) => ({ ...v, [l.id]: s.views })); }).catch(() => {});
+    });
+    return () => { cancelled = true; };
+  }, [isOpen, myLinks]);
+
+  const turnOff = async (link) => {
+    setBusyId(link.id);
+    setLinkError('');
+    try {
+      await onRevokeLink(link);
+    } catch (e) {
+      setLinkError(e.message || "Couldn't turn this link off.");
+    } finally {
+      setBusyId(null);
+      setConfirmId(null);
+    }
+  };
 
   // Escape closes, Tab stays inside the dialog, and focus returns to what opened it.
   useEffect(() => {
@@ -92,7 +120,7 @@ const ShareModal = ({
                 <select id="share-expiry" value={shareExpiry} onChange={(e) => setShareExpiry(e.target.value)} className="input">
                   {expiryOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                 </select>
-                <p className="hint mt-1.5">After this date the link shows an expired notice. It cannot be switched off earlier yet.</p>
+                <p className="hint mt-1.5">After this date the link stops opening. You can also turn it off any time from the list below.</p>
               </div>
             )}
             {shareError && <p id="share-error" role="alert" className="mt-2 text-xs font-medium text-danger">{shareError}</p>}
@@ -112,15 +140,26 @@ const ShareModal = ({
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-numeric text-[12px] text-ink">/{l.id}</p>
                     <p className="text-[11px] text-ink-3">
-                      {l.expiresAt ? (isExpired(l.expiresAt) ? `Expired ${formatDay(l.expiresAt)}` : `Expires ${formatDay(l.expiresAt)}`) : 'No expiry'}
+                      {l.revoked ? 'Turned off' : l.expiresAt ? (isExpired(l.expiresAt) ? `Expired ${formatDay(l.expiresAt)}` : `Expires ${formatDay(l.expiresAt)}`) : 'No expiry'}
+                      {views[l.id] != null && !l.revoked ? ` · ${views[l.id]} ${views[l.id] === 1 ? 'view' : 'views'}` : ''}
                     </p>
                   </div>
+                  {l.ownerToken && !l.revoked && (
+                    confirmId === l.id ? (
+                      <button type="button" className="btn btn-sm rounded-lg bg-danger px-2 text-[12px] font-semibold text-white" disabled={busyId === l.id} onClick={() => turnOff(l)}>
+                        {busyId === l.id ? 'Turning off' : 'Turn off?'}
+                      </button>
+                    ) : (
+                      <button type="button" className="btn btn-ghost btn-sm" onClick={() => setConfirmId(l.id)}>Turn off</button>
+                    )
+                  )}
                   <a className="btn btn-ghost btn-icon h-8 w-8" href={l.url} target="_blank" rel="noreferrer" aria-label={`Open ${l.id}`}><ExternalLink size={14} /></a>
                   <button type="button" className="btn btn-ghost btn-icon h-8 w-8" aria-label={`Remove ${l.id} from this list`} onClick={() => onForgetLink?.(l.id)}><X size={14} /></button>
                 </li>
               ))}
             </ul>
-            <p className="hint mt-2">Removing a link here only tidies this list. The link itself keeps working until it expires.</p>
+            {linkError && <p role="alert" className="mt-2 text-xs font-medium text-danger">{linkError}</p>}
+            <p className="hint mt-2">Turn off deletes the shared copy for good. Removing a link from this list only tidies it; the link keeps working until it expires or you turn it off.</p>
           </section>
         )}
       </div>

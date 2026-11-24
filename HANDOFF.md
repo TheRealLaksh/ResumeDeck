@@ -94,6 +94,7 @@ Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resu
 
 ### Last 15 commits
 
+- `c49e165` 2026-11-25 00:05 Add the share-link API: Cloudflare Worker + D1
 - `ffebbc3` 2026-11-24 23:47 Add share link expiry, a My links list and proposed Firestore rules
 - `01bf9e2` 2026-11-24 23:34 Add a free ATS keyword gap check to the Review tab
 - `e488232` 2026-11-24 22:49 Add a cover letter builder with a free Claude copy-paste prompt
@@ -108,25 +109,18 @@ Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resu
 - `e4fff94` 2026-11-24 21:53 Add a real sitemap.xml and block /api/ in robots.txt
 - `cfeea27` 2026-10-18 11:37 HANDOFF: refresh auto block
 - `c904b8b` 2026-10-18 11:37 HANDOFF: /laksh is live
-- `0cbb7a1` 2026-10-18 11:32 HANDOFF: refresh auto block
 
 ### Uncommitted changes at refresh time
 
 ```
-M HANDOFF.md
- M README.md
- D firestore.rules
- M package-lock.json
- M package.json
- M src/App.jsx
- M src/components/Layout/LinkUnavailable.jsx
- M src/components/Modals/ShareModal.jsx
-D  src/firebase.js
- M src/utils/shareLinks.js
-A  worker/.gitignore
-A  worker/schema.sql
-A  worker/src/index.js
-A  worker/wrangler.toml
-?? src/shareApi.js
+M  README.md
+D  firestore.rules
+M  package-lock.json
+M  package.json
+M  src/App.jsx
+M  src/components/Layout/LinkUnavailable.jsx
+M  src/components/Modals/ShareModal.jsx
+A  src/shareApi.js
+M  src/utils/shareLinks.js
 ```
 <!-- handoff:auto:end -->

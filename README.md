@@ -17,8 +17,8 @@
   <a href="https://vitejs.dev/">
     <img src="https://img.shields.io/badge/SPEED-VITE-646cff?style=for-the-badge&amp;logo=vite&amp;logoColor=white" alt="Vite" />
   </a>
-  <a href="https://firebase.google.com/">
-    <img src="https://img.shields.io/badge/CLOUD-FIREBASE-ffca28?style=for-the-badge&amp;logo=firebase&amp;logoColor=black" alt="Firebase" />
+  <a href="https://developers.cloudflare.com/d1/">
+    <img src="https://img.shields.io/badge/SHARE_LINKS-CLOUDFLARE_D1-f38020?style=for-the-badge&amp;logo=cloudflare&amp;logoColor=white" alt="Cloudflare D1" />
   </a>
   <img src="https://img.shields.io/badge/STATUS-MVP_COMPLETE-00e676?style=for-the-badge" alt="Status" />
 
@@ -139,7 +139,7 @@ src/
 ├── data/
 │   └── constants.js       # Templates, themes, defaults
 ├── assets/                # Static assets
-└── firebase.js            # Firestore integration
+└── shareApi.js            # Share link client (Cloudflare Worker + D1, see /worker)
 ```
 
 ---

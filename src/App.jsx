@@ -14,7 +14,7 @@ import TopBar from './components/Layout/TopBar';
 import ZoomDock from './components/Layout/ZoomDock';
 import AppSkeleton from './components/Layout/AppSkeleton';
 import LinkUnavailable from './components/Layout/LinkUnavailable';
-import { EXPIRY_OPTIONS, expiresAtFor, isExpired, loadLinks, addLink, forgetLink } from './utils/shareLinks';
+import { EXPIRY_OPTIONS, expiresAtFor, loadLinks, addLink, forgetLink, markRevoked } from './utils/shareLinks';
 import Footer from './components/Layout/Footer';
 
 // Hooks
@@ -45,7 +45,7 @@ import {
   markBackup,
   backupIsDue
 } from './utils/resumeLibrary';
-import { saveResumeToDB, saveResumeWithSlug, fetchResumeFromDB, makeSlug } from './firebase';
+import { saveResumeToDB, saveResumeWithSlug, fetchResumeFromDB, makeSlug, revokeShare } from './shareApi';
 import {
   initialData,
   initialConfig,
@@ -112,7 +112,7 @@ const App = ({ preset = null, viewSwitch = null }) => {
   const [shareExpiry, setShareExpiry] = useState('never');
   const [shareExpiresAt, setShareExpiresAt] = useState(null);
   const [myLinks, setMyLinks] = useState(loadLinks);
-  const [linkExpired, setLinkExpired] = useState(false);
+  const [linkUnavailable, setLinkUnavailable] = useState(null); // 'expired' | 'revoked'
   
   // Notification State
   const [toast, setToast] = useState({ show: false, message: '', variant: 'success', action: null });
@@ -182,14 +182,14 @@ const App = ({ preset = null, viewSwitch = null }) => {
         try {
           const fetched = await fetchResumeFromDB(resumeId);
           if (cancelled) return;
-          if (fetched && isExpired(fetched.expiresAt)) {
-            // The owner's expiry date has passed: show a notice and never touch the resume's content.
-            setLinkExpired(true);
+          if (fetched?.unavailable) {
+            // Expired or turned off by its owner: show a notice. The server never sends the content.
+            setLinkUnavailable(fetched.unavailable);
             setIsLoading(false);
             return;
           }
           if (fetched) {
-            const resume = normalizeResume(fetched);
+            const resume = normalizeResume(fetched.resume);
             setData(resume.data);
             setConfig(resume.config);
             setSectionOrder(resume.sectionOrder);
@@ -345,14 +345,14 @@ const App = ({ preset = null, viewSwitch = null }) => {
       delete payload.data.letter; // a cover letter is private to this browser and is never published
       const slug = customSlug.trim() ? makeSlug(customSlug) : '';
       const expiresAt = expiresAtFor(shareExpiry);
-      const resumeId = slug
+      const { id: resumeId, ownerToken } = slug
         ? await saveResumeWithSlug(slug, payload, { expiresAt })
         : await saveResumeToDB(payload, { expiresAt });
 
       const url = `${window.location.origin}/${resumeId}`;
       setShareUrl(url);
       setShareExpiresAt(expiresAt);
-      setMyLinks(addLink({ id: resumeId, url, expiresAt, name: data.personal?.name }));
+      setMyLinks(addLink({ id: resumeId, url, expiresAt, name: data.personal?.name, ownerToken }));
       // The link already exists at this point, so a blocked clipboard must not read as a failure.
       setLinkCopied(await copyToClipboard(url));
     } catch (error) {
@@ -581,7 +581,7 @@ const App = ({ preset = null, viewSwitch = null }) => {
   // --- RENDER ---
 
   if (isLoading) return <AppSkeleton />;
-  if (linkExpired) return <LinkUnavailable />;
+  if (linkUnavailable) return <LinkUnavailable reason={linkUnavailable} />;
 
   const editorProps = {
     activeTab, setActiveTab,
@@ -714,6 +714,11 @@ const App = ({ preset = null, viewSwitch = null }) => {
         shareExpiresAt={shareExpiresAt}
         myLinks={myLinks}
         onForgetLink={(id) => setMyLinks(forgetLink(id))}
+        onRevokeLink={async (link) => {
+          await revokeShare(link.id, link.ownerToken);
+          setMyLinks(markRevoked(link.id));
+          notify('Link turned off');
+        }}
       />
 
       {/* Mounted only while open so every visit starts from a clean slate. */}
