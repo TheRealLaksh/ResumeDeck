@@ -13,6 +13,8 @@ import ImportModal from './components/Modals/ImportModal';
 import TopBar from './components/Layout/TopBar';
 import ZoomDock from './components/Layout/ZoomDock';
 import AppSkeleton from './components/Layout/AppSkeleton';
+import LinkUnavailable from './components/Layout/LinkUnavailable';
+import { EXPIRY_OPTIONS, expiresAtFor, isExpired, loadLinks, addLink, forgetLink } from './utils/shareLinks';
 import Footer from './components/Layout/Footer';
 
 // Hooks
@@ -107,6 +109,10 @@ const App = ({ preset = null, viewSwitch = null }) => {
   const [shareError, setShareError] = useState('');
   const [shareUrl, setShareUrl] = useState('');
   const [linkCopied, setLinkCopied] = useState(false);
+  const [shareExpiry, setShareExpiry] = useState('never');
+  const [shareExpiresAt, setShareExpiresAt] = useState(null);
+  const [myLinks, setMyLinks] = useState(loadLinks);
+  const [linkExpired, setLinkExpired] = useState(false);
   
   // Notification State
   const [toast, setToast] = useState({ show: false, message: '', variant: 'success', action: null });
@@ -176,6 +182,12 @@ const App = ({ preset = null, viewSwitch = null }) => {
         try {
           const fetched = await fetchResumeFromDB(resumeId);
           if (cancelled) return;
+          if (fetched && isExpired(fetched.expiresAt)) {
+            // The owner's expiry date has passed: show a notice and never touch the resume's content.
+            setLinkExpired(true);
+            setIsLoading(false);
+            return;
+          }
           if (fetched) {
             const resume = normalizeResume(fetched);
             setData(resume.data);
@@ -309,7 +321,9 @@ const App = ({ preset = null, viewSwitch = null }) => {
   const openShareModal = () => {
     setShareError('');
     setShareUrl('');
+    setShareExpiresAt(null);
     setLinkCopied(false);
+    setMyLinks(loadLinks());
     setShowShareModal(true);
   };
 
@@ -330,12 +344,15 @@ const App = ({ preset = null, viewSwitch = null }) => {
       const payload = normalizeResume({ data, config, sectionOrder });
       delete payload.data.letter; // a cover letter is private to this browser and is never published
       const slug = customSlug.trim() ? makeSlug(customSlug) : '';
+      const expiresAt = expiresAtFor(shareExpiry);
       const resumeId = slug
-        ? await saveResumeWithSlug(slug, payload)
-        : await saveResumeToDB(payload);
+        ? await saveResumeWithSlug(slug, payload, { expiresAt })
+        : await saveResumeToDB(payload, { expiresAt });
 
       const url = `${window.location.origin}/${resumeId}`;
       setShareUrl(url);
+      setShareExpiresAt(expiresAt);
+      setMyLinks(addLink({ id: resumeId, url, expiresAt, name: data.personal?.name }));
       // The link already exists at this point, so a blocked clipboard must not read as a failure.
       setLinkCopied(await copyToClipboard(url));
     } catch (error) {
@@ -564,6 +581,7 @@ const App = ({ preset = null, viewSwitch = null }) => {
   // --- RENDER ---
 
   if (isLoading) return <AppSkeleton />;
+  if (linkExpired) return <LinkUnavailable />;
 
   const editorProps = {
     activeTab, setActiveTab,
@@ -690,6 +708,12 @@ const App = ({ preset = null, viewSwitch = null }) => {
         shareUrl={shareUrl}
         linkCopied={linkCopied}
         handleCopyShareUrl={handleCopyShareUrl}
+        shareExpiry={shareExpiry}
+        setShareExpiry={setShareExpiry}
+        expiryOptions={EXPIRY_OPTIONS}
+        shareExpiresAt={shareExpiresAt}
+        myLinks={myLinks}
+        onForgetLink={(id) => setMyLinks(forgetLink(id))}
       />
 
       {/* Mounted only while open so every visit starts from a clean slate. */}

@@ -29,6 +29,7 @@ React 19, Vite, Tailwind, Firebase, html2canvas + jsPDF/html2pdf, lucide-react.
 - `src/utils/resumeLibrary.js` + `components/Layout/ResumeSwitcher.jsx`: multiple saved resumes in localStorage (max 12). Entry `main` keeps the original `profiley_data/config/order` keys (no migration); others use `profiley_resume_<id>`; metadata in `profiley_library`. Also the backup reminder (`profiley_last_backup`, toast 20 s after load when real content has no backup in 14 days).
 - Cover letter: `src/letter/letter.js` (data shape in `data.letter`, starter draft, Claude copy-paste prompt, reply cleaner), `components/Editor/LetterTab.jsx`, `components/Preview/LetterDocument.jsx` (A4 page with `data-resume-paper`, so PDF/print/fit reuse the resume pipeline; shown whenever the Letter tab is active, desktop and mobile). The letter is private: stripped from share links, but kept in backups and per saved resume. File name `<Name>_Cover_Letter.pdf`.
 - Keyword gap: `src/ats/keywords.js` (curated skill list with aliases + repeated words from the post, word-boundary matching, weighted coverage, where each term is found) and `Editor/review/KeywordPanel.jsx` (Review > Keywords: paste a job post, live coverage ring, missing / only-in-Skills / found lists, one-click "add to Skills" with undo). Local only, no AI, JD kept in sessionStorage.
+- Share link controls: `src/utils/shareLinks.js` (expiry choices, `profiley_links` list of links made from this browser), expiry in ShareModal, `expiresAt` stored on the shared doc by `firebase.js` and checked in `App.jsx` on open (`components/Layout/LinkUnavailable.jsx` is the expired page). Expiry is client-enforced only (no sign-in), and links CANNOT be switched off and have NO view counter, because nothing can update a published doc. `firestore.rules` in the repo root is a PROPOSAL (get-only reads, validated create-only, no update/delete); Laksh must publish it in the Firebase console, and the real current rules are still unknown.
 - `src/components/UI/Logo.jsx`: the logo (page-shaped P + outlined Instrument Serif wordmark, inline SVG, colours from theme tokens incl. `--c-accent-fold`); used by TopBar, AppSkeleton, MobileLayout
 - `src/laksh/` (merged to `main` and LIVE since 18 Oct 2026; branch `feat/laksh-resume-custom` can be deleted): Laksh's own resume at `/laksh`. **Default `/laksh` = the standard Profiley read-only view** (`LakshClassic.jsx` renders `App` with `preset` from `classic.js`). Since the 18 Oct research (vault note `01 About Me/Top Package Resume Research (Oct 2026).md`) it is the strict one-page version: ATS Friendly template, no photo, no summary, Education first (all schools, no marks), Experience, Projects (with visible URLs and proof: tests, audits), grouped Skills, Awards. New builder features it uses: `personal.github` field (editor + header) and the `showLinkUrls` config key (prints the real URL instead of the label "LinkedIn"). It overflows A4 by about 6%, which the app's fit-to-one-page print/PDF handles. Real numbers added 18 Oct (from Laksh): ShiftsDeal 120+ venues listed, freelance 5+ sites delivered (not live yet, so no live count). Unified Mentor users: Laksh chose to skip it (24 Nov), leave it out (Calibridge Lighthouse added 24 Nov). A "Creative view" switch (`ViewSwitch.jsx`, `switch.css`; shown by TopBar and MobileLayout via the `viewSwitch` prop when read-only) goes to `/laksh?view=creative`, the hand-built page; its switch goes back. Strict readers therefore never see the creative page unless they opt in. `main.jsx` lazy-loads both (App and Firebase load only for the standard view and other paths). `content.js` holds all the facts + lens rules (client / recruiter / dev, `?lens=` param, saved in localStorage), `LakshResume.jsx` the page (hero, tinted sections, timeline, project cards with live up/down pings, changelog diff, live ATS card that runs `ats/analyze.js` on the print sheet), `Sheet.jsx` the A4 text version (table with repeating spacer rows so `@page` margin stays 0 and the browser adds no header/footer; printed via the PDF button), `hooks.js` (reveal-on-view, count-up, magnet, tilt, status, scroll progress), `laksh.css` (scoped to `.lk`, light + dark). Photo: `public/laksh/photo.webp`.
 - `src/laksh/mu.js` + `MuResume.jsx` + `mu.css`: **`/laksh-mu`** (live 24 Nov 2026), Laksh's resume in the Masters' Union format (legal page, label | content | date table, Calibri 9 pt shrinking to 8 pt to fit). "Download PDF" = browser print (selectable text). index.css hides `#root` when printing, so mu.css overrides it for this page only. Facts copied from `content.js`; keep them in sync by hand. Not linked from /laksh (Laksh chose "/laksh-mu only"). A matching Word file is made outside the repo from his MU template.
@@ -47,6 +48,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 4. Check the `/laksh` public resume page and the exported PDF carry the new links.
 
 ## Open questions / waiting on
+- Publish `firestore.rules` in the Firebase console (test a share link right after) or send the current rules so they can be compared. Real turn-off/view counter need Firebase Auth (owner sign-in) or a server function with Admin credentials.
 - Server key stays off (cost); AI is copy-paste or bring-your-own-key only. Firestore security rules are not in the repo; check them.
 - Old domain `profiley.lakshp.live` must be removed by hand in the Vercel dashboard (Domains); no tool available for it.
 - After the 24 Nov deploy: submit `https://profiley.lakshpradhwani.com/sitemap.xml` in Google Search Console (needs Laksh's login) and re-scrape the OG card if previews look stale.
@@ -59,6 +61,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-24: share link controls (chosen: expiry + My links + rules file; turn-off and view counter deliberately not built, they need Firebase Auth or server-side code). Lint + build pass; modal list/expiry select checked in the browser, helpers run in node. Not tested: creating a real link (would write to production Firestore) or opening an expired one.
 - 2026-11-24: added the free ATS keyword gap (Review > Keywords). Lint + build pass; node sample run and in-browser check (coverage, missing list, add-to-Skills). Fixed alias false positives (js inside node.js, 'rest', double counts). Not tested: desktop-width layout of the new mode, very long posts.
 - 2026-11-24: added the cover letter builder (Letter tab: company/role/recipient/date, job description, free Claude copy-paste prompt + Use reply, starter draft, letter preview and PDF/print). Lint + build pass; checked in the browser (typing, starter draft, reply cleanup, preview, mobile nav with 6 tabs). Not tested: the letter PDF download itself, multi-page letters, a real share link without the letter.
 - 2026-11-24: added multiple saved resumes (new blank, duplicate, rename, delete, switch; TopBar dropdown, icon on mobile) and a backup-file reminder toast. Lint + build pass; checked in the browser (create, switch, duplicate, delete active, reminder toast). Not tested: mobile width, the backup download click itself.
@@ -86,12 +89,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 24 Nov 2026, 11:34 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 24 Nov 2026, 11:47 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `01bf9e2` 2026-11-24 23:34 Add a free ATS keyword gap check to the Review tab
 - `e488232` 2026-11-24 22:49 Add a cover letter builder with a free Claude copy-paste prompt
 - `c79c3c4` 2026-11-24 22:17 Add multiple saved resumes and a backup reminder
 - `ee103c9` 2026-11-24 22:17 HANDOFF: /laksh-mu and ShiftsDeal role update
@@ -106,14 +110,16 @@ Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resu
 - `c904b8b` 2026-10-18 11:37 HANDOFF: /laksh is live
 - `0cbb7a1` 2026-10-18 11:32 HANDOFF: refresh auto block
 - `8f9a01c` 2026-10-18 11:32 Add real ShiftsDeal and freelance numbers to the resume
-- `6cde5a8` 2026-10-18 11:16 HANDOFF: refresh auto block
 
 ### Uncommitted changes at refresh time
 
 ```
 M  HANDOFF.md
-A  src/ats/keywords.js
-M  src/components/Editor/ReviewTab.jsx
-A  src/components/Editor/review/KeywordPanel.jsx
+A  firestore.rules
+M  src/App.jsx
+A  src/components/Layout/LinkUnavailable.jsx
+M  src/components/Modals/ShareModal.jsx
+M  src/firebase.js
+A  src/utils/shareLinks.js
 ```
 <!-- handoff:auto:end -->

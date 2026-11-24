@@ -1,0 +1,31 @@
+// Proposed Firestore security rules for Profiley. NOT deployed by this repo: publish them yourself in
+// Firebase console > Firestore Database > Rules, then test creating and opening a share link.
+//
+// What they allow, matching what the app does today:
+//   - anyone can open one shared resume by its id (get), but nobody can list them
+//   - anyone can publish a new resume, only with the expected fields and under ~1 MB
+//   - nobody can edit or delete a published resume from the web
+// There is no sign-in, so the expiry date (expiresAt) is checked by the app when a link is opened.
+// It is a courtesy, not access control.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /resumes/{id} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if request.resource.size() < 1000000
+        && request.resource.data.keys().hasAll(['data', 'config', 'sectionOrder', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['data', 'config', 'sectionOrder', 'createdAt', 'expiresAt'])
+        && request.resource.data.data is map
+        && request.resource.data.config is map
+        && request.resource.data.sectionOrder is list
+        && request.resource.data.createdAt is string
+        && (!('expiresAt' in request.resource.data) || request.resource.data.expiresAt is string)
+        && !('letter' in request.resource.data.data);
+      allow update, delete: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -32,24 +32,24 @@ export const isValidResumeId = (id) => typeof id === 'string' && RESUME_ID_PATTE
 export const makeSlug = (input) =>
   input.trim().replace(/[^a-zA-Z0-9-_]/g, '-').slice(0, 64);
 
-const buildPayload = (resumeData, tooLargeMessage) => {
+const buildPayload = (resumeData, tooLargeMessage, expiresAt = null) => {
   const cleanData = JSON.parse(JSON.stringify(resumeData));
   const payloadSize = new TextEncoder().encode(JSON.stringify(cleanData)).length;
   if (payloadSize > MAX_PAYLOAD_BYTES) throw new Error(tooLargeMessage);
-  return { ...cleanData, createdAt: new Date().toISOString() };
+  return { ...cleanData, createdAt: new Date().toISOString(), ...(expiresAt ? { expiresAt } : {}) };
 };
 
-export const saveResumeToDB = async (resumeData) => {
-  const payload = buildPayload(resumeData, "Profile is too large (Max 1MB). Remove the photo or use a smaller one.");
+export const saveResumeToDB = async (resumeData, { expiresAt = null } = {}) => {
+  const payload = buildPayload(resumeData, "Profile is too large (Max 1MB). Remove the photo or use a smaller one.", expiresAt);
   const docRef = await addDoc(collection(db, "resumes"), payload);
   return docRef.id;
 };
 
-export const saveResumeWithSlug = async (slug, resumeData) => {
+export const saveResumeWithSlug = async (slug, resumeData, { expiresAt = null } = {}) => {
   if (!isValidResumeId(slug)) throw new Error("That URL isn't valid. Use letters, numbers, - or _.");
   if (RESERVED_SLUGS.has(slug.toLowerCase())) throw new Error("URL unavailable");
 
-  const payload = buildPayload(resumeData, "Profile is too large (Max 1MB). Remove the photo or use a smaller one.");
+  const payload = buildPayload(resumeData, "Profile is too large (Max 1MB). Remove the photo or use a smaller one.", expiresAt);
   const docRef = doc(db, "resumes", slug);
 
   // Check-and-create in one transaction so two people can't claim the same slug.

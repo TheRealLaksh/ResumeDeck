@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { X, Link as LinkIcon, Loader2, Copy, Check } from 'lucide-react';
+import { X, Link as LinkIcon, Loader2, Copy, Check, ExternalLink } from 'lucide-react';
+import { formatDay, isExpired } from '../../utils/shareLinks';
 
 const ShareModal = ({
   isOpen, onClose, customSlug, setCustomSlug, shareError,
-  handleGenerateLink, isGeneratingLink, shareUrl, linkCopied, handleCopyShareUrl
+  handleGenerateLink, isGeneratingLink, shareUrl, linkCopied, handleCopyShareUrl,
+  shareExpiry, setShareExpiry, expiryOptions = [], shareExpiresAt, myLinks = [], onForgetLink
 }) => {
   const dialogRef = useRef(null);
 
@@ -62,6 +64,7 @@ const ShareModal = ({
                 {linkCopied ? <Check size={17} /> : <Copy size={17} />}
               </button>
             </div>
+            <p className="mt-2 text-xs text-ink-3">{shareExpiresAt ? `Stops opening on ${formatDay(shareExpiresAt)}.` : 'This link does not expire.'}</p>
             <button onClick={onClose} className="btn btn-secondary mt-4 h-10 w-full">Done</button>
           </>
         ) : (
@@ -83,12 +86,42 @@ const ShareModal = ({
                 className="input min-w-0 !rounded-l-none"
               />
             </div>
+            {expiryOptions.length > 0 && (
+              <div className="mt-4">
+                <label htmlFor="share-expiry" className="label">Link expires</label>
+                <select id="share-expiry" value={shareExpiry} onChange={(e) => setShareExpiry(e.target.value)} className="input">
+                  {expiryOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                </select>
+                <p className="hint mt-1.5">After this date the link shows an expired notice. It cannot be switched off earlier yet.</p>
+              </div>
+            )}
             {shareError && <p id="share-error" role="alert" className="mt-2 text-xs font-medium text-danger">{shareError}</p>}
             <button type="submit" disabled={isGeneratingLink} className="btn btn-primary mt-5 h-10 w-full">
               {isGeneratingLink && <Loader2 size={16} className="animate-spin" />}
               {isGeneratingLink ? 'Creating...' : 'Create link'}
             </button>
           </form>
+        )}
+
+        {myLinks.length > 0 && (
+          <section className="mt-6 border-t border-line pt-4" aria-label="Links you created">
+            <h3 className="eyebrow mb-2">Your links from this browser</h3>
+            <ul className="max-h-40 space-y-1 overflow-y-auto">
+              {myLinks.map((l) => (
+                <li key={l.id} className="flex items-center gap-2 rounded-xl px-1 py-1 hover:bg-canvas">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-numeric text-[12px] text-ink">/{l.id}</p>
+                    <p className="text-[11px] text-ink-3">
+                      {l.expiresAt ? (isExpired(l.expiresAt) ? `Expired ${formatDay(l.expiresAt)}` : `Expires ${formatDay(l.expiresAt)}`) : 'No expiry'}
+                    </p>
+                  </div>
+                  <a className="btn btn-ghost btn-icon h-8 w-8" href={l.url} target="_blank" rel="noreferrer" aria-label={`Open ${l.id}`}><ExternalLink size={14} /></a>
+                  <button type="button" className="btn btn-ghost btn-icon h-8 w-8" aria-label={`Remove ${l.id} from this list`} onClick={() => onForgetLink?.(l.id)}><X size={14} /></button>
+                </li>
+              ))}
+            </ul>
+            <p className="hint mt-2">Removing a link here only tidies this list. The link itself keeps working until it expires.</p>
+          </section>
         )}
       </div>
     </div>
