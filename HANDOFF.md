@@ -1,7 +1,7 @@
 # Profiley Resume Builder handoff
 
 ## Project
-Profiley: a React resume builder with real-time WYSIWYG editing, 16 templates, drag-and-drop layouts, Firebase persistence and client-side PDF export. Built by Laksh as a personal project (2025); his own resume is published at `/laksh` (since 18 Oct 2026 a hand-built page, not a Firestore share; see Code map).
+Profiley: a React resume builder with real-time WYSIWYG editing, 16 templates, drag-and-drop layouts, Cloudflare D1 share links (no sign-in) and client-side PDF export. Built by Laksh as a personal project (2025); his own resume is published at `/laksh` (since 18 Oct 2026 a hand-built page, not a Firestore share; see Code map).
 
 ## Links
 - Live: https://profiley.lakshpradhwani.com (old profiley.lakshp.live is dead)
@@ -10,7 +10,7 @@ Profiley: a React resume builder with real-time WYSIWYG editing, 16 templates, d
 - Obsidian: `05 Resources\Domains.md`, domain audit `05 Resources\lakshp.live Usage Audit.md`, `02 Projects\Past Projects (2025).md`
 
 ## Stack, run, deploy
-React 19, Vite, Tailwind, Firebase, html2canvas + jsPDF/html2pdf, lucide-react.
+React 19, Vite, Tailwind, Cloudflare Worker + D1 (share links), html2canvas + jsPDF/html2pdf, lucide-react.
 `npm run dev` / `npm run build` / `npm run lint`. Deploy = push to `main`. `vercel.json` rewrites everything to `index.html` (SPA).
 
 ## Code map
@@ -29,7 +29,7 @@ React 19, Vite, Tailwind, Firebase, html2canvas + jsPDF/html2pdf, lucide-react.
 - `src/utils/resumeLibrary.js` + `components/Layout/ResumeSwitcher.jsx`: multiple saved resumes in localStorage (max 12). Entry `main` keeps the original `profiley_data/config/order` keys (no migration); others use `profiley_resume_<id>`; metadata in `profiley_library`. Also the backup reminder (`profiley_last_backup`, toast 20 s after load when real content has no backup in 14 days).
 - Cover letter: `src/letter/letter.js` (data shape in `data.letter`, starter draft, Claude copy-paste prompt, reply cleaner), `components/Editor/LetterTab.jsx`, `components/Preview/LetterDocument.jsx` (A4 page with `data-resume-paper`, so PDF/print/fit reuse the resume pipeline; shown whenever the Letter tab is active, desktop and mobile). The letter is private: stripped from share links, but kept in backups and per saved resume. File name `<Name>_Cover_Letter.pdf`.
 - Keyword gap: `src/ats/keywords.js` (curated skill list with aliases + repeated words from the post, word-boundary matching, weighted coverage, where each term is found) and `Editor/review/KeywordPanel.jsx` (Review > Keywords: paste a job post, live coverage ring, missing / only-in-Skills / found lists, one-click "add to Skills" with undo). Local only, no AI, JD kept in sessionStorage.
-- Share link controls: `src/utils/shareLinks.js` (expiry choices, `profiley_links` list of links made from this browser), expiry in ShareModal, `expiresAt` stored on the shared doc by `firebase.js` and checked in `App.jsx` on open (`components/Layout/LinkUnavailable.jsx` is the expired page). Expiry is client-enforced only (no sign-in), and links CANNOT be switched off and have NO view counter, because nothing can update a published doc. `firestore.rules` in the repo root is a PROPOSAL (get-only reads, validated create-only, no update/delete); Laksh must publish it in the Firebase console, and the real current rules are still unknown.
+- Share links (moved off Firebase on 25 Nov 2026): Cloudflare Worker `profiley-share` + D1 database `profiley-share` (id in `worker/wrangler.toml`), URL https://profiley-share.laksh-pradhwani.workers.dev, code in `worker/` (`src/index.js`, `schema.sql`; deploy with `cd worker && npx wrangler deploy`, wrangler is logged in as laksh.pradhwani@gmail.com). Endpoints: POST /api/share (create, returns id + ownerToken), GET /api/share/:id (410 expired/revoked), GET .../stats and POST .../revoke (Bearer owner token). Only the SHA-256 of the owner token is stored. Create is rate limited (20/h per hashed IP); expiry and turn-off are enforced server-side, turn-off deletes the stored copy. Client: `src/shareApi.js` (API base in `VITE_SHARE_API`, defaults to the workers.dev URL), `src/utils/shareLinks.js` (`profiley_links` list incl. owner tokens, so clearing site data loses the ability to turn links off, the links stay live), ShareModal (expiry, views, Turn off), `components/Layout/LinkUnavailable.jsx`. The cover letter is stripped before sharing. Links imported from Firebase have no owner token (cannot be turned off from the web).
 - `src/components/UI/Logo.jsx`: the logo (page-shaped P + outlined Instrument Serif wordmark, inline SVG, colours from theme tokens incl. `--c-accent-fold`); used by TopBar, AppSkeleton, MobileLayout
 - `src/laksh/` (merged to `main` and LIVE since 18 Oct 2026; branch `feat/laksh-resume-custom` can be deleted): Laksh's own resume at `/laksh`. **Default `/laksh` = the standard Profiley read-only view** (`LakshClassic.jsx` renders `App` with `preset` from `classic.js`). Since the 18 Oct research (vault note `01 About Me/Top Package Resume Research (Oct 2026).md`) it is the strict one-page version: ATS Friendly template, no photo, no summary, Education first (all schools, no marks), Experience, Projects (with visible URLs and proof: tests, audits), grouped Skills, Awards. New builder features it uses: `personal.github` field (editor + header) and the `showLinkUrls` config key (prints the real URL instead of the label "LinkedIn"). It overflows A4 by about 6%, which the app's fit-to-one-page print/PDF handles. Real numbers added 18 Oct (from Laksh): ShiftsDeal 120+ venues listed, freelance 5+ sites delivered (not live yet, so no live count). Unified Mentor users: Laksh chose to skip it (24 Nov), leave it out (Calibridge Lighthouse added 24 Nov). A "Creative view" switch (`ViewSwitch.jsx`, `switch.css`; shown by TopBar and MobileLayout via the `viewSwitch` prop when read-only) goes to `/laksh?view=creative`, the hand-built page; its switch goes back. Strict readers therefore never see the creative page unless they opt in. `main.jsx` lazy-loads both (App and Firebase load only for the standard view and other paths). `content.js` holds all the facts + lens rules (client / recruiter / dev, `?lens=` param, saved in localStorage), `LakshResume.jsx` the page (hero, tinted sections, timeline, project cards with live up/down pings, changelog diff, live ATS card that runs `ats/analyze.js` on the print sheet), `Sheet.jsx` the A4 text version (table with repeating spacer rows so `@page` margin stays 0 and the browser adds no header/footer; printed via the PDF button), `hooks.js` (reveal-on-view, count-up, magnet, tilt, status, scroll progress), `laksh.css` (scoped to `.lk`, light + dark). Photo: `public/laksh/photo.webp`.
 - `src/laksh/mu.js` + `MuResume.jsx` + `mu.css`: **`/laksh-mu`** (live 24 Nov 2026), Laksh's resume in the Masters' Union format (legal page, label | content | date table, Calibri 9 pt shrinking to 8 pt to fit). "Download PDF" = browser print (selectable text). index.css hides `#root` when printing, so mu.css overrides it for this page only. Facts copied from `content.js`; keep them in sync by hand. Not linked from /laksh (Laksh chose "/laksh-mu only"). A matching Word file is made outside the repo from his MU template.
@@ -43,13 +43,11 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 000. Review `feat/laksh-resume-custom` at `/laksh` on a preview, then merge to `main` (push deploys live; Laksh said push only when he says). The old Firestore doc `laksh` is untouched (Laksh chose replace and delete; deleting it needs Firebase access, so it just stops being used). Not tested: window.print() in real Chrome PDF output beyond the on-screen sheet, Safari/Firefox.
 00. PDF audit fixes (9 Oct 2026) are on branch `claude/pensive-meitner-opz77b`, not yet merged: after merging, download a PDF from production in a few templates and check the text selects/searches.
 0. Do NOT set `ANTHROPIC_API_KEY` unless Laksh decides to pay. Try Review > Job match (copy-paste mode) on production.
-1. The app uses Firestore only (no Firebase Auth, so no authorized-domains step). If the Firebase browser API key has HTTP-referrer restrictions in Google Cloud Console (APIs & Services > Credentials), add `https://profiley.lakshpradhwani.com/*` or share links will fail on the new domain.
-3. After merging PR #2: create a share link on production and open it in a private window (never tested against real Firestore), and confirm the `/laksh` page still renders with the new `config.activeTemplate` (older shared docs have none and fall back to defaults).
 4. Check the `/laksh` public resume page and the exported PDF carry the new links.
 
 ## Open questions / waiting on
-- Publish `firestore.rules` in the Firebase console (test a share link right after) or send the current rules so they can be compared. Real turn-off/view counter need Firebase Auth (owner sign-in) or a server function with Admin credentials.
-- Server key stays off (cost); AI is copy-paste or bring-your-own-key only. Firestore security rules are not in the repo; check them.
+- Firebase project `profiley-76c8a` (account index 5 in Chrome) still holds the old data; its rules were locked to get-only on 25 Nov (previous open rules: anyone could read/list/edit/delete). Laksh can delete the project or its `resumes` collection once he is happy; the 6 shared resumes were copied to D1 (the unused `laksh` doc and test doc were not). Remove the now-unused `VITE_FIREBASE_*` env vars in Vercel. No custom domain on the Worker yet (a `profiley-api.lakshpradhwani.com` custom domain needs a DNS change, Laksh to approve).
+- Server key stays off (cost); AI is copy-paste or bring-your-own-key only.
 - Old domain `profiley.lakshp.live` must be removed by hand in the Vercel dashboard (Domains); no tool available for it.
 - After the 24 Nov deploy: submit `https://profiley.lakshpradhwani.com/sitemap.xml` in Google Search Console (needs Laksh's login) and re-scrape the OG card if previews look stale.
 - Email forwarding for work@ and me@lakshpradhwani.com is set up (Cloudflare Email Routing); a real delivery test mail has not been sent yet.
@@ -61,6 +59,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-25: moved share links off Firebase to Cloudflare Worker + D1 (Laksh's choice). Real turn-off and view counter now work. Published Firestore rules first (locked down), then built and deployed the Worker, copied the 6 existing shared resumes, removed the `firebase` dependency and `src/firebase.js`. Tested end to end (create, open, stats, turn off, expired page) against the live Worker; lint + build pass.
 - 2026-11-24: share link controls (chosen: expiry + My links + rules file; turn-off and view counter deliberately not built, they need Firebase Auth or server-side code). Lint + build pass; modal list/expiry select checked in the browser, helpers run in node. Not tested: creating a real link (would write to production Firestore) or opening an expired one.
 - 2026-11-24: added the free ATS keyword gap (Review > Keywords). Lint + build pass; node sample run and in-browser check (coverage, missing list, add-to-Skills). Fixed alias false positives (js inside node.js, 'rest', double counts). Not tested: desktop-width layout of the new mode, very long posts.
 - 2026-11-24: added the cover letter builder (Letter tab: company/role/recipient/date, job description, free Claude copy-paste prompt + Use reply, starter draft, letter preview and PDF/print). Lint + build pass; checked in the browser (typing, starter draft, reply cleanup, preview, mobile nav with 6 tabs). Not tested: the letter PDF download itself, multi-page letters, a real share link without the letter.
@@ -89,12 +88,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 24 Nov 2026, 11:47 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 12:05 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `ffebbc3` 2026-11-24 23:47 Add share link expiry, a My links list and proposed Firestore rules
 - `01bf9e2` 2026-11-24 23:34 Add a free ATS keyword gap check to the Review tab
 - `e488232` 2026-11-24 22:49 Add a cover letter builder with a free Claude copy-paste prompt
 - `c79c3c4` 2026-11-24 22:17 Add multiple saved resumes and a backup reminder
@@ -109,17 +109,24 @@ Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resu
 - `cfeea27` 2026-10-18 11:37 HANDOFF: refresh auto block
 - `c904b8b` 2026-10-18 11:37 HANDOFF: /laksh is live
 - `0cbb7a1` 2026-10-18 11:32 HANDOFF: refresh auto block
-- `8f9a01c` 2026-10-18 11:32 Add real ShiftsDeal and freelance numbers to the resume
 
 ### Uncommitted changes at refresh time
 
 ```
-M  HANDOFF.md
-A  firestore.rules
-M  src/App.jsx
-A  src/components/Layout/LinkUnavailable.jsx
-M  src/components/Modals/ShareModal.jsx
-M  src/firebase.js
-A  src/utils/shareLinks.js
+M HANDOFF.md
+ M README.md
+ D firestore.rules
+ M package-lock.json
+ M package.json
+ M src/App.jsx
+ M src/components/Layout/LinkUnavailable.jsx
+ M src/components/Modals/ShareModal.jsx
+D  src/firebase.js
+ M src/utils/shareLinks.js
+A  worker/.gitignore
+A  worker/schema.sql
+A  worker/src/index.js
+A  worker/wrangler.toml
+?? src/shareApi.js
 ```
 <!-- handoff:auto:end -->
