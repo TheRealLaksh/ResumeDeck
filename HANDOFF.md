@@ -46,7 +46,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 4. Check the `/laksh` public resume page and the exported PDF carry the new links.
 
 ## Open questions / waiting on
-- Firebase project `profiley-76c8a` (account index 5 in Chrome) still holds the old data; its rules were locked to get-only on 25 Nov (previous open rules: anyone could read/list/edit/delete). Laksh can delete the project or its `resumes` collection once he is happy; the 6 shared resumes were copied to D1 (the unused `laksh` doc and test doc were not). Remove the now-unused `VITE_FIREBASE_*` env vars in Vercel.
+- Firebase project `profiley-76c8a` was DELETED on 25 Nov 2026 at Laksh's request (recoverable for about 30 days from the Google Cloud console, project owner account). The 6 shared resumes and the old `laksh` doc (now `laksh-old`) live in D1. Remove the now-unused `VITE_FIREBASE_*` env vars in Vercel.
 - Server key stays off (cost); AI is copy-paste or bring-your-own-key only.
 - Old domain `profiley.lakshp.live` must be removed by hand in the Vercel dashboard (Domains); no tool available for it.
 - After the 24 Nov deploy: submit `https://profiley.lakshpradhwani.com/sitemap.xml` in Google Search Console (needs Laksh's login) and re-scrape the OG card if previews look stale.
@@ -59,6 +59,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-25: copied the old Firestore `laksh` doc into D1 as `laksh-old` (the slug `laksh` is reserved for the hand-built page), then deleted the Firebase project on Laksh's confirmation.
 - 2026-11-25: attached `profiley-api.lakshpradhwani.com` to the Worker (Laksh approved the DNS change) and pointed `src/shareApi.js` at it.
 - 2026-11-25: moved share links off Firebase to Cloudflare Worker + D1 (Laksh's choice). Real turn-off and view counter now work. Published Firestore rules first (locked down), then built and deployed the Worker, copied the 6 existing shared resumes, removed the `firebase` dependency and `src/firebase.js`. Tested end to end (create, open, stats, turn off, expired page) against the live Worker; lint + build pass.
 - 2026-11-24: share link controls (chosen: expiry + My links + rules file; turn-off and view counter deliberately not built, they need Firebase Auth or server-side code). Lint + build pass; modal list/expiry select checked in the browser, helpers run in node. Not tested: creating a real link (would write to production Firestore) or opening an expired one.
@@ -89,12 +90,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 12:42 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 12:54 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `6708ac0` 2026-11-25 00:42 Serve the share API from profiley-api.lakshpradhwani.com
 - `0c5d63f` 2026-11-25 00:05 Move share links from Firebase to the Cloudflare API; add turn-off and view counts
 - `c49e165` 2026-11-25 00:05 Add the share-link API: Cloudflare Worker + D1
 - `ffebbc3` 2026-11-24 23:47 Add share link expiry, a My links list and proposed Firestore rules
@@ -109,13 +111,10 @@ Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resu
 - `a09fa2b` 2026-11-24 21:54 Per-path canonical and noindex for shared resumes; /laksh description
 - `84396d1` 2026-11-24 21:53 Add JSON-LD, og:site_name and image details; drop stale year keyword
 - `e4fff94` 2026-11-24 21:53 Add a real sitemap.xml and block /api/ in robots.txt
-- `cfeea27` 2026-10-18 11:37 HANDOFF: refresh auto block
 
 ### Uncommitted changes at refresh time
 
 ```
 M  HANDOFF.md
-M  src/shareApi.js
-M  worker/wrangler.toml
 ```
 <!-- handoff:auto:end -->
