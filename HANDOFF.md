@@ -75,12 +75,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 18 Oct 2026, 11:37 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 24 Nov 2026, 9:53 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `main` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `56fcf1c` 2026-10-18 11:37 HANDOFF: refresh auto block
 - `6f946f9` 2026-10-18 11:37 HANDOFF: /laksh is live
 - `fbbe005` 2026-10-18 11:32 HANDOFF: refresh auto block
 - `448d2a2` 2026-10-18 11:32 Add real ShiftsDeal and freelance numbers to the resume
@@ -95,11 +96,11 @@ Branch: `main` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builde
 - `1a5f5a5` 2026-10-09 13:43 Refresh the social card with the new logo
 - `fb7ad38` 2026-10-09 13:43 Replace the neon favicon with the Page-P icon set
 - `9054d3b` 2026-10-09 13:40 Add the Page-P logo to the app header
-- `9a3f78a` 2026-10-09 03:19 Merge pull request #4 from TheRealLaksh/claude/pensive-meitner-opz77b
 
 ### Uncommitted changes at refresh time
 
 ```
-M  HANDOFF.md
+M  public/robots.txt
+A  public/sitemap.xml
 ```
 <!-- handoff:auto:end -->
