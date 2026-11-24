@@ -1,8 +1,8 @@
 <div align="center">
 
   <img
-    src="https://capsule-render.vercel.app/api?type=waving&amp;color=0f172a&amp;height=300&amp;section=header&amp;text=Profiley&amp;fontSize=88&amp;fontColor=38bdf8&amp;fontAlignY=40&amp;desc=The%20Architect%20of%20Professional%20Identity&amp;descAlignY=65&amp;descSize=22"
-    alt="Profiley Banner"
+    src="https://capsule-render.vercel.app/api?type=waving&amp;color=0f172a&amp;height=300&amp;section=header&amp;text=ResumeDeck&amp;fontSize=72&amp;fontColor=38bdf8&amp;fontAlignY=40&amp;desc=Free%20ATS%20resume%20builder%20for%20students%20and%20freshers&amp;descAlignY=65&amp;descSize=22"
+    alt="ResumeDeck Banner"
     width="100%"
   />
 
@@ -28,11 +28,11 @@
 
 # 🧬 INTRODUCTION
 
-> **Profiley** is not just a resume builder — it is a **reactive design engine** for professional documentation.
+> **ResumeDeck** is not just a resume builder — it is a **reactive design engine** for professional documentation.
 
-Built on the bleeding edge of the React ecosystem, Profiley transforms structured JSON data into **print-ready, typographically precise A4 documents** in real time. It bridges structured data entry with free-form creative design, delivering a true **WYSIWYG** experience with zero-latency feedback.
+Built on the bleeding edge of the React ecosystem, ResumeDeck transforms structured JSON data into **print-ready, typographically precise A4 documents** in real time. It bridges structured data entry with free-form creative design, delivering a true **WYSIWYG** experience with zero-latency feedback.
 
-Whether you are a developer crafting a minimalist technical resume, an executive building a polished sidebar layout, or a creative seeking a unique visual identity, Profiley adapts instantly without sacrificing performance or export fidelity.
+Whether you are a developer crafting a minimalist technical resume, an executive building a polished sidebar layout, or a creative seeking a unique visual identity, ResumeDeck adapts instantly without sacrificing performance or export fidelity.
 
 ---
 
@@ -108,7 +108,7 @@ The editor itself is a product — featuring a warm light and dark theme that fo
     <td width="50%">
       <h3 align="center">📥 Import &amp; Backup</h3>
       <p align="center">
-        Import a PDF or pasted text (read by AI, or by a basic on-device reader without a key), a Profiley backup, or JSON Resume. Export both formats back out.
+        Import a PDF or pasted text (read by AI, or by a basic on-device reader without a key), a ResumeDeck backup, or JSON Resume. Export both formats back out.
       </p>
     </td>
   </tr>
@@ -122,7 +122,7 @@ The AI features need an Anthropic key. Either set `ANTHROPIC_API_KEY` in the Ver
 
 # 🏗️ ARCHITECTURE &amp; STRUCTURE
 
-Profiley follows a **Fractal Component Architecture**, ensuring isolation of concerns and long-term scalability.
+ResumeDeck follows a **Fractal Component Architecture**, ensuring isolation of concerns and long-term scalability.
 
 ```bash
 src/
@@ -146,7 +146,7 @@ src/
 
 # 🧠 DATA-DRIVEN DESIGN
 
-Profiley operates on a strict JSON schema composed of:
+ResumeDeck operates on a strict JSON schema composed of:
 
 1. **`data`** — resume content  
 2. **`config`** — visual configuration  

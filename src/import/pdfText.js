@@ -68,6 +68,6 @@ export const extractPdfText = async (file) => {
   }
 
   const text = tidyText(pages);
-  if (text.length < 80) throw new Error('No readable text found. This looks like a scanned image. Try a PDF exported from Word, Google Docs or Profiley.');
+  if (text.length < 80) throw new Error('No readable text found. This looks like a scanned image. Try a PDF exported from Word, Google Docs or ResumeDeck.');
   return { text, links: [...new Set(links)] };
 };

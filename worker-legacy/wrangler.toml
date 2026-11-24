@@ -1,0 +1,10 @@
+# The old share API address (profiley-api.lakshpradhwani.com). It now only forwards to the ResumeDeck API,
+# so pages and tabs that still use the old address keep working. Safe to remove once nothing calls it.
+name = "profiley-share"
+main = "index.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[[routes]]
+pattern = "profiley-api.lakshpradhwani.com"
+custom_domain = true

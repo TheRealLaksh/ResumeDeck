@@ -4,7 +4,7 @@ import { analyzeKeywords } from '../../../ats/keywords';
 import { TextAreaField } from '../../UI/FormElements';
 import { ScoreRing } from './AtsPanel';
 
-const STORE_KEY = 'profiley_kw_jd';
+const STORE_KEY = 'resumedeck_kw_jd';
 const MAX_JD = 12000;
 
 const readStored = () => {

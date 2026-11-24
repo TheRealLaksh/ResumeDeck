@@ -21,7 +21,7 @@ import Footer from './components/Layout/Footer';
 import useCanvasZoom from './hooks/useCanvasZoom';
 import useMediaQuery from './hooks/useMediaQuery';
 import useAiStatus from './ai/useAiStatus';
-import { toJsonResume, toProfileyBackup } from './import/formats';
+import { toJsonResume, toBackup } from './import/formats';
 
 // Utilities & Data
 import { downloadResumePdf, printResume } from './utils/pdfManager';
@@ -53,7 +53,7 @@ import {
   templates
 } from './data/constants';
 
-const THEME_KEY = 'profiley_theme';
+const THEME_KEY = 'resumedeck_theme';
 
 const getInitialTheme = () => {
   try {
@@ -463,7 +463,7 @@ const App = ({ preset = null, viewSwitch = null }) => {
   };
 
   // Replaces the resume's content with something imported. Design is only touched when the
-  // import carries one (a Profiley backup). Everything goes through normalizeData first.
+  // import carries one (a ResumeDeck backup). Everything goes through normalizeData first.
   const handleApplyImport = ({ data: incoming, customSections = [], config: incomingConfig, sectionOrder: incomingOrder }) => {
     const imported = normalizeData(incoming);
     const photoUrl = imported.personal.photoUrl || data.personal.photoUrl;
@@ -496,7 +496,7 @@ const App = ({ preset = null, viewSwitch = null }) => {
   const handleExportJson = (kind) => {
     const base = (data.personal.name || 'resume').trim().replace(/[^\w.-]+/g, '_') || 'resume';
     if (kind === 'jsonresume') downloadJson(`${base}.jsonresume.json`, toJsonResume(data));
-    else downloadJson(`${base}.profiley.json`, toProfileyBackup({ data, config, sectionOrder }));
+    else downloadJson(`${base}.resumedeck.json`, toBackup({ data, config, sectionOrder }));
     if (kind !== 'jsonresume') markBackup();
     notify('Saved to your downloads');
   };

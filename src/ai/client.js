@@ -1,7 +1,7 @@
 import { DEFAULT_MODEL, MODEL_CHOICES, TASKS, readModelJson, toMessageParams, AiInputError } from './tasks';
 
-const KEY_STORAGE = 'profiley_ai_key';
-const MODEL_STORAGE = 'profiley_ai_model';
+const KEY_STORAGE = 'resumedeck_ai_key';
+const MODEL_STORAGE = 'resumedeck_ai_model';
 
 export class AiError extends Error {
   constructor(code, message) {

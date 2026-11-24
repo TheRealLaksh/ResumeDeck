@@ -90,7 +90,7 @@ export const MU_ROWS = [
         'Framework-free calendar with month, week and agenda views, time zones, recurring events, RFC 5545 .ics import/export and undo/redo',
         'Backed by 43 Playwright end-to-end tests in CI, axe WCAG 2.1 AA audits and a 100 Lighthouse score on mobile',
       ]),
-      ...project('Profiley | Resume builder with ATS reader', 'Founder and developer (profiley.lakshpradhwani.com)', '2025', [
+      ...project('ResumeDeck | Free ATS resume builder for freshers', 'Founder and developer (resumedeck.lakshpradhwani.com)', '2025', [
         'React app with 16 templates, click-to-edit, text-based PDF export and a built-in ATS reader that scores any resume',
       ]),
       ...project('Helios | Web music player', 'Personal project (music.lakshpradhwani.com)', '2025', [

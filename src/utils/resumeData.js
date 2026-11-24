@@ -4,9 +4,9 @@ import { normalizeLetter } from '../letter/letter';
 import { getActiveId, touchResume, MAIN_ID } from './resumeLibrary';
 
 const STORAGE_KEYS = {
-  data: 'profiley_data',
-  config: 'profiley_config',
-  order: 'profiley_order'
+  data: 'resumedeck_data',
+  config: 'resumedeck_config',
+  order: 'resumedeck_order'
 };
 
 const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -95,7 +95,7 @@ const readJson = (key) => {
   }
 };
 
-const resumeKey = (id) => `profiley_resume_${id}`;
+const resumeKey = (id) => `resumedeck_resume_${id}`;
 
 /** An empty resume (no sample content) for "New resume". */
 export const blankResume = () => normalizeResume({ data: {}, config: initialConfig, sectionOrder: initialSections });

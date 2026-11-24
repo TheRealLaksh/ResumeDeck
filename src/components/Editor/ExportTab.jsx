@@ -73,7 +73,7 @@ const ExportTab = ({ pdfQuality, setPdfQuality, fitOnePage, setFitOnePage, handl
                     </div>
                 </div>
                 <div className="mt-4 grid grid-cols-2 gap-2">
-                    <button className="btn btn-secondary h-10" onClick={() => onExportJson('profiley')}>Save backup</button>
+                    <button className="btn btn-secondary h-10" onClick={() => onExportJson('backup')}>Save backup</button>
                     <button className="btn btn-secondary h-10" onClick={() => onExportJson('jsonresume')} title="The open JSON Resume format, readable by other resume tools">JSON Resume</button>
                 </div>
                 <button className="btn btn-secondary mt-2 h-10 w-full" onClick={openImport}><FileUp size={16} /> Import a resume</button>

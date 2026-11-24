@@ -1,0 +1,9 @@
+# The old Profiley address: permanently redirects everything to ResumeDeck, and moves visitors' saved drafts over once.
+name = "profiley-redirect"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+
+[[routes]]
+pattern = "profiley.lakshpradhwani.com"
+custom_domain = true

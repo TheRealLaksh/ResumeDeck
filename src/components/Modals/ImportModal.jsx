@@ -1,3 +1,4 @@
+import { normalizeData } from '../../utils/resumeData';
 import React, { useEffect, useRef, useState } from 'react';
 import { FileUp, FileText, Loader2, Sparkles, X, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { AiError, runAiTask } from '../../ai/client';
@@ -92,8 +93,9 @@ const ImportModal = ({ isOpen, onClose, onApply, ai }) => {
         let parsed;
         try { parsed = JSON.parse(await file.text()); } catch { fail("That file isn't valid JSON."); return; }
         const found = detectJson(parsed);
-        if (!found) { fail('That JSON is not a Profiley backup or a JSON Resume file.'); return; }
-        setResult({ ...found, customSections: found.customSections || [], method: found.kind });
+        if (!found) { fail('That JSON is not a ResumeDeck backup or a JSON Resume file.'); return; }
+        // A hand-edited or partial file may lack whole sections; normalizing fills them in instead of crashing the preview.
+        setResult({ ...found, data: normalizeData(found.data), customSections: found.customSections || [], method: found.kind });
         setStage('review');
       } else if (name.endsWith('.pdf') || file.type === 'application/pdf') {
         setStage('reading');
@@ -124,13 +126,13 @@ const ImportModal = ({ isOpen, onClose, onApply, ai }) => {
       customSections: result.customSections,
       config: restoreDesign ? result.config : undefined,
       sectionOrder: restoreDesign ? result.sectionOrder : undefined,
-      photoFromFile: result.kind === 'profiley'
+      photoFromFile: result.kind === 'backup'
     });
     onClose();
   };
 
   const rows = result ? describe(result.data, result.customSections || []) : [];
-  const isBackup = result?.kind === 'profiley';
+  const isBackup = result?.kind === 'backup';
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end justify-center bg-ink/40 p-4 backdrop-blur-[2px] animate-fade sm:items-center" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
@@ -161,7 +163,7 @@ const ImportModal = ({ isOpen, onClose, onApply, ai }) => {
                   >
                     <FileText size={24} className="text-ink-3" />
                     <span className="text-[13px] font-medium text-ink">Drop a file here, or click to choose</span>
-                    <span className="text-xs text-ink-3">PDF · JSON (Profiley backup or JSON Resume) · TXT</span>
+                    <span className="text-xs text-ink-3">PDF · JSON (ResumeDeck backup or JSON Resume) · TXT</span>
                   </button>
                 </>
               ) : (
@@ -206,7 +208,7 @@ const ImportModal = ({ isOpen, onClose, onApply, ai }) => {
                 <CheckCircle2 size={16} className="text-accent" />
                 <span className="truncate">{fileName}</span>
                 <span className="ml-auto shrink-0 rounded-md bg-accent-soft px-1.5 py-0.5 font-numeric text-[10px] uppercase tracking-wider text-accent-ink">
-                  {result.method === 'ai' ? 'Read by AI' : result.method === 'basic' ? 'Basic reader' : result.method === 'jsonresume' ? 'JSON Resume' : 'Profiley backup'}
+                  {result.method === 'ai' ? 'Read by AI' : result.method === 'basic' ? 'Basic reader' : result.method === 'jsonresume' ? 'JSON Resume' : 'ResumeDeck backup'}
                 </span>
               </div>
 

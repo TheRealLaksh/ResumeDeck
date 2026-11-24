@@ -4,7 +4,7 @@ import {
   ACHIEVEMENTS, CERTS, VOLUNTEER, sheetSections, forLens,
 } from './content';
 
-// The A4 text version of the resume: what "Download PDF" prints, and the copy Profiley's ATS reader
+// The A4 text version of the resume: what "Download PDF" prints, and the copy ResumeDeck's ATS reader
 // scans. Plain single-column blocks (no side-by-side rows) so a parser reads it in order.
 // A table with spacer rows repeats the page margin on every printed page while @page margin stays 0
 // (browsers only print headers and footers when the page margin is non-zero).

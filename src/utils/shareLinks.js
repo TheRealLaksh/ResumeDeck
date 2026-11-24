@@ -3,7 +3,7 @@
 // turned-off resume. Each link created here keeps its owner token in this browser; that token is what allows
 // turning the link off and reading its view count. Clear site data and the tokens are gone (the links stay live).
 
-const LINKS_KEY = 'profiley_links';
+const LINKS_KEY = 'resumedeck_links';
 const MAX_LINKS = 30;
 
 export const EXPIRY_OPTIONS = [

@@ -1,6 +1,6 @@
 import React from 'react';
 
-// On/off switch between the standard Profiley view (default) and the creative page.
+// On/off switch between the standard ResumeDeck view (default) and the creative page.
 // Plain links so it also works without JavaScript state; the creative page is /laksh?view=creative.
 export const CREATIVE_URL = '/laksh?view=creative';
 export const STANDARD_URL = '/laksh';

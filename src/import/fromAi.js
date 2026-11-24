@@ -1,7 +1,7 @@
 const str = (v) => (typeof v === 'string' ? v : '');
 const list = (v) => (Array.isArray(v) ? v : []);
 
-/** Maps the structured answer of the "parse" AI task onto Profiley's data shape. */
+/** Maps the structured answer of the "parse" AI task onto ResumeDeck's data shape. */
 export const aiToData = (r) => {
   const custom = {};
   const customSections = [];

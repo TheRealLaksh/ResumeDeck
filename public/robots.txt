@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://profiley.lakshpradhwani.com/sitemap.xml
+Sitemap: https://resumedeck.lakshpradhwani.com/sitemap.xml

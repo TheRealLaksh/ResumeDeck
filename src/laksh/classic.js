@@ -2,7 +2,7 @@ import { initialConfig } from '../data/initialState';
 import { templates } from '../data/templates';
 import { PERSON } from './content';
 
-// The standard Profiley view of /laksh: what strict readers (recruiters, ATS, campus portals) get by default.
+// The standard ResumeDeck view of /laksh: what strict readers (recruiters, ATS, campus portals) get by default.
 // Shaped by the "high-package resumes" research (18 Oct 2026, Obsidian: 01 About Me/Top Package Resume Research):
 // one page, single column, plain ATS template, no photo, no objective, Education first for a student, bullets that
 // name what was built and the proof (tests, audits, live link), visible URLs, skills grouped by type.
@@ -78,7 +78,7 @@ export const classicResume = () => {
         title: 'Projects',
         content: bullets([
           'Calibridge (calibridge.lakshpradhwani.com): offline-first calendar PWA in strict TypeScript with RFC 5545 .ics import/export, recurring events and time zones; 43 Playwright end-to-end tests run in CI and axe WCAG 2.1 AA audits; Lighthouse 100/100/100/100 (mobile, 24 Nov 2026).',
-          'Profiley (profiley.lakshpradhwani.com): React resume builder with 16 templates and a built-in ATS reader that scores any resume; text-based PDF export, import and click-to-edit.',
+          'ResumeDeck (resumedeck.lakshpradhwani.com): free ATS resume builder for students and freshers; 16 templates, a built-in ATS reader that scores any resume, text-based PDF export, import and click-to-edit.',
           'Helios (music.lakshpradhwani.com): framework-free web music player with a 3-band equaliser, 3 visualisers, a decoded-waveform seekbar, command palette and Media Session API.',
         ]),
       },

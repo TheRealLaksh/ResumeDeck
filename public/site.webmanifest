@@ -1,7 +1,7 @@
 {
-  "name": "Profiley",
-  "short_name": "Profiley",
-  "description": "Free resume builder. No account, no watermark.",
+  "name": "ResumeDeck",
+  "short_name": "ResumeDeck",
+  "description": "Free ATS resume builder for students and freshers. No account, no watermark.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f3f0ea",

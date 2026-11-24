@@ -1,6 +1,6 @@
 @HANDOFF.md
 
-# Working on Profiley
+# Working on ResumeDeck
 
 - `HANDOFF.md` (imported above) is the project's memory across sessions. Start from it.
 - **After every change, update `HANDOFF.md` before replying**: Status, Next steps, Open questions, Decisions, and a dated line in the Session log. Never edit inside the `handoff:auto` block; `scripts/handoff.mjs` rewrites it on each commit.

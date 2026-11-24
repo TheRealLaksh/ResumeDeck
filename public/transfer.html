@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>ResumeDeck transfer</title>
+<!--
+  One-time move of saved drafts from the old address (profiley.lakshpradhwani.com) to this one. Browsers keep saved data
+  per address, so the old page opens this one in a hidden frame and sends it over with postMessage.
+  Only messages from the old address are accepted, only keys that start with "profiley_" are copied (renamed to
+  "resumedeck_"), and anything already saved here is never overwritten.
+-->
+<script>
+(function () {
+  var OLD = 'https://profiley.lakshpradhwani.com';
+  var MAX_VALUE = 6000000;
+  window.addEventListener('message', function (e) {
+    if (e.origin !== OLD) return;
+    var d = e.data;
+    if (!d || d.type !== 'resumedeck-transfer' || !d.items || typeof d.items !== 'object') return;
+    var copied = 0;
+    Object.keys(d.items).forEach(function (key) {
+      if (key.indexOf('profiley_') !== 0) return;
+      var value = d.items[key];
+      if (typeof value !== 'string' || value.length > MAX_VALUE) return;
+      var next = 'resumedeck_' + key.slice('profiley_'.length);
+      try {
+        if (localStorage.getItem(next) === null) { localStorage.setItem(next, value); copied += 1; }
+      } catch (err) { /* storage full or blocked: skip */ }
+    });
+    e.source.postMessage({ type: 'resumedeck-transfer-done', copied: copied }, e.origin);
+  });
+})();
+</script>

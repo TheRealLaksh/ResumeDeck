@@ -139,7 +139,7 @@ const AtsCard = ({ ats }) => {
           <p className="lk-ats-sub">{ats ? `${ats.pages} page${ats.pages > 1 ? 's' : ''} printed` : ''}</p>
         </div>
       </div>
-      <p className="lk-ats-note">Profiley's own ATS reader, run in your browser on the printable version of this page.</p>
+      <p className="lk-ats-note">ResumeDeck's own ATS reader, run in your browser on the printable version of this page.</p>
       <button type="button" className="lk-link" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
         {open ? 'Hide the checks' : 'Show the checks'}
       </button>
@@ -408,7 +408,7 @@ export default function LakshResume() {
       <div className="lk-progress" aria-hidden="true" />
 
       <header className="lk-bar">
-        <a href="/" className="lk-logo" aria-label="Profiley home"><Logo size="sm" /></a>
+        <a href="/" className="lk-logo" aria-label="ResumeDeck home"><Logo size="sm" /></a>
         <div className="lk-lens" role="radiogroup" aria-label="Who is reading" style={{ '--i': lensIndex }}>
           <span className="lk-lens-pill" />
           {LENSES.map((l) => (
@@ -466,7 +466,7 @@ export default function LakshResume() {
           </div>
 
           <footer className="lk-foot">
-            <p>Last updated {PERSON.updated}. Built on <a className="lk-ul" href="/">Profiley</a>, the resume builder I made, with the rules off.</p>
+            <p>Last updated {PERSON.updated}. Built on <a className="lk-ul" href="/">ResumeDeck</a>, the resume builder I made, with the rules off.</p>
           </footer>
         </main>
 

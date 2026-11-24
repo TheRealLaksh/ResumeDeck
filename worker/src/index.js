@@ -1,4 +1,4 @@
-// Profiley share-link API on Cloudflare Workers + D1. Replaces Firebase Firestore.
+// ResumeDeck share-link API on Cloudflare Workers + D1. Replaces Firebase Firestore.
 //
 //   POST /api/share              create a link        -> 201 { id, ownerToken }
 //   GET  /api/share/:id          open a link          -> 200 { resume, expiresAt, createdAt } | 404 | 410 { error: expired|revoked }
@@ -95,7 +95,7 @@ export default {
       if (!expiry.ok) return json({ error: 'bad_expiry' }, 400, cors);
 
       // Rate limit by hashed IP.
-      const ip = await sha256(`${request.headers.get('cf-connecting-ip') || 'unknown'}|profiley`);
+      const ip = await sha256(`${request.headers.get('cf-connecting-ip') || 'unknown'}|resumedeck`);
       const since = Date.now() - 3_600_000;
       const recent = await env.DB.prepare('SELECT COUNT(*) AS n FROM creates WHERE ip = ? AND ts > ?').bind(ip, since).first();
       if ((recent?.n ?? 0) >= CREATES_PER_HOUR) return json({ error: 'rate_limited', message: 'Too many links created. Try again in an hour.' }, 429, cors);

@@ -1,8 +1,8 @@
-// Client for the Profiley share API (Cloudflare Worker + D1, see /worker). Replaces Firebase Firestore.
+// Client for the ResumeDeck share API (Cloudflare Worker + D1, see /worker). Replaces Firebase Firestore.
 // Sharing works without sign-in: creating a link returns an owner token that the browser keeps, and that token
 // is what allows turning the link off or reading its view count later.
 
-const API_BASE = (import.meta.env?.VITE_SHARE_API || 'https://profiley-api.lakshpradhwani.com').replace(/\/+$/, '');
+const API_BASE = (import.meta.env?.VITE_SHARE_API || 'https://resumedeck-api.lakshpradhwani.com').replace(/\/+$/, '');
 
 // Paths the site itself serves or may serve; they must never become resume links.
 const RESERVED_SLUGS = new Set([

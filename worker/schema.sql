@@ -1,4 +1,4 @@
--- Profiley share links. Apply with: npx wrangler d1 execute profiley-share --remote --file=schema.sql
+-- ResumeDeck share links. Apply with: npx wrangler d1 execute resumedeck-share --remote --file=schema.sql
 CREATE TABLE IF NOT EXISTS resumes (
   id         TEXT PRIMARY KEY,
   data       TEXT,                       -- JSON {data, config, sectionOrder}; NULL once the link is turned off

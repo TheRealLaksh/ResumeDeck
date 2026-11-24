@@ -1,16 +1,17 @@
-name = "profiley-share"
+name = "resumedeck-share"
 main = "src/index.js"
 compatibility_date = "2026-11-01"
 workers_dev = true
 
 [[d1_databases]]
 binding = "DB"
-database_name = "profiley-share"
-database_id = "86267e2f-fc19-41c3-b61a-62171fe99c94"
+database_name = "resumedeck-share"
+database_id = "9230e005-f907-41a3-825f-a55ed0735429"
 
 [vars]
-ALLOWED_ORIGINS = "https://profiley.lakshpradhwani.com"
+# The site, plus the workers.dev copy used for previews.
+ALLOWED_ORIGINS = "https://resumedeck.lakshpradhwani.com,https://resumedeck-web.laksh-pradhwani.workers.dev"
 
 [[routes]]
-pattern = "profiley-api.lakshpradhwani.com"
+pattern = "resumedeck-api.lakshpradhwani.com"
 custom_domain = true

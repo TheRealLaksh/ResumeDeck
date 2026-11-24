@@ -1,4 +1,4 @@
-// File formats: Profiley's own backup, and JSON Resume (jsonresume.org), the common interchange format.
+// File formats: ResumeDeck's own backup (older backups made as "ResumeDeck" are still accepted), and JSON Resume (jsonresume.org), the common interchange format.
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -34,11 +34,11 @@ const toIso = (text) => {
 };
 
 // ---------------------------------------------------------------------------
-// Profiley backup
+// ResumeDeck backup
 // ---------------------------------------------------------------------------
 
-export const toProfileyBackup = ({ data, config, sectionOrder }) => ({
-  app: 'profiley',
+export const toBackup = ({ data, config, sectionOrder }) => ({
+  app: 'resumedeck',
   version: 1,
   exportedAt: new Date().toISOString(),
   data,
@@ -81,7 +81,7 @@ export const toJsonResume = (data) => {
   };
 };
 
-/** Returns a data object in Profiley's shape (feed it through normalizeData). */
+/** Returns a data object in ResumeDeck's shape (feed it through normalizeData). */
 export const fromJsonResume = (json) => {
   const basics = obj(json.basics);
   const profiles = list(basics.profiles).map(obj);
@@ -147,19 +147,19 @@ export const fromJsonResume = (json) => {
 
 /**
  * Looks at parsed JSON and says what it is.
- * Returns { kind: 'profiley', ... } | { kind: 'jsonresume', ... } | null
+ * Returns { kind: 'backup', ... } | { kind: 'jsonresume', ... } | null
  */
 export const detectJson = (json) => {
   if (!json || typeof json !== 'object') return null;
-  if (json.app === 'profiley' && json.data) {
-    return { kind: 'profiley', data: json.data, config: json.config, sectionOrder: json.sectionOrder };
+  if ((json.app === 'resumedeck' || json.app === 'profiley') && json.data) {
+    return { kind: 'backup', data: json.data, config: json.config, sectionOrder: json.sectionOrder };
   }
   if (json.basics || json.work || json.education) {
     const { data, customSections } = fromJsonResume(json);
     return { kind: 'jsonresume', data, customSections };
   }
   if (json.personal && (json.experience || json.education)) {
-    return { kind: 'profiley', data: json };
+    return { kind: 'backup', data: json };
   }
   return null;
 };

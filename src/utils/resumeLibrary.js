@@ -1,9 +1,9 @@
 // A small library of saved resumes kept in this browser's localStorage.
 // The first resume ("main") keeps using the original storage keys, so nothing needs migrating and
-// older drafts open exactly as before. Others live under `profiley_resume_<id>` (see resumeData.js).
+// older drafts open exactly as before. Others live under `resumedeck_resume_<id>` (see resumeData.js).
 
-const LIBRARY_KEY = 'profiley_library';
-const BACKUP_KEY = 'profiley_last_backup';
+const LIBRARY_KEY = 'resumedeck_library';
+const BACKUP_KEY = 'resumedeck_last_backup';
 export const MAIN_ID = 'main';
 export const MAX_RESUMES = 12;
 const BACKUP_REMINDER_DAYS = 14;

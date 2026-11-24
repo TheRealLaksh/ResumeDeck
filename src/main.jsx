@@ -10,7 +10,7 @@ const LakshClassic = lazy(() => import('./laksh/LakshClassic.jsx'))
 const LakshMu = lazy(() => import('./laksh/MuResume.jsx'))
 const isMuPage = /^\/laksh-mu\/?$/i.test(window.location.pathname)
 const isLakshPage = /^\/laksh\/?$/i.test(window.location.pathname)
-// Strict readers get the standard Profiley resume by default; ?view=creative opts in to the creative page.
+// Strict readers get the standard ResumeDeck resume by default; ?view=creative opts in to the creative page.
 const wantsCreative = new URLSearchParams(window.location.search).get('view') === 'creative'
 
 // Per-path head tags. The static index.html describes the builder at "/"; other paths get their own
@@ -18,7 +18,7 @@ const wantsCreative = new URLSearchParams(window.location.search).get('view') ==
 const setHead = () => {
   const path = window.location.pathname.replace(/\/+$/, '')
   if (path === '') return
-  const origin = 'https://profiley.lakshpradhwani.com'
+  const origin = 'https://resumedeck.lakshpradhwani.com'
   const canonical = document.querySelector('link[rel="canonical"]')
   const robots = document.querySelector('meta[name="robots"]')
   if (isMuPage) {
@@ -26,7 +26,7 @@ const setHead = () => {
     document.querySelector('meta[name="description"]')?.setAttribute('content', "Laksh Pradhwani's resume in the Masters' Union format.")
   } else if (isLakshPage) {
     canonical?.setAttribute('href', `${origin}/laksh`)
-    document.querySelector('meta[name="description"]')?.setAttribute('content', "Laksh Pradhwani's resume: AI & Data Science student and web developer, built with Profiley.")
+    document.querySelector('meta[name="description"]')?.setAttribute('content', "Laksh Pradhwani's resume: AI & Data Science student and web developer, built with ResumeDeck.")
   } else {
     canonical?.setAttribute('href', `${origin}${path}`)
     robots?.setAttribute('content', 'noindex, follow')

@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }) => {
 
 test('opens with the sample resume and autosaves in this browser', async ({ page }) => {
   await expect(paper(page)).toContainText('Laksh Pradhwani');
-  await expect.poll(() => page.evaluate(() => Boolean(localStorage.getItem('profiley_data')))).toBe(true);
+  await expect.poll(() => page.evaluate(() => Boolean(localStorage.getItem('resumedeck_data')))).toBe(true);
 });
 
 test.describe('saved resumes', () => {
@@ -42,14 +42,14 @@ test.describe('saved resumes', () => {
     await page.getByRole('button', { name: 'Delete?' }).click();
     await expect(switcher(page)).not.toHaveAccessibleName(/Internship/);
     await expect
-      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('profiley_library')).items.map((i) => i.name)))
+      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('resumedeck_library')).items.map((i) => i.name)))
       .toEqual(['My resume', 'Resume 2']);
   });
 
   test('the original draft keeps its original storage keys', async ({ page }) => {
     await expect
       .poll(() => page.evaluate(() => Object.keys(localStorage)))
-      .toEqual(expect.arrayContaining(['profiley_data', 'profiley_config', 'profiley_order']));
+      .toEqual(expect.arrayContaining(['resumedeck_data', 'resumedeck_config', 'resumedeck_order']));
   });
 });
 
@@ -82,7 +82,7 @@ test.describe('cover letter', () => {
   test('the letter is saved with the resume but kept out of a published copy', async ({ page }) => {
     await openTab(page, 'Letter');
     await page.getByPlaceholder('Acme Inc.').fill('Secret Corp');
-    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('profiley_data')).letter?.company)).toBe('Secret Corp');
+    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('resumedeck_data')).letter?.company)).toBe('Secret Corp');
   });
 });
 
@@ -99,7 +99,7 @@ test.describe('keyword gap', () => {
     await page.getByRole('button', { name: 'Add TypeScript to Skills' }).click();
     await expect(page.getByRole('button', { name: 'Add TypeScript to Skills' })).toHaveCount(0);
     await expect
-      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('profiley_data')).skills.map((s) => s.name ?? s)))
+      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('resumedeck_data')).skills.map((s) => s.name ?? s)))
       .toContain('TypeScript');
   });
 

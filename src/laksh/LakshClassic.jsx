@@ -5,7 +5,7 @@ import './switch.css';
 
 const App = lazy(() => import('../App.jsx'));
 
-/** /laksh by default: the normal Profiley read-only resume, plus the switch to the creative page. */
+/** /laksh by default: the normal ResumeDeck read-only resume, plus the switch to the creative page. */
 export default function LakshClassic() {
   const preset = useMemo(() => classicResume(), []);
   return <App preset={preset} viewSwitch={<ViewSwitch creative={false} />} />;

@@ -296,7 +296,7 @@ export const downloadResumePdf = async ({ name, quality = 'screen', fitOnePage =
       subject: 'Resume',
       author: fullName,
       keywords: (meta.keywords || []).slice(0, 20).join(', '),
-      creator: 'Profiley'
+      creator: 'ResumeDeck'
     });
 
     const pageWpx = source.width;
