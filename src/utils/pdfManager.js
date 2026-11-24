@@ -21,9 +21,9 @@ const findVisiblePaper = () =>
     (el) => el.getClientRects().length > 0
   );
 
-const buildFileName = (name) => {
+const buildFileName = (name, kind = 'Resume') => {
   const safe = (name || '').trim().replace(/[^\w.-]+/g, '_').replace(/^_+|_+$/g, '');
-  return `${safe ? `${safe}_Resume` : 'Resume'}.pdf`;
+  return `${safe ? `${safe}_${kind}` : kind}.pdf`;
 };
 
 /** An off-screen, export-ready copy of the paper that can be re-laid-out at any scale. */
@@ -243,7 +243,7 @@ const planPages = ({ atoms, height }, pageH, marginPx, cleanest) => {
  * Renders the visible resume to an A4 PDF and downloads it.
  * Resolves with { pages, scale } (scale < 1 when it was shrunk to fit one page). Rejects when export fails.
  */
-export const downloadResumePdf = async ({ name, quality = 'screen', fitOnePage = true, meta = {} } = {}) => {
+export const downloadResumePdf = async ({ name, quality = 'screen', fitOnePage = true, meta = {}, kind = 'Resume' } = {}) => {
   const paper = findVisiblePaper();
   if (!paper) throw new Error('The resume preview is not visible.');
 
@@ -350,7 +350,7 @@ export const downloadResumePdf = async ({ name, quality = 'screen', fitOnePage =
       });
     });
 
-    pdf.save(buildFileName(name));
+    pdf.save(buildFileName(name, kind));
     return { pages: pages.length, scale: fit };
   } finally {
     stage.destroy();

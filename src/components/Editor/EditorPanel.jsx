@@ -1,5 +1,6 @@
 import React from 'react';
-import { Download, FileText, Palette, ScanSearch } from 'lucide-react';
+import { Download, FileText, Mail, Palette, ScanSearch } from 'lucide-react';
+import LetterTab from './LetterTab';
 import ContentTab from './ContentTab';
 import DesignTab from './DesignTab';
 import ExportTab from './ExportTab';
@@ -9,10 +10,11 @@ const TABS = [
     { id: 'content', label: 'Content', icon: FileText },
     { id: 'design', label: 'Design', icon: Palette },
     { id: 'review', label: 'Review', icon: ScanSearch },
+    { id: 'letter', label: 'Letter', icon: Mail },
     { id: 'export', label: 'Export', icon: Download }
 ];
 
-const currentTabOf = (activeTab) => (['design', 'review', 'export'].includes(activeTab) ? activeTab : 'content');
+const currentTabOf = (activeTab) => (['design', 'review', 'letter', 'export'].includes(activeTab) ? activeTab : 'content');
 
 /** The tabbed editing surface. Used as the desktop sidebar and inside the mobile layout. */
 export const EditorTabs = ({ activeTab, setActiveTab }) => {
@@ -26,7 +28,7 @@ export const EditorTabs = ({ activeTab, setActiveTab }) => {
                     id={`tab-${id}`}
                     aria-selected={current === id}
                     aria-controls="editor-panel"
-                    className="seg-item !min-h-9"
+                    className="seg-item !min-h-9 !gap-1 !px-1.5"
                     onClick={() => setActiveTab(id === 'content' ? 'sections' : id)}
                 >
                     <Icon size={15} />
@@ -41,6 +43,7 @@ export const EditorBody = (props) => {
     const current = currentTabOf(props.activeTab);
     return current === 'design' ? <DesignTab {...props} />
         : current === 'review' ? <ReviewTab {...props} />
+        : current === 'letter' ? <LetterTab {...props} />
         : current === 'export' ? <ExportTab {...props} />
         : <ContentTab {...props} />;
 };

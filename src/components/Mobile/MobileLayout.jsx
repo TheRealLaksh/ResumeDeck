@@ -4,6 +4,7 @@ import {
 } from 'lucide-react';
 import { EditorBody } from '../Editor/EditorPanel';
 import ResumeDocument from '../Preview/ResumeDocument';
+import LetterDocument from '../Preview/LetterDocument';
 import ZoomDock from '../Layout/ZoomDock';
 import Logo from '../UI/Logo';
 import ResumeSwitcher from '../Layout/ResumeSwitcher';
@@ -13,6 +14,7 @@ const NAV = [
     { id: 'content', label: 'Content', icon: FileText },
     { id: 'design', label: 'Design', icon: Palette },
     { id: 'review', label: 'Review', icon: ScanSearch },
+    { id: 'letter', label: 'Letter', icon: Mail },
     { id: 'preview', label: 'Preview', icon: Eye },
     { id: 'export', label: 'Export', icon: Link2 }
 ];
@@ -29,7 +31,7 @@ const MobileLayout = (props) => {
     } = useCanvasZoom({ gutter: 16, min: 0.25, maxFit: 1 });
 
     const inPreview = isReadOnly || showPreview;
-    const current = inPreview ? 'preview' : (['design', 'review', 'export'].includes(activeTab) ? activeTab : 'content');
+    const current = inPreview ? 'preview' : (['design', 'review', 'letter', 'export'].includes(activeTab) ? activeTab : 'content');
 
     const go = (id) => {
         if (id === 'preview') { setShowPreview(true); return; }
@@ -91,7 +93,9 @@ const MobileLayout = (props) => {
                                     style={{ width: contentSize.width || undefined, transform: `scale(${zoom})` }}
                                 >
                                     <div ref={setContent} className="inline-block">
-                                        <ResumeDocument data={data} config={config} sectionOrder={sectionOrder} />
+                                        {!isReadOnly && activeTab === 'letter'
+                                            ? <LetterDocument data={data} config={config} />
+                                            : <ResumeDocument data={data} config={config} sectionOrder={sectionOrder} />}
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +121,7 @@ const MobileLayout = (props) => {
                     <button className="btn btn-primary !h-11 flex-1" onClick={onForkTemplate}><FilePlus size={17} /> Use this template</button>
                 </div>
             ) : (
-                <nav aria-label="Primary" className="grid shrink-0 grid-cols-5 border-t border-line bg-panel px-2 pb-[max(0.25rem,env(safe-area-inset-bottom))] pt-1">
+                <nav aria-label="Primary" className="grid shrink-0 grid-cols-6 border-t border-line bg-panel px-2 pb-[max(0.25rem,env(safe-area-inset-bottom))] pt-1">
                     {NAV.map(({ id, label, icon: Icon }) => {
                         const active = current === id;
                         return (

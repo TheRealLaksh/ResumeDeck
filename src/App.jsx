@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 // Components
 import EditorPanel from './components/Editor/EditorPanel';
 import ResumeDocument from './components/Preview/ResumeDocument';
+import LetterDocument from './components/Preview/LetterDocument';
 import { EditContext } from './components/Preview/editContext';
 import MobileLayout from './components/Mobile/MobileLayout';
 import Toast from './components/UI/Toast';
@@ -327,6 +328,7 @@ const App = ({ preset = null, viewSwitch = null }) => {
     try {
       // Normalising drops unsafe links/photos before anything is published.
       const payload = normalizeResume({ data, config, sectionOrder });
+      delete payload.data.letter; // a cover letter is private to this browser and is never published
       const slug = customSlug.trim() ? makeSlug(customSlug) : '';
       const resumeId = slug
         ? await saveResumeWithSlug(slug, payload)
@@ -353,12 +355,14 @@ const App = ({ preset = null, viewSwitch = null }) => {
     }
   };
 
+  const showLetter = !isReadOnly && activeTab === 'letter';
+
   const handleDownloadPdf = async () => {
     if (isExportingPdf) return;
     setIsExportingPdf(true);
     try {
       const skills = (data.skills || []).map((skill) => (typeof skill === 'string' ? skill : skill?.name)).filter(Boolean);
-      const { pages, scale } = await downloadResumePdf({ name: data.personal?.name, quality: pdfQuality, fitOnePage, meta: { keywords: skills } });
+      const { pages, scale } = await downloadResumePdf({ name: data.personal?.name, quality: pdfQuality, fitOnePage, meta: { keywords: showLetter ? [] : skills }, kind: showLetter ? 'Cover_Letter' : 'Resume' });
       const note = scale < 1 ? ` Shrunk to ${Math.round(scale * 100)}% to fit one page.` : pages > 1 ? ` It runs to ${pages} pages.` : '';
       notify(`PDF downloaded.${note}`);
     } catch (error) {
@@ -639,7 +643,9 @@ const App = ({ preset = null, viewSwitch = null }) => {
                 >
                   <div ref={canvas.setContent} className="inline-block">
                     <EditContext.Provider value={isReadOnly ? null : { commit: handleInlineEdit }}>
-                      <ResumeDocument data={data} config={config} sectionOrder={sectionOrder} />
+                      {showLetter
+                        ? <LetterDocument data={data} config={config} />
+                        : <ResumeDocument data={data} config={config} sectionOrder={sectionOrder} />}
                     </EditContext.Provider>
                   </div>
                 </div>
@@ -650,7 +656,7 @@ const App = ({ preset = null, viewSwitch = null }) => {
           </div>
 
           <p className="pointer-events-none absolute left-4 top-3 font-numeric text-[11px] text-ink-3">
-            A4{templateName ? ` · ${templateName}` : ''}{!isReadOnly && ' · click any text to edit'}
+            {showLetter ? 'A4 · Cover letter' : `A4${templateName ? ` · ${templateName}` : ''}${isReadOnly ? '' : ' · click any text to edit'}`}
           </p>
 
           <ZoomDock
@@ -726,7 +732,9 @@ const App = ({ preset = null, viewSwitch = null }) => {
       {/* Print-only copy of the page: Ctrl+P / "Save as PDF" gives a real text PDF. See index.css. */}
       {createPortal(
         <div id="print-root">
-          <ResumeDocument data={data} config={config} sectionOrder={sectionOrder} paperRole="print" />
+          {showLetter
+            ? <LetterDocument data={data} config={config} paperRole="print" />
+            : <ResumeDocument data={data} config={config} sectionOrder={sectionOrder} paperRole="print" />}
         </div>,
         document.body
       )}

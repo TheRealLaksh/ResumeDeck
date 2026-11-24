@@ -1,5 +1,6 @@
 import { initialData, initialConfig, initialSections } from '../data/constants';
 import { sanitizeUrl, sanitizeImageSrc } from './safeUrl';
+import { normalizeLetter } from '../letter/letter';
 import { getActiveId, touchResume, MAIN_ID } from './resumeLibrary';
 
 const STORAGE_KEYS = {
@@ -66,7 +67,8 @@ export const normalizeData = (raw) => {
     skills: normalizeSkills(source.skills),
     achievements: asStringList(source.achievements),
     community: asStringList(source.community),
-    custom: normalizeCustom(source.custom)
+    custom: normalizeCustom(source.custom),
+    letter: normalizeLetter(source.letter)
   };
 };
 
