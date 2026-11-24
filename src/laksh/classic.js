@@ -76,7 +76,7 @@ export const classicResume = () => {
       projects: {
         title: 'Projects',
         content: bullets([
-          'Calibridge (calibridge.lakshpradhwani.com): offline-first calendar PWA in strict TypeScript with RFC 5545 .ics import/export, recurring events and time zones; 43 Playwright end-to-end tests run in CI and axe WCAG 2.1 AA audits.',
+          'Calibridge (calibridge.lakshpradhwani.com): offline-first calendar PWA in strict TypeScript with RFC 5545 .ics import/export, recurring events and time zones; 43 Playwright end-to-end tests run in CI and axe WCAG 2.1 AA audits; Lighthouse 100/100/100/100 (mobile, 24 Nov 2026).',
           'Profiley (profiley.lakshpradhwani.com): React resume builder with 16 templates and a built-in ATS reader that scores any resume; text-based PDF export, import and click-to-edit.',
           'Helios (music.lakshpradhwani.com): framework-free web music player with a 3-band equaliser, 3 visualisers, a decoded-waveform seekbar, command palette and Media Session API.',
         ]),

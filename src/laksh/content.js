@@ -133,7 +133,7 @@ export const PROJECTS = [
     url: 'https://calibridge.lakshpradhwani.com',
     host: 'calibridge.lakshpradhwani.com',
     text: 'Strict TypeScript and Vite with no UI framework. Month, week and agenda views, real time zones, repeating events, RFC 5545 .ics import and export, undo and redo.',
-    proof: '43 Playwright e2e tests in CI, axe WCAG 2.1 AA audits',
+    proof: '43 Playwright e2e tests in CI, axe WCAG 2.1 AA audits, Lighthouse 100 on all four',
     tags: ['TypeScript', 'PWA', 'Playwright'],
     lenses: ALL,
   },
