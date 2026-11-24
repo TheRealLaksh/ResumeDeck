@@ -78,12 +78,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 24 Nov 2026, 10:13 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 24 Nov 2026, 10:16 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `be68d41` 2026-11-24 22:13 Add SEO listings and brand tech collaborations to the ShiftsDeal role on /laksh
 - `6568118` 2026-11-24 21:57 HANDOFF: Unified Mentor number skipped
 - `a470fa4` 2026-11-24 21:56 Add Calibridge Lighthouse result to the /laksh resume
 - `a09fa2b` 2026-11-24 21:54 Per-path canonical and noindex for shared resumes; /laksh description
@@ -98,12 +99,19 @@ Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resu
 - `2b6bfef` 2026-10-18 10:49 HANDOFF: refresh auto block
 - `6db00a2` 2026-10-18 10:49 Default /laksh to the standard Profiley view with a Creative view switch
 - `092068e` 2026-10-18 10:44 HANDOFF: note the pushed preview branch
-- `b60460a` 2026-10-18 10:43 Route /laksh to the custom page and update HANDOFF
 
 ### Uncommitted changes at refresh time
 
 ```
-M  src/laksh/classic.js
-M  src/laksh/content.js
+M src/App.jsx
+ M src/components/Layout/TopBar.jsx
+ M src/components/Mobile/MobileLayout.jsx
+A  src/laksh/MuResume.jsx
+A  src/laksh/mu.css
+A  src/laksh/mu.js
+M  src/main.jsx
+ M src/utils/resumeData.js
+?? src/components/Layout/ResumeSwitcher.jsx
+?? src/utils/resumeLibrary.js
 ```
 <!-- handoff:auto:end -->
