@@ -1,6 +1,7 @@
 import React from 'react';
 import { Check, Download, FilePlus, Link2, Loader2, Mail, Moon, Phone, Redo2, Sun, Undo2 } from 'lucide-react';
 import Logo from '../UI/Logo';
+import ResumeSwitcher from './ResumeSwitcher';
 
 const IconButton = ({ label, shortcut, children, ...props }) => (
     <button className="btn btn-ghost btn-icon" aria-label={label} title={shortcut ? `${label} (${shortcut})` : label} {...props}>
@@ -13,7 +14,7 @@ const TopBar = ({
     data, isReadOnly, darkMode, toggleDarkMode,
     canUndo, canRedo, undo, redo,
     saveState, onShare, onDownloadPdf, isExportingPdf,
-    onCopyEmail, onForkTemplate, viewSwitch
+    onCopyEmail, onForkTemplate, viewSwitch, resumeSwitcher
 }) => {
     const name = data.personal?.name?.trim();
 
@@ -26,6 +27,7 @@ const TopBar = ({
                 <span className="truncate text-[13px] font-medium text-ink-2">
                     {isReadOnly ? `${name || 'Resume'}` : name ? `${name}'s resume` : 'Untitled resume'}
                 </span>
+                {!isReadOnly && resumeSwitcher && <ResumeSwitcher {...resumeSwitcher} />}
                 {isReadOnly ? (
                     <span className="rounded-md bg-accent-soft px-1.5 py-0.5 font-numeric text-[10px] uppercase tracking-wider text-accent-ink">Shared · read only</span>
                 ) : (

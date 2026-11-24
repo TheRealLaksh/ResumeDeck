@@ -29,8 +29,19 @@ import {
   normalizeResume,
   loadLocalResume,
   saveLocalResume,
-  saveLocalDesignOnly
+  saveLocalDesignOnly,
+  deleteLocalResume,
+  blankResume
 } from './utils/resumeData';
+import {
+  getLibrary,
+  setActiveId,
+  addResume,
+  renameResume,
+  removeResume,
+  markBackup,
+  backupIsDue
+} from './utils/resumeLibrary';
 import { saveResumeToDB, saveResumeWithSlug, fetchResumeFromDB, makeSlug } from './firebase';
 import {
   initialData,
@@ -66,6 +77,8 @@ const pushSnapshot = (history, snapshot) => {
 
 const App = ({ preset = null, viewSwitch = null }) => {
   // --- STATE MANAGEMENT ---
+  const [library, setLibrary] = useState(getLibrary);
+  const activeId = library.activeId;
   const [data, setData] = useState(initialData);
   const [config, setConfig] = useState(initialConfig);
   const [sectionOrder, setSectionOrder] = useState(initialSections);
@@ -197,9 +210,10 @@ const App = ({ preset = null, viewSwitch = null }) => {
 
     let indicatorTimer;
     const timeoutId = setTimeout(() => {
-      const saved = saveLocalResume({ data, config, sectionOrder });
+      const saved = saveLocalResume({ data, config, sectionOrder }, activeId);
       if (saved) {
         storageWarnedRef.current = false;
+        setLibrary(getLibrary());
         setSaveState('saved');
         indicatorTimer = setTimeout(() => setSaveState('idle'), 2200);
       } else {
@@ -217,7 +231,7 @@ const App = ({ preset = null, viewSwitch = null }) => {
       clearTimeout(timeoutId);
       clearTimeout(indicatorTimer);
     };
-  }, [data, config, sectionOrder, isLoading, isReadOnly, notify]);
+  }, [data, config, sectionOrder, activeId, isLoading, isReadOnly, notify]);
 
   // 4. Fullscreen Listener
   useEffect(() => {
@@ -462,11 +476,77 @@ const App = ({ preset = null, viewSwitch = null }) => {
     const base = (data.personal.name || 'resume').trim().replace(/[^\w.-]+/g, '_') || 'resume';
     if (kind === 'jsonresume') downloadJson(`${base}.jsonresume.json`, toJsonResume(data));
     else downloadJson(`${base}.profiley.json`, toProfileyBackup({ data, config, sectionOrder }));
+    if (kind !== 'jsonresume') markBackup();
     notify('Saved to your downloads');
   };
 
+  // --- Saved resumes (library) ---
+  const flushSave = () => saveLocalResume({ data, config, sectionOrder }, activeId);
+
+  const openResume = (nextLibrary, resume) => {
+    setLibrary(nextLibrary);
+    setData(resume.data);
+    setConfig(resume.config);
+    setSectionOrder(resume.sectionOrder);
+    setHistory({ stack: [resume], index: 0 });
+  };
+
+  const handleSwitchResume = (id) => {
+    if (id === activeId) return;
+    flushSave();
+    openResume(setActiveId(id), loadLocalResume(id) ?? blankResume());
+  };
+
+  const handleCreateResume = () => {
+    flushSave();
+    const { id, library: next } = addResume(`Resume ${library.items.length + 1}`);
+    if (!id) { notify('You can keep up to 12 resumes in this browser.', 'error'); return; }
+    const resume = blankResume();
+    saveLocalResume(resume, id);
+    openResume(next, resume);
+    notify('New blank resume');
+  };
+
+  const handleDuplicateResume = () => {
+    flushSave();
+    const current = library.items.find((i) => i.id === activeId);
+    const { id, library: next } = addResume(`${current?.name ?? 'Resume'} copy`);
+    if (!id) { notify('You can keep up to 12 resumes in this browser.', 'error'); return; }
+    const resume = normalizeResume({ data, config, sectionOrder });
+    saveLocalResume(resume, id);
+    openResume(next, resume);
+    notify('Duplicated. You are editing the copy.');
+  };
+
+  const handleRenameResume = (id, name) => setLibrary(renameResume(id, name));
+
+  const handleDeleteResume = (id) => {
+    const next = removeResume(id);
+    if (next.items.some((i) => i.id === id)) return; // the last resume cannot be deleted
+    deleteLocalResume(id);
+    if (id === activeId) openResume(next, loadLocalResume(next.activeId) ?? blankResume());
+    else setLibrary(next);
+    notify('Resume deleted');
+  };
+
+  // One gentle reminder per visit when real content has no recent backup file.
+  useEffect(() => {
+    if (isLoading || isReadOnly) return undefined;
+    const timer = setTimeout(() => {
+      if (backupIsDue(data)) {
+        notify('Your resume only lives in this browser. Download a backup file?', 'success', {
+          label: 'Download backup',
+          run: () => actionsRef.current.backup?.()
+        });
+      }
+    }, 20000);
+    return () => clearTimeout(timer);
+    // Runs once per load on purpose: the timer reads the data at that moment, edits don't restart it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, isReadOnly]);
+
   const handleSaveNow = () => {
-    const saved = saveLocalResume({ data, config, sectionOrder });
+    const saved = saveLocalResume({ data, config, sectionOrder }, activeId);
     setSaveState(saved ? 'saved' : 'error');
     notify(saved ? 'Saved to this browser' : "Couldn't save to this browser", saved ? 'success' : 'error');
   };
@@ -474,7 +554,7 @@ const App = ({ preset = null, viewSwitch = null }) => {
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   useEffect(() => {
-    actionsRef.current = { undo: handleUndo, redo: handleRedo, save: handleSaveNow };
+    actionsRef.current = { undo: handleUndo, redo: handleRedo, save: handleSaveNow, backup: () => handleExportJson('backup') };
   });
 
   // --- RENDER ---
@@ -524,6 +604,14 @@ const App = ({ preset = null, viewSwitch = null }) => {
         onCopyEmail={handleCopyEmail}
         onForkTemplate={handleForkTemplate}
         viewSwitch={viewSwitch}
+        resumeSwitcher={{
+          library,
+          onSwitch: handleSwitchResume,
+          onCreate: handleCreateResume,
+          onDuplicate: handleDuplicateResume,
+          onRename: handleRenameResume,
+          onDelete: handleDeleteResume
+        }}
       />
 
       <div className="flex min-h-0 flex-1">
@@ -607,7 +695,8 @@ const App = ({ preset = null, viewSwitch = null }) => {
         variant={toast.variant}
         action={toast.action}
         onAction={() => {
-          actionsRef.current.undo?.();
+          if (toast.action?.run) toast.action.run();
+          else actionsRef.current.undo?.();
           setToast((t) => ({ ...t, show: false }));
         }}
       />
@@ -623,6 +712,14 @@ const App = ({ preset = null, viewSwitch = null }) => {
           onCopyEmail={handleCopyEmail}
           onForkTemplate={handleForkTemplate}
           viewSwitch={viewSwitch}
+          resumeSwitcher={{
+          library,
+          onSwitch: handleSwitchResume,
+          onCreate: handleCreateResume,
+          onDuplicate: handleDuplicateResume,
+          onRename: handleRenameResume,
+          onDelete: handleDeleteResume
+        }}
         />
       )}
 

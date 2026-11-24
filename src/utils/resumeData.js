@@ -1,5 +1,6 @@
 import { initialData, initialConfig, initialSections } from '../data/constants';
 import { sanitizeUrl, sanitizeImageSrc } from './safeUrl';
+import { getActiveId, touchResume, MAIN_ID } from './resumeLibrary';
 
 const STORAGE_KEYS = {
   data: 'profiley_data',
@@ -92,8 +93,17 @@ const readJson = (key) => {
   }
 };
 
-/** Returns the saved draft, or null when nothing usable is stored. */
-export const loadLocalResume = () => {
+const resumeKey = (id) => `profiley_resume_${id}`;
+
+/** An empty resume (no sample content) for "New resume". */
+export const blankResume = () => normalizeResume({ data: {}, config: initialConfig, sectionOrder: initialSections });
+
+/** Returns the saved draft for a library entry (default: the active one), or null when nothing usable is stored. */
+export const loadLocalResume = (id = getActiveId()) => {
+  if (id !== MAIN_ID) {
+    const stored = readJson(resumeKey(id));
+    return stored === undefined ? null : normalizeResume(stored);
+  }
   const data = readJson(STORAGE_KEYS.data);
   const config = readJson(STORAGE_KEYS.config);
   const sectionOrder = readJson(STORAGE_KEYS.order);
@@ -102,20 +112,39 @@ export const loadLocalResume = () => {
 };
 
 /** Returns true when everything was written, false when storage refused (quota, private mode). */
-export const saveLocalResume = ({ data, config, sectionOrder }) => {
+export const saveLocalResume = ({ data, config, sectionOrder }, id = getActiveId()) => {
   try {
-    localStorage.setItem(STORAGE_KEYS.data, JSON.stringify(data));
-    localStorage.setItem(STORAGE_KEYS.config, JSON.stringify(config));
-    localStorage.setItem(STORAGE_KEYS.order, JSON.stringify(sectionOrder));
+    if (id !== MAIN_ID) {
+      localStorage.setItem(resumeKey(id), JSON.stringify({ data, config, sectionOrder }));
+    } else {
+      localStorage.setItem(STORAGE_KEYS.data, JSON.stringify(data));
+      localStorage.setItem(STORAGE_KEYS.config, JSON.stringify(config));
+      localStorage.setItem(STORAGE_KEYS.order, JSON.stringify(sectionOrder));
+    }
+    touchResume(id);
     return true;
   } catch {
     return false;
   }
 };
 
+export const deleteLocalResume = (id) => {
+  try {
+    if (id === MAIN_ID) Object.values(STORAGE_KEYS).forEach((key) => localStorage.removeItem(key));
+    else localStorage.removeItem(resumeKey(id));
+  } catch {
+    // Nothing to remove if storage is blocked.
+  }
+};
+
 /** Used by "Use Template": keep the look, start with an empty draft. */
 export const saveLocalDesignOnly = ({ config, sectionOrder }) => {
   try {
+    const id = getActiveId();
+    if (id !== MAIN_ID) {
+      localStorage.setItem(resumeKey(id), JSON.stringify({ data: {}, config, sectionOrder }));
+      return;
+    }
     localStorage.setItem(STORAGE_KEYS.config, JSON.stringify(config));
     localStorage.setItem(STORAGE_KEYS.order, JSON.stringify(sectionOrder));
     localStorage.removeItem(STORAGE_KEYS.data);

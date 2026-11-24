@@ -6,6 +6,7 @@ import { EditorBody } from '../Editor/EditorPanel';
 import ResumeDocument from '../Preview/ResumeDocument';
 import ZoomDock from '../Layout/ZoomDock';
 import Logo from '../UI/Logo';
+import ResumeSwitcher from '../Layout/ResumeSwitcher';
 import useCanvasZoom from '../../hooks/useCanvasZoom';
 
 const NAV = [
@@ -19,7 +20,7 @@ const NAV = [
 const MobileLayout = (props) => {
     const {
         activeTab, setActiveTab, darkMode, toggleDarkMode, data, config, sectionOrder, isReadOnly,
-        canUndo, canRedo, undo, redo, onDownloadPdf, isExportingPdf, onCopyEmail, onForkTemplate, viewSwitch
+        canUndo, canRedo, undo, redo, onDownloadPdf, isExportingPdf, onCopyEmail, onForkTemplate, viewSwitch, resumeSwitcher
     } = props;
 
     const [showPreview, setShowPreview] = useState(false);
@@ -48,6 +49,7 @@ const MobileLayout = (props) => {
                     <div className="flex-1"><Logo size="sm" /></div>
                 )}
 
+                {!isReadOnly && !inPreview && resumeSwitcher && <ResumeSwitcher {...resumeSwitcher} compact />}
                 {!isReadOnly && !inPreview && (
                     <>
                         <button className="btn btn-ghost btn-icon" onClick={undo} disabled={!canUndo} aria-label="Undo"><Undo2 size={17} /></button>
