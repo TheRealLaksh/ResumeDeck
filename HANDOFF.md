@@ -81,6 +81,7 @@ Branch: `main` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builde
 
 ### Last 15 commits
 
+- `353ab9b` 2026-11-24 21:53 Add a real sitemap.xml and block /api/ in robots.txt
 - `56fcf1c` 2026-10-18 11:37 HANDOFF: refresh auto block
 - `6f946f9` 2026-10-18 11:37 HANDOFF: /laksh is live
 - `fbbe005` 2026-10-18 11:32 HANDOFF: refresh auto block
@@ -95,12 +96,10 @@ Branch: `main` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builde
 - `0be32a7` 2026-10-18 10:43 Add content and photo for Laksh's custom resume page
 - `1a5f5a5` 2026-10-09 13:43 Refresh the social card with the new logo
 - `fb7ad38` 2026-10-09 13:43 Replace the neon favicon with the Page-P icon set
-- `9054d3b` 2026-10-09 13:40 Add the Page-P logo to the app header
 
 ### Uncommitted changes at refresh time
 
 ```
-M  public/robots.txt
-A  public/sitemap.xml
+M  index.html
 ```
 <!-- handoff:auto:end -->
