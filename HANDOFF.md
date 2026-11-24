@@ -27,14 +27,14 @@ React 19, Vite, Tailwind, Firebase, html2canvas + jsPDF/html2pdf, lucide-react.
 - `src/components/Preview/Editable.jsx` + `editContext.js`: click-to-edit on the main canvas only (not shared/read-only, thumbs or print)
 - `src/utils/pdfManager.js`: Download PDF (html2canvas image per page + invisible text layer + link annotations, page breaks planned in text gaps, fit-to-one-page shrink up to 15%, margins and sidebar colour on continuation pages) and `printResume` (browser print with the same fit via the `--print-fit` CSS variable)
 - `src/components/UI/Logo.jsx`: the logo (page-shaped P + outlined Instrument Serif wordmark, inline SVG, colours from theme tokens incl. `--c-accent-fold`); used by TopBar, AppSkeleton, MobileLayout
-- `src/laksh/` (merged to `main` and LIVE since 18 Oct 2026; branch `feat/laksh-resume-custom` can be deleted): Laksh's own resume at `/laksh`. **Default `/laksh` = the standard Profiley read-only view** (`LakshClassic.jsx` renders `App` with `preset` from `classic.js`). Since the 18 Oct research (vault note `01 About Me/Top Package Resume Research (Oct 2026).md`) it is the strict one-page version: ATS Friendly template, no photo, no summary, Education first (all schools, no marks), Experience, Projects (with visible URLs and proof: tests, audits), grouped Skills, Awards. New builder features it uses: `personal.github` field (editor + header) and the `showLinkUrls` config key (prints the real URL instead of the label "LinkedIn"). It overflows A4 by about 6%, which the app's fit-to-one-page print/PDF handles. Real numbers added 18 Oct (from Laksh): ShiftsDeal 120+ venues listed, freelance 5+ sites delivered (not live yet, so no live count). Still missing: Unified Mentor users (Calibridge Lighthouse added 24 Nov). A "Creative view" switch (`ViewSwitch.jsx`, `switch.css`; shown by TopBar and MobileLayout via the `viewSwitch` prop when read-only) goes to `/laksh?view=creative`, the hand-built page; its switch goes back. Strict readers therefore never see the creative page unless they opt in. `main.jsx` lazy-loads both (App and Firebase load only for the standard view and other paths). `content.js` holds all the facts + lens rules (client / recruiter / dev, `?lens=` param, saved in localStorage), `LakshResume.jsx` the page (hero, tinted sections, timeline, project cards with live up/down pings, changelog diff, live ATS card that runs `ats/analyze.js` on the print sheet), `Sheet.jsx` the A4 text version (table with repeating spacer rows so `@page` margin stays 0 and the browser adds no header/footer; printed via the PDF button), `hooks.js` (reveal-on-view, count-up, magnet, tilt, status, scroll progress), `laksh.css` (scoped to `.lk`, light + dark). Photo: `public/laksh/photo.webp`.
+- `src/laksh/` (merged to `main` and LIVE since 18 Oct 2026; branch `feat/laksh-resume-custom` can be deleted): Laksh's own resume at `/laksh`. **Default `/laksh` = the standard Profiley read-only view** (`LakshClassic.jsx` renders `App` with `preset` from `classic.js`). Since the 18 Oct research (vault note `01 About Me/Top Package Resume Research (Oct 2026).md`) it is the strict one-page version: ATS Friendly template, no photo, no summary, Education first (all schools, no marks), Experience, Projects (with visible URLs and proof: tests, audits), grouped Skills, Awards. New builder features it uses: `personal.github` field (editor + header) and the `showLinkUrls` config key (prints the real URL instead of the label "LinkedIn"). It overflows A4 by about 6%, which the app's fit-to-one-page print/PDF handles. Real numbers added 18 Oct (from Laksh): ShiftsDeal 120+ venues listed, freelance 5+ sites delivered (not live yet, so no live count). Unified Mentor users: Laksh chose to skip it (24 Nov), leave it out (Calibridge Lighthouse added 24 Nov). A "Creative view" switch (`ViewSwitch.jsx`, `switch.css`; shown by TopBar and MobileLayout via the `viewSwitch` prop when read-only) goes to `/laksh?view=creative`, the hand-built page; its switch goes back. Strict readers therefore never see the creative page unless they opt in. `main.jsx` lazy-loads both (App and Firebase load only for the standard view and other paths). `content.js` holds all the facts + lens rules (client / recruiter / dev, `?lens=` param, saved in localStorage), `LakshResume.jsx` the page (hero, tinted sections, timeline, project cards with live up/down pings, changelog diff, live ATS card that runs `ats/analyze.js` on the print sheet), `Sheet.jsx` the A4 text version (table with repeating spacer rows so `@page` margin stays 0 and the browser adds no header/footer; printed via the PDF button), `hooks.js` (reveal-on-view, count-up, magnet, tilt, status, scroll progress), `laksh.css` (scoped to `.lk`, light + dark). Photo: `public/laksh/photo.webp`.
 - `public/`: `favicon.svg` (adaptive tile, light/dark), `favicon.ico`, `apple-touch-icon.png`, `icon-192/512(.maskable).png` + `site.webmanifest`, og-image.png, `_redirects`, `robots.txt` (served; moved here by the merged PR #1 `claude/pensive-meitner-opz77b`, which also hardened sharing/saved data, fixed preview/PDF export and dropped unused dependencies)
 
 ## Status
 Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click-to-edit and import/export (PDF/text/backup/JSON Resume), on top of the PR #2 redesign (design system with light/dark, new editor, mobile fit/pinch, 16 templates). Lint, `npm run build`, API handler test (stubbed fetch) and Playwright suites pass. Real Anthropic calls and real Firestore shares are untested (no key / no Firestore in the sandbox). `ANTHROPIC_API_KEY` is deliberately NOT set (Laksh doesn't want to pay): with no server key and no user key, Job match runs in a free copy-paste mode (Copy prompt, run it in claude.ai or Claude in Chrome, paste the JSON reply back; `buildManualPrompt`/`parseManualReply` in `src/ai/tasks.js`, UI in `TailorPanel.jsx`). Import's AI read is still key-only; the basic reader is free. Print CSS caps letter-spacing at 0.05em so the text PDF extracts cleanly. `vercel.json` rewrite excludes `/api/`. Domain migration: the default email is `work@lakshpradhwani.com` (Cloudflare Email Routing forwards it to Laksh's Gmail).
 
 ## Next steps
-0000. `/laksh` is live (standard strict view by default, `?view=creative` for the creative page). Verified on production 18 Oct: switch, numbers, lenses, ATS score 94, live status pings. Still to do: fill Unified Mentor users (Laksh to supply); test-print to PDF in Chrome (fit to one page); old Firestore doc `laksh` is unused and can be deleted in the Firebase console.
+0000. `/laksh` is live (standard strict view by default, `?view=creative` for the creative page). Verified on production 18 Oct: switch, numbers, lenses, ATS score 94, live status pings. Unified Mentor users number skipped by Laksh on 24 Nov; test-print to PDF in Chrome (fit to one page); old Firestore doc `laksh` is unused and can be deleted in the Firebase console.
 000. Review `feat/laksh-resume-custom` at `/laksh` on a preview, then merge to `main` (push deploys live; Laksh said push only when he says). The old Firestore doc `laksh` is untouched (Laksh chose replace and delete; deleting it needs Firebase access, so it just stops being used). Not tested: window.print() in real Chrome PDF output beyond the on-screen sheet, Safari/Firefox.
 00. PDF audit fixes (9 Oct 2026) are on branch `claude/pensive-meitner-opz77b`, not yet merged: after merging, download a PDF from production in a few templates and check the text selects/searches.
 0. Do NOT set `ANTHROPIC_API_KEY` unless Laksh decides to pay. Try Review > Job match (copy-paste mode) on production.
@@ -55,6 +55,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-24: Laksh chose to skip the Unified Mentor user count; /laksh numbers are done.
 - 2026-11-24: added the Calibridge Lighthouse result (measured by me on production, mobile: performance, accessibility, best practices, SEO all 100) to both /laksh views. Unified Mentor user count still missing (only Laksh knows it).
 - 2026-11-24: SEO pass: real `public/sitemap.xml` (/ and /laksh), robots blocks /api/, JSON-LD WebApplication + og:site_name/image size/alt in `index.html`, `setHead()` in `main.jsx` (/laksh gets its own canonical + description; share-link paths get self canonical and noindex). Lint + build pass. Pushed to main. Local browser-pane data cleared on request.
 - 2026-10-18: merged `feat/laksh-resume-custom` into `main` (fast-forward) and deployed on Laksh's say-so; checked both views on production.
@@ -77,12 +78,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 24 Nov 2026, 9:56 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 24 Nov 2026, 9:57 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `a470fa4` 2026-11-24 21:56 Add Calibridge Lighthouse result to the /laksh resume
 - `a09fa2b` 2026-11-24 21:54 Per-path canonical and noindex for shared resumes; /laksh description
 - `84396d1` 2026-11-24 21:53 Add JSON-LD, og:site_name and image details; drop stale year keyword
 - `e4fff94` 2026-11-24 21:53 Add a real sitemap.xml and block /api/ in robots.txt
@@ -97,13 +99,10 @@ Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resu
 - `092068e` 2026-10-18 10:44 HANDOFF: note the pushed preview branch
 - `b60460a` 2026-10-18 10:43 Route /laksh to the custom page and update HANDOFF
 - `602bbfc` 2026-10-18 10:43 Add the /laksh resume page: lenses, live ATS check, project status, changelog, print sheet
-- `c49e26e` 2026-10-18 10:43 Add content and photo for Laksh's custom resume page
 
 ### Uncommitted changes at refresh time
 
 ```
 M  HANDOFF.md
-M  src/laksh/classic.js
-M  src/laksh/content.js
 ```
 <!-- handoff:auto:end -->
