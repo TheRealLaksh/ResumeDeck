@@ -11,7 +11,7 @@ Profiley: a React resume builder with real-time WYSIWYG editing, 16 templates, d
 
 ## Stack, run, deploy
 React 19, Vite, Tailwind, Cloudflare Worker + D1 (share links), html2canvas + jsPDF/html2pdf, lucide-react.
-`npm run dev` / `npm run build` / `npm run lint`. Deploy = push to `main`. `vercel.json` rewrites everything to `index.html` (SPA).
+`npm run dev` / `npm run build` / `npm run lint` / `npm test` (Playwright, 17 tests in `tests/`: saved resumes, cover letter, keyword gap, PDF downloads, backup reminder, share links with the API mocked so nothing touches the real database; locally uses installed Chrome, CI uses Playwright Chromium; `.github/workflows/ci.yml` runs lint, build and tests on every push and PR). Deploy = push to `main`. `vercel.json` rewrites everything to `index.html` (SPA).
 
 ## Code map
 - `index.html`: meta, canonical, og/twitter tags
@@ -59,6 +59,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-25: added automated tests + CI. `@playwright/test`, `playwright.config.js`, `tests/editor.spec.js` + `tests/share.spec.js` + `tests/helpers.js`, `.github/workflows/ci.yml`, `npm test`. 17 tests pass locally (Chrome). The CI workflow has not run on GitHub yet when this was written. Eslint now ignores test output and treats tests/worker as Node.
 - 2026-11-25: copied the old Firestore `laksh` doc into D1 as `laksh-old` (the slug `laksh` is reserved for the hand-built page), then deleted the Firebase project on Laksh's confirmation.
 - 2026-11-25: attached `profiley-api.lakshpradhwani.com` to the Worker (Laksh approved the DNS change) and pointed `src/shareApi.js` at it.
 - 2026-11-25: moved share links off Firebase to Cloudflare Worker + D1 (Laksh's choice). Real turn-off and view counter now work. Published Firestore rules first (locked down), then built and deployed the Worker, copied the 6 existing shared resumes, removed the `firebase` dependency and `src/firebase.js`. Tested end to end (create, open, stats, turn off, expired page) against the live Worker; lint + build pass.
@@ -90,12 +91,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 12:54 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 1:05 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `770508e` 2026-11-25 00:54 HANDOFF: Firebase project deleted, laksh doc copied
 - `6708ac0` 2026-11-25 00:42 Serve the share API from profiley-api.lakshpradhwani.com
 - `0c5d63f` 2026-11-25 00:05 Move share links from Firebase to the Cloudflare API; add turn-off and view counts
 - `c49e165` 2026-11-25 00:05 Add the share-link API: Cloudflare Worker + D1
@@ -110,11 +112,19 @@ Branch: `laksh-numbers` · remote: https://github.com/TheRealLaksh/Profiley-Resu
 - `a470fa4` 2026-11-24 21:56 Add Calibridge Lighthouse result to the /laksh resume
 - `a09fa2b` 2026-11-24 21:54 Per-path canonical and noindex for shared resumes; /laksh description
 - `84396d1` 2026-11-24 21:53 Add JSON-LD, og:site_name and image details; drop stale year keyword
-- `e4fff94` 2026-11-24 21:53 Add a real sitemap.xml and block /api/ in robots.txt
 
 ### Uncommitted changes at refresh time
 
 ```
+A  .github/workflows/ci.yml
+M  .gitignore
 M  HANDOFF.md
+M  eslint.config.js
+M  package-lock.json
+M  package.json
+A  playwright.config.js
+A  tests/editor.spec.js
+A  tests/helpers.js
+A  tests/share.spec.js
 ```
 <!-- handoff:auto:end -->
