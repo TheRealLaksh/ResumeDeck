@@ -5,8 +5,8 @@ ResumeDeck: a React resume builder with real-time WYSIWYG editing, 16 templates,
 
 ## Links
 - Live: https://resumedeck.lakshpradhwani.com. Old address https://profiley.lakshpradhwani.com 301-redirects here (Worker `profiley-redirect`, code in `redirect/`); `profiley.lakshp.live` is dead.
-- Repo: https://github.com/TheRealLaksh/ResumeDeck (push to `main` auto-deploys on Vercel, project `profiley-resume-builder`)
-- Local: `C:\Users\laksh\OneDrive\Documents\Personal Projects\ResumeDeck`
+- Repo: https://github.com/TheRealLaksh/ResumeDeck (renamed from Profiley-Resume-Builder on 25 Nov 2026; GitHub redirects the old URL). Hosting: Cloudflare Worker `resumedeck-web` (static assets + /api/ai, `wrangler.toml`, deploy with `npm run deploy:cf`). Other Workers: `resumedeck-share` (+ D1 `resumedeck-share`, `worker/`), `profiley-redirect` (old address, `redirect/`), `profiley-share` (old api address proxy, `worker-legacy/`). The old Vercel project is no longer used.
+- Local: `C:\Users\laksh\OneDrive\Documents\Personal Projects\Profiley-Resume-Builder` (folder name unchanged on purpose)
 - Obsidian: `05 Resources\Domains.md`, domain audit `05 Resources\lakshp.live Usage Audit.md`, `02 Projects\Past Projects (2025).md`
 
 ## Stack, run, deploy
@@ -92,12 +92,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 1:31 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 1:39 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `acab092` 2026-11-25 01:31 Rename Profiley to ResumeDeck, host on Cloudflare, new share Worker and redirect Worker
 - `8643820` 2026-11-25 01:05 Add Playwright tests and a CI workflow
 - `770508e` 2026-11-25 00:54 HANDOFF: Firebase project deleted, laksh doc copied
 - `6708ac0` 2026-11-25 00:42 Serve the share API from profiley-api.lakshpradhwani.com
@@ -112,63 +113,11 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/Profiley-
 - `be68d41` 2026-11-24 22:13 Add SEO listings and brand tech collaborations to the ShiftsDeal role on /laksh
 - `6568118` 2026-11-24 21:57 HANDOFF: Unified Mentor number skipped
 - `a470fa4` 2026-11-24 21:56 Add Calibridge Lighthouse result to the /laksh resume
-- `a09fa2b` 2026-11-24 21:54 Per-path canonical and noindex for shared resumes; /laksh description
 
 ### Uncommitted changes at refresh time
 
 ```
-M  CLAUDE.md
 M  HANDOFF.md
-M  README.md
-A  edge/index.js
-M  index.html
-M  package-lock.json
-M  package.json
-D  public/_redirects
-M  public/apple-touch-icon.png
-M  public/favicon.ico
-M  public/favicon.svg
-M  public/icon-192.png
-M  public/icon-512-maskable.png
-M  public/icon-512.png
-M  public/og-image.png
-M  public/robots.txt
-M  public/site.webmanifest
-M  public/sitemap.xml
-A  public/transfer.html
-A  redirect/src/index.js
-A  redirect/wrangler.toml
-A  scripts/make-brand-assets.mjs
-M  src/App.jsx
-M  src/ai/client.js
-M  src/components/Editor/ExportTab.jsx
-M  src/components/Editor/review/KeywordPanel.jsx
-M  src/components/Layout/Footer.jsx
-M  src/components/Modals/ImportModal.jsx
-M  src/components/UI/Logo.jsx
-M  src/import/formats.js
-M  src/import/fromAi.js
-M  src/import/pdfText.js
-M  src/laksh/LakshClassic.jsx
-M  src/laksh/LakshResume.jsx
-M  src/laksh/Sheet.jsx
-M  src/laksh/ViewSwitch.jsx
-M  src/laksh/classic.js
-M  src/laksh/content.js
-M  src/laksh/mu.js
-M  src/main.jsx
-M  src/shareApi.js
-M  src/utils/pdfManager.js
-M  src/utils/resumeData.js
-M  src/utils/resumeLibrary.js
-M  src/utils/shareLinks.js
-M  tests/editor.spec.js
-A  tests/rename.spec.js
-A  worker-legacy/index.js
-A  worker-legacy/wrangler.toml
-M  worker/schema.sql
-M  worker/src/index.js
-M  worker/wrangler.toml
-A  wrangler.toml
+M  wrangler.toml
 ```
 <!-- handoff:auto:end -->
