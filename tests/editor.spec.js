@@ -42,7 +42,7 @@ test.describe('saved resumes', () => {
     await page.getByRole('button', { name: 'Delete?' }).click();
     await expect(switcher(page)).not.toHaveAccessibleName(/Internship/);
     await expect
-      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('resumedeck_library')).items.map((i) => i.name)))
+      .poll(() => page.evaluate(() => (JSON.parse(localStorage.getItem('resumedeck_library') || 'null')?.items ?? []).map((i) => i.name)))
       .toEqual(['My resume', 'Resume 2']);
   });
 
@@ -82,7 +82,7 @@ test.describe('cover letter', () => {
   test('the letter is saved with the resume but kept out of a published copy', async ({ page }) => {
     await openTab(page, 'Letter');
     await page.getByPlaceholder('Acme Inc.').fill('Secret Corp');
-    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('resumedeck_data')).letter?.company)).toBe('Secret Corp');
+    await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('resumedeck_data') || 'null')?.letter?.company)).toBe('Secret Corp');
   });
 });
 
@@ -99,7 +99,7 @@ test.describe('keyword gap', () => {
     await page.getByRole('button', { name: 'Add TypeScript to Skills' }).click();
     await expect(page.getByRole('button', { name: 'Add TypeScript to Skills' })).toHaveCount(0);
     await expect
-      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('resumedeck_data')).skills.map((s) => s.name ?? s)))
+      .poll(() => page.evaluate(() => (JSON.parse(localStorage.getItem('resumedeck_data') || 'null')?.skills ?? []).map((s) => s.name ?? s)))
       .toContain('TypeScript');
   });
 

@@ -92,12 +92,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 1:39 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 1:50 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
-Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
+Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `2228748` 2026-11-25 01:39 ResumeDeck: custom domains, docs, import hardening
 - `acab092` 2026-11-25 01:31 Rename Profiley to ResumeDeck, host on Cloudflare, new share Worker and redirect Worker
 - `8643820` 2026-11-25 01:05 Add Playwright tests and a CI workflow
 - `770508e` 2026-11-25 00:54 HANDOFF: Firebase project deleted, laksh doc copied
@@ -112,12 +113,10 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/Profiley-
 - `61e72a5` 2026-11-24 22:16 Add /laksh-mu: resume in the Masters' Union format with browser PDF download
 - `be68d41` 2026-11-24 22:13 Add SEO listings and brand tech collaborations to the ShiftsDeal role on /laksh
 - `6568118` 2026-11-24 21:57 HANDOFF: Unified Mentor number skipped
-- `a470fa4` 2026-11-24 21:56 Add Calibridge Lighthouse result to the /laksh resume
 
 ### Uncommitted changes at refresh time
 
 ```
-M  HANDOFF.md
-M  wrangler.toml
+M  tests/editor.spec.js
 ```
 <!-- handoff:auto:end -->
