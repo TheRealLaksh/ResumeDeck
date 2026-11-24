@@ -11,6 +11,24 @@ const isLakshPage = /^\/laksh\/?$/i.test(window.location.pathname)
 // Strict readers get the standard Profiley resume by default; ?view=creative opts in to the creative page.
 const wantsCreative = new URLSearchParams(window.location.search).get('view') === 'creative'
 
+// Per-path head tags. The static index.html describes the builder at "/"; other paths get their own
+// canonical, and shared resumes (any other path) are kept out of search results.
+const setHead = () => {
+  const path = window.location.pathname.replace(/\/+$/, '')
+  if (path === '') return
+  const origin = 'https://profiley.lakshpradhwani.com'
+  const canonical = document.querySelector('link[rel="canonical"]')
+  const robots = document.querySelector('meta[name="robots"]')
+  if (isLakshPage) {
+    canonical?.setAttribute('href', `${origin}/laksh`)
+    document.querySelector('meta[name="description"]')?.setAttribute('content', "Laksh Pradhwani's resume: AI & Data Science student and web developer, built with Profiley.")
+  } else {
+    canonical?.setAttribute('href', `${origin}${path}`)
+    robots?.setAttribute('content', 'noindex, follow')
+  }
+}
+setHead()
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Suspense fallback={null}>

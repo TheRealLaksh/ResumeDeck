@@ -45,7 +45,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 ## Open questions / waiting on
 - Server key stays off (cost); AI is copy-paste or bring-your-own-key only. Firestore security rules are not in the repo; check them.
 - Old domain `profiley.lakshp.live` must be removed by hand in the Vercel dashboard (Domains); no tool available for it.
-- `public/robots.txt` points at `/sitemap.xml`, but there is no `sitemap.xml` in `public/`; that URL returns the SPA index page (200) because of the catch-all rewrite. Decide whether to add a real sitemap.
+- After the 24 Nov deploy: submit `https://profiley.lakshpradhwani.com/sitemap.xml` in Google Search Console (needs Laksh's login) and re-scrape the OG card if previews look stale.
 - Email forwarding for work@ and me@lakshpradhwani.com is set up (Cloudflare Email Routing); a real delivery test mail has not been sent yet.
 
 ## Decisions not to undo
@@ -55,6 +55,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-24: SEO pass: real `public/sitemap.xml` (/ and /laksh), robots blocks /api/, JSON-LD WebApplication + og:site_name/image size/alt in `index.html`, `setHead()` in `main.jsx` (/laksh gets its own canonical + description; share-link paths get self canonical and noindex). Lint + build pass. Pushed to main. Local browser-pane data cleared on request.
 - 2026-10-18: merged `feat/laksh-resume-custom` into `main` (fast-forward) and deployed on Laksh's say-so; checked both views on production.
 - 2026-10-18: added Laksh's real numbers to both views (ShiftsDeal 120+ venues, freelance 5+ sites delivered).
 - 2026-10-18: deep research on ₹60L-1Cr CS/AI resumes (8 real resumes read; Reddit unreadable; report in the vault) and rebuilt the standard `/laksh` view from its blueprint; added the `github` field and `showLinkUrls`. Lint passes; checked in Chrome. Local commit only.
@@ -75,12 +76,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 24 Nov 2026, 9:53 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 24 Nov 2026, 9:54 pm IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `main` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builder
 
 ### Last 15 commits
 
+- `2f1613a` 2026-11-24 21:53 Add JSON-LD, og:site_name and image details; drop stale year keyword
 - `353ab9b` 2026-11-24 21:53 Add a real sitemap.xml and block /api/ in robots.txt
 - `56fcf1c` 2026-10-18 11:37 HANDOFF: refresh auto block
 - `6f946f9` 2026-10-18 11:37 HANDOFF: /laksh is live
@@ -95,11 +97,11 @@ Branch: `main` · remote: https://github.com/TheRealLaksh/Profiley-Resume-Builde
 - `6106795` 2026-10-18 10:43 Add the /laksh resume page: lenses, live ATS check, project status, changelog, print sheet
 - `0be32a7` 2026-10-18 10:43 Add content and photo for Laksh's custom resume page
 - `1a5f5a5` 2026-10-09 13:43 Refresh the social card with the new logo
-- `fb7ad38` 2026-10-09 13:43 Replace the neon favicon with the Page-P icon set
 
 ### Uncommitted changes at refresh time
 
 ```
-M  index.html
+M  HANDOFF.md
+M  src/main.jsx
 ```
 <!-- handoff:auto:end -->
