@@ -3,6 +3,7 @@ import { PanelHeading, Segmented } from '../UI/FormElements';
 import useAiStatus from '../../ai/useAiStatus';
 import AtsPanel from './review/AtsPanel';
 import TailorPanel from './review/TailorPanel';
+import KeywordPanel from './review/KeywordPanel';
 
 const CONTENT_TABS = new Set(['personal', 'summary', 'experience', 'sections']);
 
@@ -26,10 +27,12 @@ const ReviewTab = ({ data, setData, config, sectionOrder, applyTemplate, setActi
         className="mb-5"
         value={mode}
         onChange={setMode}
-        options={[{ value: 'ats', label: 'ATS check' }, { value: 'job', label: 'Job match' }]}
+        options={[{ value: 'ats', label: 'ATS check' }, { value: 'keywords', label: 'Keywords' }, { value: 'job', label: 'Job match' }]}
       />
       {mode === 'ats'
         ? <AtsPanel data={data} config={config} sectionOrder={sectionOrder} onAction={onAction} />
+        : mode === 'keywords'
+        ? <KeywordPanel data={data} setData={setData} notifyUndo={notifyUndo} />
         : <TailorPanel data={data} setData={setData} notifyUndo={notifyUndo} ai={ai} />}
     </div>
   );
