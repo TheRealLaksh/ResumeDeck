@@ -47,7 +47,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 4. Check the `/laksh` public resume page and the exported PDF carry the new links.
 
 ## Open questions / waiting on
-- RENAME FOLLOW-UPS (25 Nov 2026): (1) Auto-deploy: the `deploy` job in `.github/workflows/ci.yml` is in place and skips itself until the repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` exist. A scoped token named "ResumeDeck GitHub Actions deploy" (Workers edit, this account, zone lakshpradhwani.com only, expires 25 Nov 2027) was created on 25 Nov 2026 but the secret could not be stored by Claude (blocked); Laksh stores it (`gh secret set CLOUDFLARE_API_TOKEN --repo TheRealLaksh/ResumeDeck`, and the account id `ed883e733f5ed6ea26829ec5073c8733` as CLOUDFLARE_ACCOUNT_ID). Until then deploy by hand with `npm run deploy:cf`. Renew the token before it expires. (2) The old Vercel project `profiley-resume-builder` is unused but still exists; delete it (and the leftover profiley domain entry there) only on Laksh's say-so. (3) SEO guides are built (50 pages); DONE 25 Nov 2026: deployed, sitemap submitted in Search Console via the verified domain property sc-domain:lakshpradhwani.com (status Success, 53 pages discovered). Remaining: request indexing for / and /guides/ by hand later, add Bing Webmaster, check the Pages report after a few days, then lengthen the shortest guides (hr-intern, bcom, ui-ux, electrical, mechanical) toward 800 words, prioritising pages that get impressions. (4) LinkedIn Featured link still points at the old profiley address (LinkedIn cannot edit a link's URL; it redirects). (5) The old D1 `profiley-share` is kept as a backup; delete once happy. (6) Portfolio chatbot `feat/chat-v3` has a local rename commit, not pushed. (7) PDFs/Google Docs of the resume that still say Profiley are Laksh's to re-export.
+- RENAME FOLLOW-UPS (25 Nov 2026): (1) Auto-deploy: the `deploy` job in `.github/workflows/ci.yml` is in place and skips itself until the repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` exist. A scoped token named "ResumeDeck GitHub Actions deploy" (Workers edit, this account, zone lakshpradhwani.com only, expires 25 Nov 2027) was created on 25 Nov 2026 but the secret could not be stored by Claude (blocked); Laksh stores it (`gh secret set CLOUDFLARE_API_TOKEN --repo TheRealLaksh/ResumeDeck`, and the account id `ed883e733f5ed6ea26829ec5073c8733` as CLOUDFLARE_ACCOUNT_ID). Until then deploy by hand with `npm run deploy:cf`. Renew the token before it expires. (2) The old Vercel project `profiley-resume-builder` is unused but still exists; delete it (and the leftover profiley domain entry there) only on Laksh's say-so. (3) SEO guides are built (50 pages); DONE 25 Nov 2026: deployed, sitemap submitted in Search Console via the verified domain property sc-domain:lakshpradhwani.com (status Success, 53 pages discovered). Remaining: request indexing for / and /guides/ by hand later, add Bing Webmaster, check the Pages report after a few days, then deepen the pages that get impressions (add real screenshots/examples), since all guides are now 700+ words. (4) LinkedIn Featured link still points at the old profiley address (LinkedIn cannot edit a link's URL; it redirects). (5) The old D1 `profiley-share` is kept as a backup; delete once happy. (6) Portfolio chatbot `feat/chat-v3` has a local rename commit, not pushed. (7) PDFs/Google Docs of the resume that still say Profiley are Laksh's to re-export.
 - Firebase project `profiley-76c8a` was DELETED on 25 Nov 2026 at Laksh's request (recoverable for about 30 days from the Google Cloud console, project owner account). The 6 shared resumes and the old `laksh` doc (now `laksh-old`) live in D1. Remove the now-unused `VITE_FIREBASE_*` env vars in Vercel.
 - Server key stays off (cost); AI is copy-paste or bring-your-own-key only.
 - Old domain `profiley.lakshp.live` must be removed by hand in the Vercel dashboard (Domains); no tool available for it.
@@ -62,6 +62,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-25: round 3 of guide expansion (`16-ex3-a.mjs`, `17-ex3-b.mjs`, 33 more sections: interview prep, process, worked examples): shortest guide now about 700 words, average above 730. Deployed.
 - 2026-11-25: expanded all 50 guides (average about 660 words, shortest about 480): extra sections live in `scripts/seo/content/11-15-ex*.mjs` as `extras` maps keyed by slug and merged by the generator. Not yet at the 800-word target; next round should go to the pages that get impressions first.
 - 2026-11-25: SEO phase: 50 static guide pages + /guides/ index + generated sitemap (53 URLs), home prerender block, footer link (branch `seo-guides`, see Code map). Lint, build and 24 tests pass. Deployed with `npm run deploy:cf` and the sitemap submitted in Search Console (Success, 53 pages).
 - 2026-11-25: removed the CODE IIT Madras entry from Education in `classic.js` (so /laksh and /laksh-mu); the creative page still lists it under experience/certifications (Laksh only asked about education).
@@ -100,12 +101,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 11:51 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 11:56 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `6fa940a` 2026-11-25 11:51 Expand guides with worked examples (round 2), update handoff
 - `9547c66` 2026-11-25 11:51 Expand all 50 guides with extra sections and FAQs (round 1)
 - `c35b4f9` 2026-11-25 11:29 Handoff: SEO guides deployed, sitemap submitted to Search Console
 - `84ab37c` 2026-11-25 11:28 Link guides from home and footer, add crawlable home text, update handoff
@@ -120,12 +122,13 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 - `67131ca` 2026-11-25 10:51 Fix clipped logo wordmark
 - `263c5f5` 2026-11-25 10:45 Resume: add Bestow internship (ongoing), keep freelancing separate
 - `42124a3` 2026-11-25 03:42 CI: deploy to Cloudflare on main once the secrets exist
-- `87712b2` 2026-11-25 01:53 HANDOFF: rename follow-ups
 
 ### Uncommitted changes at refresh time
 
 ```
-A  scripts/seo/content/14-ex2-a.mjs
-A  scripts/seo/content/15-ex2-b.mjs
+M  HANDOFF.md
+M  scripts/build-seo.mjs
+A  scripts/seo/content/16-ex3-a.mjs
+A  scripts/seo/content/17-ex3-b.mjs
 ```
 <!-- handoff:auto:end -->

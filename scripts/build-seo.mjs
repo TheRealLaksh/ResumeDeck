@@ -268,6 +268,6 @@ write(
     urls.map((u) => `  <url><loc>${ORIGIN}${u.loc}</loc><lastmod>${UPDATED}</lastmod><changefreq>${u.freq}</changefreq><priority>${u.pri}</priority></url>`).join('\n') +
     `\n</urlset>\n`,
 );
-const per = pages.map((p) => [p.slug, wordCount(p)]).sort((a, b) => a[1] - b[1]); console.log("lowest:", per.slice(0, 5).map((x) => x.join("=")).join(", "));
+const per = pages.map((p) => [p.slug, wordCount(p)]).sort((a, b) => a[1] - b[1]); console.log("lowest:", per.slice(0, 60).map((x) => x.join("=")).join(", "));
 const total = pages.reduce((n, p) => n + wordCount(p), 0);
 console.log(`SEO: ${pages.length} guides + index, ${total} words (avg ${Math.round(total / pages.length)}), sitemap with ${urls.length} URLs.`);
