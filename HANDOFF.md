@@ -106,6 +106,7 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `9547c66` 2026-11-25 11:51 Expand all 50 guides with extra sections and FAQs (round 1)
 - `c35b4f9` 2026-11-25 11:29 Handoff: SEO guides deployed, sitemap submitted to Search Console
 - `84ab37c` 2026-11-25 11:28 Link guides from home and footer, add crawlable home text, update handoff
 - `b5f2fad` 2026-11-25 11:28 Add 11 guides on job search, cover letters and sharing
@@ -120,17 +121,11 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 - `263c5f5` 2026-11-25 10:45 Resume: add Bestow internship (ongoing), keep freelancing separate
 - `42124a3` 2026-11-25 03:42 CI: deploy to Cloudflare on main once the secrets exist
 - `87712b2` 2026-11-25 01:53 HANDOFF: rename follow-ups
-- `5c71ee2` 2026-11-25 01:50 Tests: read saved data defensively while autosave is still pending
 
 ### Uncommitted changes at refresh time
 
 ```
-M HANDOFF.md
-M  scripts/build-seo.mjs
-A  scripts/seo/content/11-ex-ats.mjs
-A  scripts/seo/content/12-ex-sections.mjs
-A  scripts/seo/content/13-ex-rest.mjs
-?? scripts/seo/content/14-ex2-a.mjs
-?? scripts/seo/content/15-ex2-b.mjs
+A  scripts/seo/content/14-ex2-a.mjs
+A  scripts/seo/content/15-ex2-b.mjs
 ```
 <!-- handoff:auto:end -->
