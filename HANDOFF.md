@@ -105,6 +105,7 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `b5f2fad` 2026-11-25 11:28 Add 11 guides on job search, cover letters and sharing
 - `ce24f49` 2026-11-25 11:27 Add 13 role-specific fresher resume guides
 - `d1429cb` 2026-11-25 11:27 Add 8 guides on resume sections and bullet points
 - `5cd0928` 2026-11-25 11:27 Add 18 guides: ATS basics and fresher resume basics
@@ -119,13 +120,11 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 - `5c71ee2` 2026-11-25 01:50 Tests: read saved data defensively while autosave is still pending
 - `2228748` 2026-11-25 01:39 ResumeDeck: custom domains, docs, import hardening
 - `acab092` 2026-11-25 01:31 Rename Profiley to ResumeDeck, host on Cloudflare, new share Worker and redirect Worker
-- `8643820` 2026-11-25 01:05 Add Playwright tests and a CI workflow
 
 ### Uncommitted changes at refresh time
 
 ```
-M index.html
-A  scripts/seo/content/06-search.mjs
- M src/components/Layout/Footer.jsx
+M  index.html
+M  src/components/Layout/Footer.jsx
 ```
 <!-- handoff:auto:end -->
