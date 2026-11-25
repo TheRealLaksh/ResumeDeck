@@ -102,6 +102,7 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDec
 
 ### Last 15 commits
 
+- `7db9b39` 2026-11-25 10:51 Add Masters' Union table template
 - `67131ca` 2026-11-25 10:51 Fix clipped logo wordmark
 - `263c5f5` 2026-11-25 10:45 Resume: add Bestow internship (ongoing), keep freelancing separate
 - `42124a3` 2026-11-25 03:42 CI: deploy to Cloudflare on main once the secrets exist
@@ -116,15 +117,11 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDec
 - `c49e165` 2026-11-25 00:05 Add the share-link API: Cloudflare Worker + D1
 - `ffebbc3` 2026-11-24 23:47 Add share link expiry, a My links list and proposed Firestore rules
 - `01bf9e2` 2026-11-24 23:34 Add a free ATS keyword gap check to the Review tab
-- `e488232` 2026-11-24 22:49 Add a cover letter builder with a free Claude copy-paste prompt
 
 ### Uncommitted changes at refresh time
 
 ```
-M  src/components/Preview/ResumeDocument.jsx
-A  src/components/Preview/muTemplate.css
-M  src/data/templates.js
- M src/laksh/mu.js
-?? src/laksh/MuResume.jsx
+A  src/laksh/MuResume.jsx
+M  src/laksh/mu.js
 ```
 <!-- handoff:auto:end -->
