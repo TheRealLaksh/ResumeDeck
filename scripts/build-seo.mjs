@@ -27,7 +27,17 @@ const dir = join(ROOT, 'scripts', 'seo', 'content');
 const pages = [];
 for (const f of readdirSync(dir).filter((n) => n.endsWith('.mjs')).sort()) {
   const mod = await import(pathToFileURL(join(dir, f)).href);
-  pages.push(...mod.default);
+  if (mod.default) pages.push(...mod.default);
+}
+// Expansion files (ex-*.mjs) export `extras`: { slug: { sections: [...], faq: [...] } }, appended to the base page.
+for (const f of readdirSync(dir).filter((n) => n.endsWith('.mjs')).sort()) {
+  const mod = await import(pathToFileURL(join(dir, f)).href);
+  for (const [slug, add] of Object.entries(mod.extras || {})) {
+    const page = pages.find((x) => x.slug === slug);
+    if (!page) { console.error(`extras for unknown slug ${slug} in ${f}`); process.exit(1); }
+    page.sections.push(...(add.sections || []));
+    page.faq.push(...(add.faq || []));
+  }
 }
 const bySlug = new Map();
 const problems = [];
@@ -62,7 +72,7 @@ const inline = (s) =>
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\[\[([a-z0-9-]+)\|(.+?)\]\]/g, (_, slug, label) => `<a href="/guides/${slug}/">${label}</a>`);
 
-const wordCount = (p) => text(p).replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const wordCount = (p) => text(p).replace(/"(h|p|ul|ol|ex|after|exLabel|intro|sections|faq)":/g, ' ').replace(/[\[\]{}",]+/g, ' ').split(/\s+/).filter((w) => /[A-Za-z0-9]/.test(w)).length;
 
 const CSS = `
 :root{--bg:#f3f0ea;--panel:#fbfaf7;--line:#e3ded4;--ink:#1c1b19;--ink2:#4e4a43;--ink3:#726d64;--acc:#2f5d50;--accsoft:#e3eee9;--accfg:#fff}
@@ -258,5 +268,6 @@ write(
     urls.map((u) => `  <url><loc>${ORIGIN}${u.loc}</loc><lastmod>${UPDATED}</lastmod><changefreq>${u.freq}</changefreq><priority>${u.pri}</priority></url>`).join('\n') +
     `\n</urlset>\n`,
 );
+const per = pages.map((p) => [p.slug, wordCount(p)]).sort((a, b) => a[1] - b[1]); console.log("lowest:", per.slice(0, 5).map((x) => x.join("=")).join(", "));
 const total = pages.reduce((n, p) => n + wordCount(p), 0);
 console.log(`SEO: ${pages.length} guides + index, ${total} words (avg ${Math.round(total / pages.length)}), sitemap with ${urls.length} URLs.`);
