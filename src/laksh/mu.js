@@ -30,7 +30,7 @@ export const MU_ROWS = [
   {
     label: 'Professional Summary',
     items: [{
-      i: "Undergraduate student in Data Science & AI at Masters' Union (class of 2030) and full-stack developer with hands-on experience building and shipping web products. Tech & Growth Intern at ShiftsDeal, a venue-booking marketplace; freelance developer delivering company websites with CMS admin panels; four earlier internships in web development, AI/ML and IT. Interested in building practical, deployable products where technology meets business.",
+      i: "Undergraduate student in Data Science & AI at Masters' Union (class of 2030) and full-stack developer with hands-on experience building and shipping web products. Tech & Growth Intern at ShiftsDeal, a venue-booking marketplace, and Web Developer Intern at Bestow, building company websites with CMS admin panels (both ongoing); freelance developer on the side; four earlier internships in web development, AI/ML and IT. Interested in building practical, deployable products where technology meets business.",
     }],
   },
   {
@@ -58,9 +58,13 @@ export const MU_ROWS = [
         'Add new features and fixes every day, including Razorpay payments; lead technology collaborations with large brands',
         'Support growth alongside engineering through outreach calls, operations and social media',
       ]),
-      ...job('Freelance', '(company websites and web apps)', 'Full-Stack Developer | Self-employed, remote', '2026 - Present', [
-        'Delivered 5+ company websites with custom CMS admin panels for agency clients: scoping, build, testing and handover',
-        "Added booking flows, dashboards and Razorpay payments; MySQL-backed so each client's team can deploy and run the site",
+      ...job('Bestow', '(web agency)', 'Web Developer Intern | Remote', 'Sep 2026 - Present', [
+        "Build company websites with custom CMS admin panels for the agency's clients, from UI design to testing and handover; 5+ sites delivered",
+        "MySQL-backed builds, tested end to end, so each client's team can deploy and run the site themselves",
+      ]),
+      ...job('Freelance', '(websites and web apps)', 'Full-Stack Developer | Self-employed, remote', '2026 - Present', [
+        'Build websites and admin panels for businesses in clear stages: scoping, build, testing and handover',
+        'Add booking flows, dashboards, Razorpay payments and AI features (chat assistants, automation, computer vision) where a project needs them',
       ]),
       ...job('Unified Mentor', '(remote internship platform)', 'Full Stack Web Developer Intern | Remote', 'Oct - Dec 2025', [
         'Shipped four production apps in one internship: Helios (music player), Calibridge (calendar exporter), CogniSync (academic appointments and messaging with role-based access) and MarketBridge (local-merchant marketplace)',

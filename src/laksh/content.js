@@ -17,7 +17,7 @@ export const PERSON = {
   github: 'https://github.com/TheRealLaksh',
   portfolio: 'https://lakshpradhwani.com/',
   photo: '/laksh/photo.webp',
-  updated: '18 Oct 2026',
+  updated: '25 Nov 2026',
 };
 
 export const HEADLINE = {
@@ -30,13 +30,13 @@ export const SUMMARY = {
   client:
     "I build company websites that your own team can run: fast, mobile-friendly, with a CMS admin panel, plus booking flows, Razorpay payments, dashboards and AI features on top. Based in Delhi NCR and working with clients across India. Every project is built in clear stages and tested before handover.",
   recruiter:
-    "B.Tech Data Science & AI student at Masters' Union (2026 to 2030) with a year of hands-on engineering: tech and growth intern at ShiftsDeal, freelance developer, and four earlier internships in web development and AI/ML, including an 8-week IIT Madras data science programme. National-level shooter, former house captain and hackathon podium finisher.",
+    "B.Tech Data Science & AI student at Masters' Union (2026 to 2030) with a year of hands-on engineering: tech and growth intern at ShiftsDeal, web developer intern at Bestow (both ongoing), freelance developer, and four earlier internships in web development and AI/ML, including an 8-week IIT Madras data science programme. National-level shooter, former house captain and hackathon podium finisher.",
   dev:
     "I write strict TypeScript and React, and Python and Django when the job needs a backend. Recent work: an offline-first calendar PWA with 43 Playwright end-to-end tests and axe accessibility audits, a framework-free web music player, a resume builder with a working ATS reader, and token-authenticated REST APIs. Comfortable across Node, SQL and MongoDB.",
 };
 
 export const STATS = [
-  { value: 5, label: 'internships and roles' },
+  { value: 7, label: 'internships and roles' },
   { value: 4, label: 'production apps in a single internship' },
   { value: 43, label: 'end-to-end tests on Calibridge' },
 ];
@@ -63,6 +63,20 @@ export const EXPERIENCE = [
     tags: ['Razorpay', 'Web app', 'Production'],
   },
   {
+    id: 'bestow',
+    role: 'Web Developer Intern',
+    org: 'Bestow',
+    place: 'Remote',
+    dates: 'Sep 2026 - Present',
+    lenses: ALL,
+    bullets: [
+      { t: 'Build company websites with CMS admin panels for the agency\'s clients, from UI design through testing to handover; 5+ sites delivered.', lenses: ALL },
+      { t: 'Test every admin panel end to end before handover, so clients\' own teams can update content without a developer.', lenses: ['recruiter', 'dev'] },
+      { t: 'MySQL-backed builds that each client\'s team can deploy and run themselves.', lenses: ['client', 'dev'] },
+    ],
+    tags: ['React', 'Next.js', 'Node.js', 'MySQL'],
+  },
+  {
     id: 'freelance',
     role: 'Freelance Full-Stack Developer',
     org: 'Self-employed',
@@ -70,11 +84,11 @@ export const EXPERIENCE = [
     dates: '2026 - Present',
     lenses: ALL,
     bullets: [
-      { t: 'Delivered 5+ company websites with CMS admin panels for agency clients: scoping, build, testing and handover.', lenses: ALL },
-      { t: 'Booking flows, dashboards and Razorpay payments on top of the sites that need them.', lenses: ['client', 'dev'] },
-      { t: 'MySQL-backed builds that the client\'s own team can deploy and run.', lenses: ['dev'] },
+      { t: 'Build websites and admin panels for businesses, scoped, built, tested and handed over in clear stages.', lenses: ALL },
+      { t: 'Add booking flows, dashboards and Razorpay payments to the sites that need them.', lenses: ['client', 'dev'] },
+      { t: 'Build AI features on request: chat assistants, automation and computer vision.', lenses: ['client', 'dev'] },
     ],
-    tags: ['React', 'Next.js', 'Node.js', 'MySQL'],
+    tags: ['React', 'Next.js', 'Razorpay', 'AI features'],
   },
   {
     id: 'unified',
@@ -257,6 +271,12 @@ export const VOLUNTEER = [
 // ---- Changelog -----------------------------------------------------------------------------------------------
 // "git log" for the resume. Newest first. `del` lines are what the previous version said; `add` lines replace them.
 export const CHANGELOG = [
+  {
+    when: 'Nov 2026',
+    title: 'Bestow internship added, freelancing kept separate',
+    del: ['Freelance Full-Stack Developer (agency sites, 5+ delivered)'],
+    add: ['Web Developer Intern at Bestow (Sep 2026 - Present, ongoing)', 'Freelance listed on its own: websites, booking flows, payments and AI features'],
+  },
   {
     when: 'Oct 2026',
     title: 'Rewritten for hiring, not applying',

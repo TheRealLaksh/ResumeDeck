@@ -42,10 +42,17 @@ export const classicResume = () => {
         ]),
       },
       {
+        id: 'bestow', role: 'Web Developer Intern', company: 'Bestow (remote)', year: 'Sep 2026 - Present',
+        details: bullets([
+          'Build company websites with custom CMS admin panels for the agency\'s clients, from UI design to testing and handover; 5+ sites delivered.',
+          'MySQL-backed builds, tested end to end, so each client\'s team can deploy and run the site themselves.',
+        ]),
+      },
+      {
         id: 'freelance', role: 'Freelance Full-Stack Developer', company: 'Self-employed, Delhi NCR (remote)', year: '2026 - Present',
         details: bullets([
-          'Delivered 5+ company websites with custom CMS admin panels for agency clients, covering scoping, build, testing and handover.',
-          'Added booking flows, dashboards and Razorpay payments; MySQL-backed so clients deploy and run the sites themselves.',
+          'Build websites and admin panels for businesses in clear stages: scoping, build, testing and handover.',
+          'Add booking flows, dashboards, Razorpay payments and AI features (chat assistants, automation, computer vision) where a project needs them.',
         ]),
       },
       {

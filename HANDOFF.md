@@ -54,12 +54,14 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Email forwarding for work@ and me@lakshpradhwani.com is set up (Cloudflare Email Routing); a real delivery test mail has not been sent yet.
 
 ## Decisions not to undo
+- Bestow (25 Nov 2026): shown as an internship (matches LinkedIn), ongoing, separate from the Freelance entry. Never name Bestow's clients.
 - `/laksh` (18 Oct 2026): hand-built, not a template. Public data rules: no phone, no marks, no client names (Bestow's), shooting = just "National-level shooter", ShiftsDeal title = "Tech & Growth Intern" (matches LinkedIn), freelance listed without client names, Delhi NCR. Animation = entrance + hover micro-motion only (Laksh declined pinned scroll scenes, scroll-fill text and cursor effects). Light + dark. The ATS card downgrades two checks on purpose (phone left off; image-PDF tip n/a) and says so.
 - Logo (9 Oct 2026): "Page-P", a P whose silhouette is a dog-eared page (spruce body, lighter fold), wordmark in Instrument Serif with an accent-coloured i-dot. Chosen over a document-icon-with-P (too generic) and a stacked-layers P (reads as a drop shadow). Source art and exports: Obsidian `05 Resources/ResumeDeck Logo/`. The old glowing 3D neon favicon is retired; don't bring it back.
 - Domain is lakshpradhwani.com. Never reintroduce lakshp.live.
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-25: /laksh, /laksh?view=creative and /laksh-mu: added Bestow as its own ongoing role (Web Developer Intern, Sep 2026 - Present, from LinkedIn) and kept Freelance as a separate entry; the "5+ sites delivered" number now sits under Bestow (that work was agency work), freelance lists services only. Roles count 5 -> 7, changelog entry added. Bestow named, no Bestow client names. Lint + build pass.
 - 2026-11-25: RENAMED Profiley -> ResumeDeck (new name, resumedeck.lakshpradhwani.com, new Page-R logo, tagline "Free ATS resume builder for students and freshers"), and moved hosting from Vercel to Cloudflare. Share API is now Worker `resumedeck-share` + D1 `resumedeck-share` at resumedeck-api.lakshpradhwani.com (old D1 `profiley-share` kept as backup; Worker `profiley-share` now only proxies the old api address). localStorage keys are `resumedeck_*`; saved drafts move from the old address through `public/transfer.html` + the redirect Worker's hand-over page. Older backups with app "profiley" still import. Earlier log lines below keep the old name on purpose.
 - 2026-11-25: added automated tests + CI. `@playwright/test`, `playwright.config.js`, `tests/editor.spec.js` + `tests/share.spec.js` + `tests/helpers.js`, `.github/workflows/ci.yml`, `npm test`. 17 tests pass locally (Chrome). The CI workflow has not run on GitHub yet when this was written. Eslint now ignores test output and treats tests/worker as Node.
 - 2026-11-25: copied the old Firestore `laksh` doc into D1 as `laksh-old` (the slug `laksh` is reserved for the hand-built page), then deleted the Firebase project on Laksh's confirmation.
@@ -93,12 +95,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 3:42 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 10:45 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `42124a3` 2026-11-25 03:42 CI: deploy to Cloudflare on main once the secrets exist
 - `87712b2` 2026-11-25 01:53 HANDOFF: rename follow-ups
 - `5c71ee2` 2026-11-25 01:50 Tests: read saved data defensively while autosave is still pending
 - `2228748` 2026-11-25 01:39 ResumeDeck: custom domains, docs, import hardening
@@ -113,12 +116,13 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDec
 - `e488232` 2026-11-24 22:49 Add a cover letter builder with a free Claude copy-paste prompt
 - `c79c3c4` 2026-11-24 22:17 Add multiple saved resumes and a backup reminder
 - `ee103c9` 2026-11-24 22:17 HANDOFF: /laksh-mu and ShiftsDeal role update
-- `61e72a5` 2026-11-24 22:16 Add /laksh-mu: resume in the Masters' Union format with browser PDF download
 
 ### Uncommitted changes at refresh time
 
 ```
-M  .github/workflows/ci.yml
 M  HANDOFF.md
+M  src/laksh/classic.js
+M  src/laksh/content.js
+M  src/laksh/mu.js
 ```
 <!-- handoff:auto:end -->
