@@ -99,12 +99,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 11:27 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 11:28 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `d1429cb` 2026-11-25 11:27 Add 8 guides on resume sections and bullet points
 - `5cd0928` 2026-11-25 11:27 Add 18 guides: ATS basics and fresher resume basics
 - `e4b7b28` 2026-11-25 11:27 Add static SEO guide generator and generated sitemap
 - `fc78f9a` 2026-11-25 10:56 Remove IIT Madras from Education
@@ -119,16 +120,14 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 - `acab092` 2026-11-25 01:31 Rename Profiley to ResumeDeck, host on Cloudflare, new share Worker and redirect Worker
 - `8643820` 2026-11-25 01:05 Add Playwright tests and a CI workflow
 - `770508e` 2026-11-25 00:54 HANDOFF: Firebase project deleted, laksh doc copied
-- `6708ac0` 2026-11-25 00:42 Serve the share API from profiley-api.lakshpradhwani.com
 
 ### Uncommitted changes at refresh time
 
 ```
 M index.html
-A  scripts/seo/content/03-sections.mjs
+A  scripts/seo/content/04-roles-a.mjs
+A  scripts/seo/content/05-roles-b.mjs
  M src/components/Layout/Footer.jsx
-?? scripts/seo/content/04-roles-a.mjs
-?? scripts/seo/content/05-roles-b.mjs
 ?? scripts/seo/content/06-search.mjs
 ```
 <!-- handoff:auto:end -->
