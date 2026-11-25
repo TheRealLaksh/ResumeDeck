@@ -105,6 +105,7 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `e4b7b28` 2026-11-25 11:27 Add static SEO guide generator and generated sitemap
 - `fc78f9a` 2026-11-25 10:56 Remove IIT Madras from Education
 - `a7c2323` 2026-11-25 10:51 /laksh-mu now uses the app view with the Masters' Union template
 - `7db9b39` 2026-11-25 10:51 Add Masters' Union table template
@@ -119,17 +120,17 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 - `770508e` 2026-11-25 00:54 HANDOFF: Firebase project deleted, laksh doc copied
 - `6708ac0` 2026-11-25 00:42 Serve the share API from profiley-api.lakshpradhwani.com
 - `0c5d63f` 2026-11-25 00:05 Move share links from Firebase to the Cloudflare API; add turn-off and view counts
-- `c49e165` 2026-11-25 00:05 Add the share-link API: Cloudflare Worker + D1
 
 ### Uncommitted changes at refresh time
 
 ```
-M HANDOFF.md
- M index.html
-M  package.json
-D  public/sitemap.xml
-A  scripts/build-seo.mjs
+M index.html
+A  scripts/seo/content/01-ats.mjs
+A  scripts/seo/content/02-fresher.mjs
  M src/components/Layout/Footer.jsx
-?? scripts/seo/
+?? scripts/seo/content/03-sections.mjs
+?? scripts/seo/content/04-roles-a.mjs
+?? scripts/seo/content/05-roles-b.mjs
+?? scripts/seo/content/06-search.mjs
 ```
 <!-- handoff:auto:end -->
