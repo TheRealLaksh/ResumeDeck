@@ -33,6 +33,7 @@ React 19, Vite, Tailwind, Cloudflare Worker + D1 (share links), html2canvas + js
 - `src/components/UI/Logo.jsx`: the logo (page-shaped P + outlined Instrument Serif wordmark, inline SVG, colours from theme tokens incl. `--c-accent-fold`); used by TopBar, AppSkeleton, MobileLayout
 - `src/laksh/` (merged to `main` and LIVE since 18 Oct 2026; branch `feat/laksh-resume-custom` can be deleted): Laksh's own resume at `/laksh`. **Default `/laksh` = the standard ResumeDeck read-only view** (`LakshClassic.jsx` renders `App` with `preset` from `classic.js`). Since the 18 Oct research (vault note `01 About Me/Top Package Resume Research (Oct 2026).md`) it is the strict one-page version: ATS Friendly template, no photo, no summary, Education first (all schools, no marks), Experience, Projects (with visible URLs and proof: tests, audits), grouped Skills, Awards. New builder features it uses: `personal.github` field (editor + header) and the `showLinkUrls` config key (prints the real URL instead of the label "LinkedIn"). It overflows A4 by about 6%, which the app's fit-to-one-page print/PDF handles. Real numbers added 18 Oct (from Laksh): ShiftsDeal 120+ venues listed, freelance 5+ sites delivered (not live yet, so no live count). Unified Mentor users: Laksh chose to skip it (24 Nov), leave it out (Calibridge Lighthouse added 24 Nov). A "Creative view" switch (`ViewSwitch.jsx`, `switch.css`; shown by TopBar and MobileLayout via the `viewSwitch` prop when read-only) goes to `/laksh?view=creative`, the hand-built page; its switch goes back. Strict readers therefore never see the creative page unless they opt in. `main.jsx` lazy-loads both (App and Firebase load only for the standard view and other paths). `content.js` holds all the facts + lens rules (client / recruiter / dev, `?lens=` param, saved in localStorage), `LakshResume.jsx` the page (hero, tinted sections, timeline, project cards with live up/down pings, changelog diff, live ATS card that runs `ats/analyze.js` on the print sheet), `Sheet.jsx` the A4 text version (table with repeating spacer rows so `@page` margin stays 0 and the browser adds no header/footer; printed via the PDF button), `hooks.js` (reveal-on-view, count-up, magnet, tilt, status, scroll progress), `laksh.css` (scoped to `.lk`, light + dark). Photo: `public/laksh/photo.webp`.
 - `src/laksh/mu.js` + `MuResume.jsx`: **`/laksh-mu`**, the app's read-only view with the `mastersunion` template (A4; since 25 Nov 2026, replaces the legal-page hand-built version). Data = `classicResume()` plus a professional summary, so edit facts in `classic.js` only. Not linked from /laksh (Laksh chose "/laksh-mu only"). A matching Word file is made outside the repo from his MU template.
+- `scripts/build-seo.mjs` + `scripts/seo/content/*.mjs` (26 Nov 2026): SEO guides. `npm run build` = vite build, then this script writes 50 static pages to `dist/guides/<slug>/index.html`, `dist/guides/index.html` and `dist/sitemap.xml` (the old `public/sitemap.xml` was deleted, the script is the source). Each page has Article + FAQPage + BreadcrumbList JSON-LD, canonical, OG tags, related links and a CTA to the builder. Add or edit a guide by editing the content files (the script validates slugs, title/description length, internal links and refuses en/em dashes). `index.html` also carries a crawlable prerender block inside `#root` (replaced by React on load) and the app Footer links to /guides/.
 - `public/`: `favicon.svg` (adaptive tile, light/dark), `favicon.ico`, `apple-touch-icon.png`, `icon-192/512(.maskable).png` + `site.webmanifest`, og-image.png, `_redirects`, `robots.txt` (served; moved here by the merged PR #1 `claude/pensive-meitner-opz77b`, which also hardened sharing/saved data, fixed preview/PDF export and dropped unused dependencies)
 
 ## Status
@@ -46,7 +47,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 4. Check the `/laksh` public resume page and the exported PDF carry the new links.
 
 ## Open questions / waiting on
-- RENAME FOLLOW-UPS (25 Nov 2026): (1) Auto-deploy: the `deploy` job in `.github/workflows/ci.yml` is in place and skips itself until the repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` exist. A scoped token named "ResumeDeck GitHub Actions deploy" (Workers edit, this account, zone lakshpradhwani.com only, expires 25 Nov 2027) was created on 25 Nov 2026 but the secret could not be stored by Claude (blocked); Laksh stores it (`gh secret set CLOUDFLARE_API_TOKEN --repo TheRealLaksh/ResumeDeck`, and the account id `ed883e733f5ed6ea26829ec5073c8733` as CLOUDFLARE_ACCOUNT_ID). Until then deploy by hand with `npm run deploy:cf`. Renew the token before it expires. (2) The old Vercel project `profiley-resume-builder` is unused but still exists; delete it (and the leftover profiley domain entry there) only on Laksh's say-so. (3) SEO phase is next: readable landing text for Google, meta/schema, Search Console sitemap for resumedeck.lakshpradhwani.com (needs Laksh's Google login). (4) LinkedIn Featured link still points at the old profiley address (LinkedIn cannot edit a link's URL; it redirects). (5) The old D1 `profiley-share` is kept as a backup; delete once happy. (6) Portfolio chatbot `feat/chat-v3` has a local rename commit, not pushed. (7) PDFs/Google Docs of the resume that still say Profiley are Laksh's to re-export.
+- RENAME FOLLOW-UPS (25 Nov 2026): (1) Auto-deploy: the `deploy` job in `.github/workflows/ci.yml` is in place and skips itself until the repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` exist. A scoped token named "ResumeDeck GitHub Actions deploy" (Workers edit, this account, zone lakshpradhwani.com only, expires 25 Nov 2027) was created on 25 Nov 2026 but the secret could not be stored by Claude (blocked); Laksh stores it (`gh secret set CLOUDFLARE_API_TOKEN --repo TheRealLaksh/ResumeDeck`, and the account id `ed883e733f5ed6ea26829ec5073c8733` as CLOUDFLARE_ACCOUNT_ID). Until then deploy by hand with `npm run deploy:cf`. Renew the token before it expires. (2) The old Vercel project `profiley-resume-builder` is unused but still exists; delete it (and the leftover profiley domain entry there) only on Laksh's say-so. (3) SEO guides are built (50 pages); remaining: after deploy, submit https://resumedeck.lakshpradhwani.com/sitemap.xml in Google Search Console (needs Laksh's Google login) and request indexing for / and /guides/; Bing Webmaster too. (4) LinkedIn Featured link still points at the old profiley address (LinkedIn cannot edit a link's URL; it redirects). (5) The old D1 `profiley-share` is kept as a backup; delete once happy. (6) Portfolio chatbot `feat/chat-v3` has a local rename commit, not pushed. (7) PDFs/Google Docs of the resume that still say Profiley are Laksh's to re-export.
 - Firebase project `profiley-76c8a` was DELETED on 25 Nov 2026 at Laksh's request (recoverable for about 30 days from the Google Cloud console, project owner account). The 6 shared resumes and the old `laksh` doc (now `laksh-old`) live in D1. Remove the now-unused `VITE_FIREBASE_*` env vars in Vercel.
 - Server key stays off (cost); AI is copy-paste or bring-your-own-key only.
 - Old domain `profiley.lakshp.live` must be removed by hand in the Vercel dashboard (Domains); no tool available for it.
@@ -61,6 +62,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-25: SEO phase: 50 static guide pages + /guides/ index + generated sitemap (53 URLs), home prerender block, footer link (branch `seo-guides`, see Code map). Lint, build and 24 tests pass. Search Console submission is Laksh's login step (see open questions).
 - 2026-11-25: removed the CODE IIT Madras entry from Education in `classic.js` (so /laksh and /laksh-mu); the creative page still lists it under experience/certifications (Laksh only asked about education).
 - 2026-11-25: (1) Logo wordmark was clipped to "ResumeDe" in the top bar (fallback serif wider than the viewBox): `Logo.jsx` text now has `textLength=204`. (2) New official template **Masters' Union** (`mastersunion` in `data/templates.js`, `layoutType: 'mu'` branch in `ResumeDocument.jsx`, styles `components/Preview/muTemplate.css`): label | content table, black rules, A4 (the old hand-built page was a legal page; legal size is not supported by the builder). (3) `/laksh-mu` is now the normal ResumeDeck read-only view with that template (`laksh/MuResume.jsx` + `muResume()` in `laksh/mu.js`, same data as `/laksh` so they can't drift); old hand-built `mu.css` page deleted. Lint, build, 24 Playwright tests pass.
 - 2026-11-25: /laksh, /laksh?view=creative and /laksh-mu: added Bestow as its own ongoing role (Web Developer Intern, Sep 2026 - Present, from LinkedIn) and kept Freelance as a separate entry; the "5+ sites delivered" number now sits under Bestow (that work was agency work), freelance lists services only. Roles count 5 -> 7, changelog entry added. Bestow named, no Bestow client names. Lint + build pass.
@@ -97,12 +99,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 10:56 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 11:27 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
-Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
+Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `fc78f9a` 2026-11-25 10:56 Remove IIT Madras from Education
 - `a7c2323` 2026-11-25 10:51 /laksh-mu now uses the app view with the Masters' Union template
 - `7db9b39` 2026-11-25 10:51 Add Masters' Union table template
 - `67131ca` 2026-11-25 10:51 Fix clipped logo wordmark
@@ -117,12 +120,16 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDec
 - `6708ac0` 2026-11-25 00:42 Serve the share API from profiley-api.lakshpradhwani.com
 - `0c5d63f` 2026-11-25 00:05 Move share links from Firebase to the Cloudflare API; add turn-off and view counts
 - `c49e165` 2026-11-25 00:05 Add the share-link API: Cloudflare Worker + D1
-- `ffebbc3` 2026-11-24 23:47 Add share link expiry, a My links list and proposed Firestore rules
 
 ### Uncommitted changes at refresh time
 
 ```
-M  HANDOFF.md
-M  src/laksh/classic.js
+M HANDOFF.md
+ M index.html
+M  package.json
+D  public/sitemap.xml
+A  scripts/build-seo.mjs
+ M src/components/Layout/Footer.jsx
+?? scripts/seo/
 ```
 <!-- handoff:auto:end -->
