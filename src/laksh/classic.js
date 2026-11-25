@@ -27,7 +27,6 @@ export const classicResume = () => {
     },
     education: [
       { id: 'edu-mu', institution: "Masters' Union", degree: 'B.Tech, Data Science and AI', year: 'Aug 2026 - Aug 2030', details: '' },
-      { id: 'edu-iitm', institution: 'CODE, IIT Madras', degree: 'Introduction to Data Science and AI (8-week programme)', year: 'Aug 2025 - Oct 2025', details: '' },
       { id: 'edu-sunbeam', institution: 'Sunbeam School Lahartara, Varanasi', degree: 'Grade XII, PCM with Computer Science', year: 'Mar 2024 - Mar 2026', details: '' },
       { id: 'edu-cirs', institution: 'Chinmaya International Residential School, Coimbatore', degree: 'Class X, House Captain', year: 'Apr 2019 - Mar 2024', details: '' },
     ],

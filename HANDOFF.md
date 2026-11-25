@@ -61,6 +61,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-25: removed the CODE IIT Madras entry from Education in `classic.js` (so /laksh and /laksh-mu); the creative page still lists it under experience/certifications (Laksh only asked about education).
 - 2026-11-25: (1) Logo wordmark was clipped to "ResumeDe" in the top bar (fallback serif wider than the viewBox): `Logo.jsx` text now has `textLength=204`. (2) New official template **Masters' Union** (`mastersunion` in `data/templates.js`, `layoutType: 'mu'` branch in `ResumeDocument.jsx`, styles `components/Preview/muTemplate.css`): label | content table, black rules, A4 (the old hand-built page was a legal page; legal size is not supported by the builder). (3) `/laksh-mu` is now the normal ResumeDeck read-only view with that template (`laksh/MuResume.jsx` + `muResume()` in `laksh/mu.js`, same data as `/laksh` so they can't drift); old hand-built `mu.css` page deleted. Lint, build, 24 Playwright tests pass.
 - 2026-11-25: /laksh, /laksh?view=creative and /laksh-mu: added Bestow as its own ongoing role (Web Developer Intern, Sep 2026 - Present, from LinkedIn) and kept Freelance as a separate entry; the "5+ sites delivered" number now sits under Bestow (that work was agency work), freelance lists services only. Roles count 5 -> 7, changelog entry added. Bestow named, no Bestow client names. Lint + build pass.
 - 2026-11-25: RENAMED Profiley -> ResumeDeck (new name, resumedeck.lakshpradhwani.com, new Page-R logo, tagline "Free ATS resume builder for students and freshers"), and moved hosting from Vercel to Cloudflare. Share API is now Worker `resumedeck-share` + D1 `resumedeck-share` at resumedeck-api.lakshpradhwani.com (old D1 `profiley-share` kept as backup; Worker `profiley-share` now only proxies the old api address). localStorage keys are `resumedeck_*`; saved drafts move from the old address through `public/transfer.html` + the redirect Worker's hand-over page. Older backups with app "profiley" still import. Earlier log lines below keep the old name on purpose.
@@ -96,12 +97,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 10:51 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 10:56 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `a7c2323` 2026-11-25 10:51 /laksh-mu now uses the app view with the Masters' Union template
 - `7db9b39` 2026-11-25 10:51 Add Masters' Union table template
 - `67131ca` 2026-11-25 10:51 Fix clipped logo wordmark
 - `263c5f5` 2026-11-25 10:45 Resume: add Bestow internship (ongoing), keep freelancing separate
@@ -116,12 +118,11 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDec
 - `0c5d63f` 2026-11-25 00:05 Move share links from Firebase to the Cloudflare API; add turn-off and view counts
 - `c49e165` 2026-11-25 00:05 Add the share-link API: Cloudflare Worker + D1
 - `ffebbc3` 2026-11-24 23:47 Add share link expiry, a My links list and proposed Firestore rules
-- `01bf9e2` 2026-11-24 23:34 Add a free ATS keyword gap check to the Review tab
 
 ### Uncommitted changes at refresh time
 
 ```
-A  src/laksh/MuResume.jsx
-M  src/laksh/mu.js
+M  HANDOFF.md
+M  src/laksh/classic.js
 ```
 <!-- handoff:auto:end -->
