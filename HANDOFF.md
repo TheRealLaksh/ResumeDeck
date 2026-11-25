@@ -105,6 +105,7 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `ce24f49` 2026-11-25 11:27 Add 13 role-specific fresher resume guides
 - `d1429cb` 2026-11-25 11:27 Add 8 guides on resume sections and bullet points
 - `5cd0928` 2026-11-25 11:27 Add 18 guides: ATS basics and fresher resume basics
 - `e4b7b28` 2026-11-25 11:27 Add static SEO guide generator and generated sitemap
@@ -119,15 +120,12 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 - `2228748` 2026-11-25 01:39 ResumeDeck: custom domains, docs, import hardening
 - `acab092` 2026-11-25 01:31 Rename Profiley to ResumeDeck, host on Cloudflare, new share Worker and redirect Worker
 - `8643820` 2026-11-25 01:05 Add Playwright tests and a CI workflow
-- `770508e` 2026-11-25 00:54 HANDOFF: Firebase project deleted, laksh doc copied
 
 ### Uncommitted changes at refresh time
 
 ```
 M index.html
-A  scripts/seo/content/04-roles-a.mjs
-A  scripts/seo/content/05-roles-b.mjs
+A  scripts/seo/content/06-search.mjs
  M src/components/Layout/Footer.jsx
-?? scripts/seo/content/06-search.mjs
 ```
 <!-- handoff:auto:end -->
