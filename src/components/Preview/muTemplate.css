@@ -1,0 +1,17 @@
+/* Masters' Union template: label | content table, Calibri-style text, black rules. Used by layoutType 'mu'. */
+.mu-doc { font-family: Calibri, Carlito, 'Segoe UI', Arial, sans-serif; font-size: 12px; line-height: 1.25; color: #000; }
+.mu-doc .mu-name { margin: 0 0 1px; text-align: center; font-size: 14px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.2; }
+.mu-doc .mu-contact { margin: 0 0 10px; text-align: center; }
+.mu-doc .mu-contact a { color: #1155cc; text-decoration: underline; }
+.mu-doc .mu-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.mu-doc .mu-c1 { width: 96px; }
+.mu-doc .mu-table th, .mu-doc .mu-table td { border: 1px solid #000; padding: 3px 5px; vertical-align: top; text-align: left; }
+.mu-doc .mu-table th { font-weight: 700; }
+.mu-doc .mu-table p { margin: 0; }
+.mu-doc .mu-i, .mu-doc .mu-r { font-style: italic; }
+.mu-doc .mu-b { padding-left: 14px; text-indent: -14px; }
+.mu-doc .mu-b > span:first-child { display: inline-block; width: 14px; text-indent: 0; }
+.mu-doc .mu-line::after { content: ''; display: block; clear: both; }
+.mu-doc .mu-line .mu-right { float: right; padding-left: 8px; white-space: nowrap; }
+.mu-doc .mu-table tr + tr td > div + div { margin-top: 3px; }
+.mu-doc, .mu-doc * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }

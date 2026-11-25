@@ -9,6 +9,7 @@ import { sanitizeImageSrc, sanitizeUrl } from '../../utils/safeUrl';
 import { ContactItem, DetailText, Entry, SectionHeader, SkillTag } from './PreviewHelpers';
 import Editable from './Editable';
 import { useEdit } from './editContext';
+import './muTemplate.css';
 
 const sectionIcons = {
     summary: User,
@@ -207,6 +208,111 @@ const ResumeDocument = ({ data, config, sectionOrder, paperRole = 'main' }) => {
     const framed = Boolean(frame);
 
     const visibleSections = sections.filter((s) => s.visible);
+
+    // =================================================================
+    // Masters' Union table layout: label | content, plain Calibri-style text, black rules
+    // =================================================================
+    if (layoutType === 'mu') {
+        const BUL = /^\s*[-•*]\s+/;
+        const lines = (text) => (text || '').split('\n').filter((l) => l.trim() !== '');
+        const Bullets = ({ text, path }) => (
+            <Editable as="div" multiline path={path} value={text || ''} placeholder="Describe what you did. Start lines with - for bullets." label="Details" inputClassName="[font-size:inherit] leading-snug">
+                {lines(text).map((l, i) => (BUL.test(l)
+                    ? <p key={i} className="mu-b"><span aria-hidden="true">{'•'}</span>{l.replace(BUL, '')}</p>
+                    : <p key={i}>{l}</p>))}
+            </Editable>
+        );
+        const Head = ({ title, date, tPath, dPath, tPh, dPh }) => (
+            <p className="mu-line">
+                {(date || edit) && <Editable as="b" path={dPath} value={date || ''} placeholder={dPh} className="mu-right" />}
+                <Editable as="b" path={tPath} value={title || ''} placeholder={tPh} />
+            </p>
+        );
+        const listFor = (id) => (id === 'achievements' ? data.achievements : data.community);
+        const muContent = (id) => {
+            switch (id) {
+                case 'summary':
+                    return (edit || data.personal.summary) && (
+                        <Editable as="p" multiline path="personal:summary" value={data.personal.summary} placeholder="Write a short summary." label="Summary" className="mu-i" inputClassName="[font-size:inherit] leading-snug">
+                            {data.personal.summary}
+                        </Editable>
+                    );
+                case 'education':
+                    return data.education.length > 0 && data.education.map((e, i) => (
+                        <div key={e.id ?? i}>
+                            <Head title={e.institution} date={e.year} tPath={`education:${e.id}:institution`} dPath={`education:${e.id}:year`} tPh="Institution" dPh="Dates" />
+                            {(e.degree || edit) && <Editable as="p" path={`education:${e.id}:degree`} value={e.degree || ''} placeholder="Degree" />}
+                            {e.details && <Bullets text={e.details} path={`education:${e.id}:details`} />}
+                        </div>
+                    ));
+                case 'experience':
+                    return data.experience.length > 0 && data.experience.map((x, i) => (
+                        <div key={x.id ?? i}>
+                            <Head title={x.company} date={x.year} tPath={`experience:${x.id}:company`} dPath={`experience:${x.id}:year`} tPh="Company" dPh="Dates" />
+                            {(x.role || edit) && <Editable as="p" path={`experience:${x.id}:role`} value={x.role || ''} placeholder="Role" className="mu-r" />}
+                            <Bullets text={x.details} path={`experience:${x.id}:details`} />
+                        </div>
+                    ));
+                case 'skills': {
+                    if (data.skills.length === 0) return null;
+                    const names = data.skills.map((sk) => (typeof sk === 'string' ? sk : sk.name)).filter(Boolean);
+                    return <p>{names.join(', ')}</p>;
+                }
+                case 'achievements':
+                case 'community': {
+                    const items = listFor(id);
+                    if (items.length === 0) return null;
+                    return items.map((it, i) => (
+                        <p key={i} className="mu-b"><span aria-hidden="true">{'•'}</span><Editable as="span" path={`${id}:${i}`} value={it} placeholder="Add a point" /></p>
+                    ));
+                }
+                default: {
+                    const c = data.custom?.[id];
+                    if (!c?.content && !(edit && c)) return null;
+                    return (
+                        <Editable as="div" multiline path={`custom:${id}:content`} value={c.content} placeholder="Add details for this section." label="Section content" inputClassName="[font-size:inherit] leading-snug">
+                            {lines(c.content).map((l, i) => {
+                                if (BUL.test(l)) return <p key={i} className="mu-b"><span aria-hidden="true">{'•'}</span>{l.replace(BUL, '')}</p>;
+                                const m = l.match(/^([^:]{1,40}):\s+(.*)$/);
+                                return m ? <p key={i}><b>{m[1]}: </b>{m[2]}</p> : <p key={i}>{l}</p>;
+                            })}
+                        </Editable>
+                    );
+                }
+            }
+        };
+        const rows = visibleSections
+            .map((section) => ({ section, content: muContent(section.id) }))
+            .filter(({ content }) => !isEmptyContent(content));
+        const links = [
+            data.personal.email && { label: data.personal.email, href: `mailto:${data.personal.email}` },
+            linkedinUrl && { label: 'LinkedIn', href: linkedinUrl },
+            githubUrl && { label: 'GitHub', href: githubUrl },
+            portfolioUrl && { label: 'Portfolio', href: portfolioUrl }
+        ].filter(Boolean);
+
+        return (
+            <div data-resume-paper={paperRole} className={`${pageClass} mu-doc px-9 py-8`}>
+                <Editable as="h1" path="personal:name" value={data.personal.name} placeholder="Your name" className="mu-name" />
+                <p className="mu-contact">
+                    {links.map((l, i) => (
+                        <span key={l.label}>{i > 0 && ' | '}<a href={l.href}>{l.label}</a></span>
+                    ))}
+                </p>
+                <table className="mu-table">
+                    <colgroup><col className="mu-c1" /><col /></colgroup>
+                    <tbody>
+                        {rows.map(({ section, content }) => (
+                            <tr key={section.id}>
+                                <th scope="row"><Editable as="span" path={`section:${section.id}`} value={getTitle(section)} placeholder="Section title" /></th>
+                                <td>{content}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
 
     // =================================================================
     // Sidebar layouts

@@ -196,6 +196,24 @@ export const templates = {
       themeColor: 'noir'
     }
   },
+  mastersunion: {
+    name: "Masters' Union",
+    description: "Label and content table with black rules, the layout Masters' Union asks for.",
+    tags: ['single', 'ats'],
+    config: {
+      layoutType: 'mu',
+      sidebarBg: 'none',
+      headerAlign: 'text-center',
+      fontFamily: 'font-sans',
+      sectionHeaderStyle: 'caps-rule',
+      skillStyle: 'comma',
+      showPhoto: false,
+      showIcons: false,
+      showSectionIcons: false,
+      themeColor: 'noir',
+      spacingScale: 'compact'
+    }
+  },
   ledger: {
     name: 'Ledger',
     description: 'Dense, two-sided header and tight rhythm.',

@@ -102,6 +102,7 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDec
 
 ### Last 15 commits
 
+- `67131ca` 2026-11-25 10:51 Fix clipped logo wordmark
 - `263c5f5` 2026-11-25 10:45 Resume: add Bestow internship (ongoing), keep freelancing separate
 - `42124a3` 2026-11-25 03:42 CI: deploy to Cloudflare on main once the secrets exist
 - `87712b2` 2026-11-25 01:53 HANDOFF: rename follow-ups
@@ -116,19 +117,14 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDec
 - `ffebbc3` 2026-11-24 23:47 Add share link expiry, a My links list and proposed Firestore rules
 - `01bf9e2` 2026-11-24 23:34 Add a free ATS keyword gap check to the Review tab
 - `e488232` 2026-11-24 22:49 Add a cover letter builder with a free Claude copy-paste prompt
-- `c79c3c4` 2026-11-24 22:17 Add multiple saved resumes and a backup reminder
 
 ### Uncommitted changes at refresh time
 
 ```
-M HANDOFF.md
- M src/components/Preview/ResumeDocument.jsx
-M  src/components/UI/Logo.jsx
- M src/data/templates.js
-D  src/laksh/MuResume.jsx
-D  src/laksh/mu.css
+M  src/components/Preview/ResumeDocument.jsx
+A  src/components/Preview/muTemplate.css
+M  src/data/templates.js
  M src/laksh/mu.js
-?? src/components/Preview/muTemplate.css
 ?? src/laksh/MuResume.jsx
 ```
 <!-- handoff:auto:end -->
