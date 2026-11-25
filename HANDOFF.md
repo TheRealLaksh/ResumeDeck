@@ -62,7 +62,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
-- 2026-11-25: round 3 of guide expansion (`16-ex3-a.mjs`, `17-ex3-b.mjs`, 33 more sections: interview prep, process, worked examples): shortest guide now about 700 words, average above 730. Deployed.
+- 2026-11-25: round 3 of guide expansion (`16-ex3-a.mjs`, `17-ex3-b.mjs`, 33 more sections: interview prep, process, worked examples): shortest guide now about 700 words, average 802 words. Deployed.
 - 2026-11-25: expanded all 50 guides (average about 660 words, shortest about 480): extra sections live in `scripts/seo/content/11-15-ex*.mjs` as `extras` maps keyed by slug and merged by the generator. Not yet at the 800-word target; next round should go to the pages that get impressions first.
 - 2026-11-25: SEO phase: 50 static guide pages + /guides/ index + generated sitemap (53 URLs), home prerender block, footer link (branch `seo-guides`, see Code map). Lint, build and 24 tests pass. Deployed with `npm run deploy:cf` and the sitemap submitted in Search Console (Success, 53 pages).
 - 2026-11-25: removed the CODE IIT Madras entry from Education in `classic.js` (so /laksh and /laksh-mu); the creative page still lists it under experience/certifications (Laksh only asked about education).
@@ -101,12 +101,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 11:56 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 11:57 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `42803bf` 2026-11-25 11:56 Expand 33 guides with interview prep and process sections (round 3)
 - `6fa940a` 2026-11-25 11:51 Expand guides with worked examples (round 2), update handoff
 - `9547c66` 2026-11-25 11:51 Expand all 50 guides with extra sections and FAQs (round 1)
 - `c35b4f9` 2026-11-25 11:29 Handoff: SEO guides deployed, sitemap submitted to Search Console
@@ -121,14 +122,10 @@ Branch: `seo-guides` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 - `7db9b39` 2026-11-25 10:51 Add Masters' Union table template
 - `67131ca` 2026-11-25 10:51 Fix clipped logo wordmark
 - `263c5f5` 2026-11-25 10:45 Resume: add Bestow internship (ongoing), keep freelancing separate
-- `42124a3` 2026-11-25 03:42 CI: deploy to Cloudflare on main once the secrets exist
 
 ### Uncommitted changes at refresh time
 
 ```
 M  HANDOFF.md
-M  scripts/build-seo.mjs
-A  scripts/seo/content/16-ex3-a.mjs
-A  scripts/seo/content/17-ex3-b.mjs
 ```
 <!-- handoff:auto:end -->
