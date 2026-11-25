@@ -32,7 +32,7 @@ React 19, Vite, Tailwind, Cloudflare Worker + D1 (share links), html2canvas + js
 - Share links (moved off Firebase on 25 Nov 2026): Cloudflare Worker `profiley-share` + D1 database `profiley-share` (id in `worker/wrangler.toml`), URL https://resumedeck-api.lakshpradhwani.com (custom domain, added 25 Nov; the workers.dev address https://profiley-share.laksh-pradhwani.workers.dev still works), code in `worker/` (`src/index.js`, `schema.sql`; deploy with `cd worker && npx wrangler deploy`, wrangler is logged in as laksh.pradhwani@gmail.com). Endpoints: POST /api/share (create, returns id + ownerToken), GET /api/share/:id (410 expired/revoked), GET .../stats and POST .../revoke (Bearer owner token). Only the SHA-256 of the owner token is stored. Create is rate limited (20/h per hashed IP); expiry and turn-off are enforced server-side, turn-off deletes the stored copy. Client: `src/shareApi.js` (API base in `VITE_SHARE_API`, defaults to the workers.dev URL), `src/utils/shareLinks.js` (`resumedeck_links` list incl. owner tokens, so clearing site data loses the ability to turn links off, the links stay live), ShareModal (expiry, views, Turn off), `components/Layout/LinkUnavailable.jsx`. The cover letter is stripped before sharing. Links imported from Firebase have no owner token (cannot be turned off from the web).
 - `src/components/UI/Logo.jsx`: the logo (page-shaped P + outlined Instrument Serif wordmark, inline SVG, colours from theme tokens incl. `--c-accent-fold`); used by TopBar, AppSkeleton, MobileLayout
 - `src/laksh/` (merged to `main` and LIVE since 18 Oct 2026; branch `feat/laksh-resume-custom` can be deleted): Laksh's own resume at `/laksh`. **Default `/laksh` = the standard ResumeDeck read-only view** (`LakshClassic.jsx` renders `App` with `preset` from `classic.js`). Since the 18 Oct research (vault note `01 About Me/Top Package Resume Research (Oct 2026).md`) it is the strict one-page version: ATS Friendly template, no photo, no summary, Education first (all schools, no marks), Experience, Projects (with visible URLs and proof: tests, audits), grouped Skills, Awards. New builder features it uses: `personal.github` field (editor + header) and the `showLinkUrls` config key (prints the real URL instead of the label "LinkedIn"). It overflows A4 by about 6%, which the app's fit-to-one-page print/PDF handles. Real numbers added 18 Oct (from Laksh): ShiftsDeal 120+ venues listed, freelance 5+ sites delivered (not live yet, so no live count). Unified Mentor users: Laksh chose to skip it (24 Nov), leave it out (Calibridge Lighthouse added 24 Nov). A "Creative view" switch (`ViewSwitch.jsx`, `switch.css`; shown by TopBar and MobileLayout via the `viewSwitch` prop when read-only) goes to `/laksh?view=creative`, the hand-built page; its switch goes back. Strict readers therefore never see the creative page unless they opt in. `main.jsx` lazy-loads both (App and Firebase load only for the standard view and other paths). `content.js` holds all the facts + lens rules (client / recruiter / dev, `?lens=` param, saved in localStorage), `LakshResume.jsx` the page (hero, tinted sections, timeline, project cards with live up/down pings, changelog diff, live ATS card that runs `ats/analyze.js` on the print sheet), `Sheet.jsx` the A4 text version (table with repeating spacer rows so `@page` margin stays 0 and the browser adds no header/footer; printed via the PDF button), `hooks.js` (reveal-on-view, count-up, magnet, tilt, status, scroll progress), `laksh.css` (scoped to `.lk`, light + dark). Photo: `public/laksh/photo.webp`.
-- `src/laksh/mu.js` + `MuResume.jsx` + `mu.css`: **`/laksh-mu`** (live 24 Nov 2026), Laksh's resume in the Masters' Union format (legal page, label | content | date table, Calibri 9 pt shrinking to 8 pt to fit). "Download PDF" = browser print (selectable text). index.css hides `#root` when printing, so mu.css overrides it for this page only. Facts copied from `content.js`; keep them in sync by hand. Not linked from /laksh (Laksh chose "/laksh-mu only"). A matching Word file is made outside the repo from his MU template.
+- `src/laksh/mu.js` + `MuResume.jsx`: **`/laksh-mu`**, the app's read-only view with the `mastersunion` template (A4; since 25 Nov 2026, replaces the legal-page hand-built version). Data = `classicResume()` plus a professional summary, so edit facts in `classic.js` only. Not linked from /laksh (Laksh chose "/laksh-mu only"). A matching Word file is made outside the repo from his MU template.
 - `public/`: `favicon.svg` (adaptive tile, light/dark), `favicon.ico`, `apple-touch-icon.png`, `icon-192/512(.maskable).png` + `site.webmanifest`, og-image.png, `_redirects`, `robots.txt` (served; moved here by the merged PR #1 `claude/pensive-meitner-opz77b`, which also hardened sharing/saved data, fixed preview/PDF export and dropped unused dependencies)
 
 ## Status
@@ -61,6 +61,7 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 - Laksh chose small commits, pushed after each (every push to `main` goes live). Session of 8 Oct 2026.
 
 ## Session log (newest first)
+- 2026-11-25: (1) Logo wordmark was clipped to "ResumeDe" in the top bar (fallback serif wider than the viewBox): `Logo.jsx` text now has `textLength=204`. (2) New official template **Masters' Union** (`mastersunion` in `data/templates.js`, `layoutType: 'mu'` branch in `ResumeDocument.jsx`, styles `components/Preview/muTemplate.css`): label | content table, black rules, A4 (the old hand-built page was a legal page; legal size is not supported by the builder). (3) `/laksh-mu` is now the normal ResumeDeck read-only view with that template (`laksh/MuResume.jsx` + `muResume()` in `laksh/mu.js`, same data as `/laksh` so they can't drift); old hand-built `mu.css` page deleted. Lint, build, 24 Playwright tests pass.
 - 2026-11-25: /laksh, /laksh?view=creative and /laksh-mu: added Bestow as its own ongoing role (Web Developer Intern, Sep 2026 - Present, from LinkedIn) and kept Freelance as a separate entry; the "5+ sites delivered" number now sits under Bestow (that work was agency work), freelance lists services only. Roles count 5 -> 7, changelog entry added. Bestow named, no Bestow client names. Lint + build pass.
 - 2026-11-25: RENAMED Profiley -> ResumeDeck (new name, resumedeck.lakshpradhwani.com, new Page-R logo, tagline "Free ATS resume builder for students and freshers"), and moved hosting from Vercel to Cloudflare. Share API is now Worker `resumedeck-share` + D1 `resumedeck-share` at resumedeck-api.lakshpradhwani.com (old D1 `profiley-share` kept as backup; Worker `profiley-share` now only proxies the old api address). localStorage keys are `resumedeck_*`; saved drafts move from the old address through `public/transfer.html` + the redirect Worker's hand-over page. Older backups with app "profiley" still import. Earlier log lines below keep the old name on purpose.
 - 2026-11-25: added automated tests + CI. `@playwright/test`, `playwright.config.js`, `tests/editor.spec.js` + `tests/share.spec.js` + `tests/helpers.js`, `.github/workflows/ci.yml`, `npm test`. 17 tests pass locally (Chrome). The CI workflow has not run on GitHub yet when this was written. Eslint now ignores test output and treats tests/worker as Node.
@@ -95,12 +96,13 @@ Merged to `main` and deployed (9 Oct 2026): AI "tailor to job", ATS check, click
 <!-- handoff:auto:start -->
 ## Auto: repo state
 
-_Refreshed 25 Nov 2026, 10:45 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
+_Refreshed 25 Nov 2026, 10:51 am IST by `scripts/handoff.mjs` (runs on every commit). Don't edit inside this block._
 
 Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDeck.git
 
 ### Last 15 commits
 
+- `263c5f5` 2026-11-25 10:45 Resume: add Bestow internship (ongoing), keep freelancing separate
 - `42124a3` 2026-11-25 03:42 CI: deploy to Cloudflare on main once the secrets exist
 - `87712b2` 2026-11-25 01:53 HANDOFF: rename follow-ups
 - `5c71ee2` 2026-11-25 01:50 Tests: read saved data defensively while autosave is still pending
@@ -115,14 +117,18 @@ Branch: `rename-resumedeck` · remote: https://github.com/TheRealLaksh/ResumeDec
 - `01bf9e2` 2026-11-24 23:34 Add a free ATS keyword gap check to the Review tab
 - `e488232` 2026-11-24 22:49 Add a cover letter builder with a free Claude copy-paste prompt
 - `c79c3c4` 2026-11-24 22:17 Add multiple saved resumes and a backup reminder
-- `ee103c9` 2026-11-24 22:17 HANDOFF: /laksh-mu and ShiftsDeal role update
 
 ### Uncommitted changes at refresh time
 
 ```
-M  HANDOFF.md
-M  src/laksh/classic.js
-M  src/laksh/content.js
-M  src/laksh/mu.js
+M HANDOFF.md
+ M src/components/Preview/ResumeDocument.jsx
+M  src/components/UI/Logo.jsx
+ M src/data/templates.js
+D  src/laksh/MuResume.jsx
+D  src/laksh/mu.css
+ M src/laksh/mu.js
+?? src/components/Preview/muTemplate.css
+?? src/laksh/MuResume.jsx
 ```
 <!-- handoff:auto:end -->

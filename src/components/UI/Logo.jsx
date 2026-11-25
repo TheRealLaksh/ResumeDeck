@@ -17,7 +17,7 @@ const Logo = ({ size = 'md' }) => (
   >
     <path d={MARK} fillRule="evenodd" fill="rgb(var(--c-accent))" />
     <path d={FOLD} fill="rgb(var(--c-accent-fold))" />
-    <text x="76" y="46" fontFamily="'Instrument Serif', Georgia, serif" fontSize="46" fill="currentColor">
+    <text x="76" y="46" fontFamily="'Instrument Serif', Georgia, serif" fontSize="46" fill="currentColor" textLength="204" lengthAdjust="spacingAndGlyphs">
       Resume<tspan fill="rgb(var(--c-accent))">Deck</tspan>
     </text>
   </svg>
